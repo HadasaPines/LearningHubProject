@@ -1,7 +1,36 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\User\\Documents\\dvora\\LearningHubProject\\LearningHub\\",
-  "Documents": [],
+  "WorkspaceRootPath": "H:\\FinalProject\\LearningHubProject\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\teacher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\teacher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\teacheravailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\teacheravailability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\enums\\subjectsenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\enums\\subjectsenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeachersToSubjects.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DAL\\Models\\TeachersToSubjects.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +38,100 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Lesson.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Lesson.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\Lesson.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Lesson.cs",
+              "RelativeToolTip": "DAL\\Models\\Lesson.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAcwA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T16:23:07.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\User.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\User.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\User.cs",
+              "RelativeToolTip": "DAL\\Models\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T16:22:24.379Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Registration.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Registration.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\Registration.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Registration.cs",
+              "RelativeToolTip": "DAL\\Models\\Registration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T16:22:20.017Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Teacher.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Teacher.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\Teacher.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Teacher.cs",
+              "RelativeToolTip": "DAL\\Models\\Teacher.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T16:22:04.38Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TeacherAvailability.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeacherAvailability.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\TeacherAvailability.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeacherAvailability.cs",
+              "RelativeToolTip": "DAL\\Models\\TeacherAvailability.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T16:22:02.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TeachersToSubjects.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeachersToSubjects.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\TeachersToSubjects.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeachersToSubjects.cs",
+              "RelativeToolTip": "DAL\\Models\\TeachersToSubjects.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T15:44:46.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SubjectsEnum.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Enums\\SubjectsEnum.cs",
+              "RelativeDocumentMoniker": "DAL\\Enums\\SubjectsEnum.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Enums\\SubjectsEnum.cs",
+              "RelativeToolTip": "DAL\\Enums\\SubjectsEnum.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T15:33:47.714Z"
             }
           ]
         }
