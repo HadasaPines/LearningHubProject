@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "H:\\FinalProject\\LearningHubProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\services\\userservicedal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\services\\userservicedal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\services\\studentservicedal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\services\\studentservicedal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\subject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\subject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|solutionrelative:dal\\models\\lesson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6AF9CC22-DE44-4D9F-93EF-F7EFA25293E2}|DAL\\DAL.csproj|h:\\finalproject\\learninghubproject\\dal\\models\\teacher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,21 +58,86 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserServiceDAL.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Services\\UserServiceDAL.cs",
+              "RelativeDocumentMoniker": "DAL\\Services\\UserServiceDAL.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Services\\UserServiceDAL.cs",
+              "RelativeToolTip": "DAL\\Services\\UserServiceDAL.cs",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAwDoAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T18:14:40.559Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Subject.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Subject.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\Subject.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Subject.cs",
+              "RelativeToolTip": "DAL\\Models\\Subject.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T18:14:09.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MyDbContext.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\MyDbContext.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\MyDbContext.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\MyDbContext.cs",
+              "RelativeToolTip": "DAL\\Models\\MyDbContext.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAQwBYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:57:23.633Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StudentServiceDAL.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Services\\StudentServiceDAL.cs",
+              "RelativeDocumentMoniker": "DAL\\Services\\StudentServiceDAL.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Services\\StudentServiceDAL.cs",
+              "RelativeToolTip": "DAL\\Services\\StudentServiceDAL.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwCMAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:51:47.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Student.cs",
+              "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Student.cs",
+              "RelativeDocumentMoniker": "DAL\\Models\\Student.cs",
+              "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Student.cs",
+              "RelativeToolTip": "DAL\\Models\\Student.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:51:03.322Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "Lesson.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Lesson.cs",
               "RelativeDocumentMoniker": "DAL\\Models\\Lesson.cs",
               "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Lesson.cs",
               "RelativeToolTip": "DAL\\Models\\Lesson.cs",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAcwA4AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T16:23:07.159Z",
               "EditorCaption": ""
@@ -65,14 +150,14 @@
               "RelativeDocumentMoniker": "DAL\\Models\\User.cs",
               "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\User.cs",
               "RelativeToolTip": "DAL\\Models\\User.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAjAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAcAAAALAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T16:22:24.379Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Registration.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Registration.cs",
               "RelativeDocumentMoniker": "DAL\\Models\\Registration.cs",
@@ -85,7 +170,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Teacher.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Teacher.cs",
               "RelativeDocumentMoniker": "DAL\\Models\\Teacher.cs",
@@ -93,12 +178,11 @@
               "RelativeToolTip": "DAL\\Models\\Teacher.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:04.38Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:04.38Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "TeacherAvailability.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeacherAvailability.cs",
               "RelativeDocumentMoniker": "DAL\\Models\\TeacherAvailability.cs",
@@ -106,12 +190,11 @@
               "RelativeToolTip": "DAL\\Models\\TeacherAvailability.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:02.397Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:02.397Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "TeachersToSubjects.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\TeachersToSubjects.cs",
               "RelativeDocumentMoniker": "DAL\\Models\\TeachersToSubjects.cs",
@@ -123,7 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "SubjectsEnum.cs",
               "DocumentMoniker": "H:\\FinalProject\\LearningHubProject\\DAL\\Enums\\SubjectsEnum.cs",
               "RelativeDocumentMoniker": "DAL\\Enums\\SubjectsEnum.cs",

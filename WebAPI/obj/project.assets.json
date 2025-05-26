@@ -447,7 +447,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\פינס הדסה\\.nuget\\packages\\": {},
+    "C:\\Users\\כהנזדה אורית\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -456,14 +456,14 @@
       "projectUniqueName": "H:\\FinalProject\\LearningHubProject\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
       "projectPath": "H:\\FinalProject\\LearningHubProject\\WebAPI\\WebAPI.csproj",
-      "packagesPath": "C:\\Users\\פינס הדסה\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\כהנזדה אורית\\.nuget\\packages\\",
       "outputPath": "H:\\FinalProject\\LearningHubProject\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\פינס הדסה\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\כהנזדה אורית\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
