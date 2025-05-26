@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace DAL.Models;
 
 public partial class Teacher
@@ -20,6 +21,7 @@ public partial class Teacher
     public virtual ICollection<TeacherAvailability> TeacherAvailabilities { get; set; } = new List<TeacherAvailability>();
 
     public virtual User TeacherNavigation { get; set; } = null!;
+
 
     public virtual ICollection<TeachersToSubject> TeachersToSubjects { get; set; } = new List<TeachersToSubject>();
 }

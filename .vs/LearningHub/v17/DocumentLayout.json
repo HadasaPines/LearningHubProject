@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "DAL\\Models\\Lesson.cs",
               "ToolTip": "H:\\FinalProject\\LearningHubProject\\DAL\\Models\\Lesson.cs",
               "RelativeToolTip": "DAL\\Models\\Lesson.cs",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAcwA4AAAAAAAAA",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAcwBIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T16:23:07.159Z",
               "EditorCaption": ""
@@ -67,8 +67,7 @@
               "RelativeToolTip": "DAL\\Models\\User.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:24.379Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:24.379Z"
             },
             {
               "$type": "Document",
@@ -80,8 +79,7 @@
               "RelativeToolTip": "DAL\\Models\\Registration.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:20.017Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:20.017Z"
             },
             {
               "$type": "Document",
@@ -93,8 +91,7 @@
               "RelativeToolTip": "DAL\\Models\\Teacher.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:04.38Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:04.38Z"
             },
             {
               "$type": "Document",
@@ -106,8 +103,7 @@
               "RelativeToolTip": "DAL\\Models\\TeacherAvailability.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T16:22:02.397Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T16:22:02.397Z"
             },
             {
               "$type": "Document",
