@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Api;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    internal class UserServiceDAL
+    public class UserServiceDAL : IUserServiceDAL
     {
         private readonly MyDbContext dbContext;
         public UserServiceDAL(MyDbContext context)
@@ -28,10 +29,10 @@ namespace DAL.Services
             dbContext.Users.Add(user);
             await dbContext.SaveChangesAsync();
         }
-        public async Task UpdateUserName(int id,string name)
+        public async Task UpdateUserName(int id, string name)
         {
-           var user= await dbContext.Users
-              .FirstOrDefaultAsync( u=> u.UserId==id);
+            var user = await dbContext.Users
+               .FirstOrDefaultAsync(u => u.UserId == id);
             if (user == null)
                 throw new Exception($"User with ID {id} not found.");
             user.FullName = name;
@@ -79,6 +80,6 @@ namespace DAL.Services
 
 
 
- 
+
     }
 }

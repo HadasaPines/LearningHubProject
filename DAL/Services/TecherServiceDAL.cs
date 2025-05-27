@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Api;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    internal class TecherServiceDAL
+    public class TecherServiceDAL : ITecherServiceDAL
     {
         private readonly MyDbContext dbContext;
         public TecherServiceDAL(MyDbContext _dbContext)
@@ -41,15 +42,15 @@ namespace DAL.Services
         {
             dbContext.Teachers.Add(teacher);
             await dbContext.SaveChangesAsync();
-            return teacher;            
+            return teacher;
         }
-        public async Task<Teacher> UpdateTeacherBioAsync(string bio , string name )
+        public async Task<Teacher> UpdateTeacherBioAsync(string bio, string name)
         {
             var user = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.FullName == name);
-            if(user == null)
+            if (user == null)
             {
-                 throw new Exception("User not found");
+                throw new Exception("User not found");
             }
             var teacher = await dbContext.Teachers
                 .Include(t => t.TeacherNavigation)

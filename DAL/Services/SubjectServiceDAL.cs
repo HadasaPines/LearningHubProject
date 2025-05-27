@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Api;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 namespace DAL.Services
 {
-    public class SubjectServiceDAL 
+    public class SubjectServiceDAL : ISubjectServiceDAL
     {
         private readonly MyDbContext _context;
         public SubjectServiceDAL(MyDbContext dbContext)
@@ -62,7 +63,7 @@ namespace DAL.Services
         //        .Where(s => s..FullName.Equals(teacherName))
         //        .ToListAsync();
         //}
-      
+
     }
 }
 

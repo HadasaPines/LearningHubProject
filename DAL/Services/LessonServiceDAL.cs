@@ -1,5 +1,6 @@
 ﻿
 
+using DAL.Api;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    public class LessonServiceDAL
+    public class LessonServiceDAL : ILessonServiceDAL
     {
         private readonly MyDbContext dbContext;
         public LessonServiceDAL(MyDbContext _dbContext)

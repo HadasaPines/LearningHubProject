@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Api;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    internal class StudentServiceDAL
+    public class StudentServiceDAL : IStudentServiceDAL
     {
-private readonly MyDbContext dbContext;
+        private readonly MyDbContext dbContext;
 
         public StudentServiceDAL(MyDbContext context)
         {
@@ -47,11 +48,11 @@ private readonly MyDbContext dbContext;
         public async Task DeleteStudent(int studentId)
         {
             var student = await GetStudentById(studentId);
-            if (student==null)
-            throw  new Exception($"Student with ID {studentId} not found.");
+            if (student == null)
+                throw new Exception($"Student with ID {studentId} not found.");
             dbContext.Students.Remove(student);
-                await dbContext.SaveChangesAsync();
-            
+            await dbContext.SaveChangesAsync();
+
         }
     }
 }
