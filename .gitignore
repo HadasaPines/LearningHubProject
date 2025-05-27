@@ -1,0 +1,20 @@
+# Ignore build results
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.app
+*.log
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache files
+.vs/
+
+# NuGet packages
+*.nupkg
+packages/

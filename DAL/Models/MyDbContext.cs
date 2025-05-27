@@ -83,9 +83,9 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.StudentId).HasName("PK__Students__32C52B9961F9D6E0");
+            entity.HasKey(e => e.StudentId).HasName("PK__tmp_ms_x__32C52B995F1BDE1D");
 
-            entity.Property(e => e.StudentId).ValueGeneratedNever();
+            entity.Property(e => e.StudentId).ValueGeneratedOnAdd();
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
@@ -106,9 +106,9 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.TeacherId).HasName("PK__Teachers__EDF259648C2B3F02");
+            entity.HasKey(e => e.TeacherId).HasName("PK__tmp_ms_x__EDF2596470721750");
 
-            entity.Property(e => e.TeacherId).ValueGeneratedNever();
+            entity.Property(e => e.TeacherId).ValueGeneratedOnAdd();
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
