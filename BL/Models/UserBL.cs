@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    internal class UserBL
+    public class UserBL
     {
+        public int UserId { get; set; }
+
+        public string FullName { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+        public string PasswordHash { get; set; } = null!;
     }
 }
