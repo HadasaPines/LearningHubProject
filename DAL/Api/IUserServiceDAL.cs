@@ -12,5 +12,7 @@ namespace DAL.Api
         Task UpdateUserEmail(int id, string email);
         Task UpdateUserName(int id, string name);
         Task UpdateUserPassword(int id, string password);
+        Task<bool> IsPasswordMatchToName(string name, string password);
+
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace BL.Services
 {
@@ -24,16 +25,13 @@ namespace BL.Services
         }
         public async Task AddUser(UserBL userBL)
         {
-            // בדיקת תקינות ת"ז
             if (!IsValidIsraeliId(userBL.UserId.ToString()))
                 throw new ArgumentException("מספר תעודת זהות שגוי");
 
-            // בדיקת ייחודיות ת"ז
-            //bool exists = await _userService.UserIdExistsAsync(userBL.UserId);
-            //if (exists)
-            //    throw new InvalidOperationException("משתמש עם תעודת זהות זו כבר קיים");
+            var passwordHasher = new PasswordHasher<UserBL>();
+            userBL.PasswordHash = passwordHasher.HashPassword(userBL, userBL.PasswordHash);
 
-            // מיפוי ושמירה
+
             User user = _mapper.Map<User>(userBL);
             await _userService.AddUser(user);
         }
@@ -53,6 +51,35 @@ namespace BL.Services
             }
 
             return sum % 10 == 0;
+        }
+
+        public async Task<User> GetUserByNameAndPassword(string username, string password)
+        {
+            // בדיקת תקינות שם משתמש וסיסמה
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
+            // בדיקת התאמה
+           
+            User user = await _userService.GetUserByName(username);
+
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            if (result == PasswordVerificationResult.Failed)
+                throw new UnauthorizedAccessException("שם משתמש או סיסמה שגויים");
+
+
+            return user;
+        }
+        public async Task DeleteUser(string name , int id)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
+            User user = await _userService.GetUserByName(name);
+            if (user.UserId!=id)
+            {
+                throw new Exception("name and id not mach");
+            }
+            await _userService.DeleteUser(id);
         }
 
     }

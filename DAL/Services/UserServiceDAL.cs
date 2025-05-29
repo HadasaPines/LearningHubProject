@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DAL.Services
 {
     public class UserServiceDAL : IUserServiceDAL
@@ -23,6 +24,13 @@ namespace DAL.Services
         public async Task<User> GetUserByName(string name)
         {
             return await dbContext.Users.FirstOrDefaultAsync(u => u.FullName == name);
+        }
+        public async Task<bool> IsPasswordMatchToName(string name, string password)
+        {
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.FullName == name);
+            if (user == null)
+                return false;
+            return user.PasswordHash == password;
         }
         public async Task AddUser(User user)
         {
