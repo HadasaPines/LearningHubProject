@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 namespace DAL.Models;
 
 public partial class MyDbContext : DbContext
@@ -31,9 +32,19 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\database\\projectDB.mdf;Integrated Security=True");
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    if (!optionsBuilder.IsConfigured)
+    //    {
+    //        var config = new ConfigurationBuilder()
+    //            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    //            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    //            .Build();
+    //        var connectionString = config.GetConnectionString("DefaultConnection");
+    //        optionsBuilder.UseSqlServer(connectionString);
+    //    }
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

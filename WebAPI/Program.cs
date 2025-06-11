@@ -8,9 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// הוספת DbContext - יש להחליף את מחרוזת החיבור
+var relativeDbPath = Path.Combine("..", "..", "..", "..", "DAL", "database", "projectDB.mdf");
+var fullDbPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeDbPath));
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!
+    .Replace("PATH", fullDbPath);
+
+
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
+
+
 
 // הזרקת תלויות לשירותי DAL
 builder.Services.AddScoped<IUserServiceDAL, UserServiceDAL>();

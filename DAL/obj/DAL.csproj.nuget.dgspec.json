@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\DAL.csproj": {}
+    "D:\\שולחן עבודה\\project\\LearningHubProject\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\DAL.csproj": {
+    "D:\\שולחן עבודה\\project\\LearningHubProject\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\DAL.csproj",
+        "projectUniqueName": "D:\\שולחן עבודה\\project\\LearningHubProject\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Documents\\dvora\\LearningHubFinalProj\\LearningHubProject\\DAL\\obj\\",
+        "projectPath": "D:\\שולחן עבודה\\project\\LearningHubProject\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\אורית\\.nuget\\packages\\",
+        "outputPath": "D:\\שולחן עבודה\\project\\LearningHubProject\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\אורית\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,8 +44,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -71,6 +70,14 @@
               "target": "Package",
               "version": "[9.0.5, )"
             },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
             "Microsoft.Extensions.Identity.Core": {
               "target": "Package",
               "version": "[9.0.5, )"
@@ -92,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

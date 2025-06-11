@@ -13,3 +13,18 @@ C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\DAL\obj\De
 C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\DAL\obj\Debug\net8.0\DAL.pdb
 C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\DAL\obj\Debug\net8.0\DAL.genruntimeconfig.cache
 C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\DAL\obj\Debug\net8.0\ref\DAL.dll
+D:\שולחן עבודה\project\LearningHubProject\DAL\bin\Debug\net8.0\DAL.deps.json
+D:\שולחן עבודה\project\LearningHubProject\DAL\bin\Debug\net8.0\DAL.runtimeconfig.json
+D:\שולחן עבודה\project\LearningHubProject\DAL\bin\Debug\net8.0\DAL.dll
+D:\שולחן עבודה\project\LearningHubProject\DAL\bin\Debug\net8.0\DAL.pdb
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.AssemblyInfo.cs
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.csproj.CoreCompileInputs.cache
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.sourcelink.json
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.dll
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\refint\DAL.dll
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.pdb
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\DAL.genruntimeconfig.cache
+D:\שולחן עבודה\project\LearningHubProject\DAL\obj\Debug\net8.0\ref\DAL.dll

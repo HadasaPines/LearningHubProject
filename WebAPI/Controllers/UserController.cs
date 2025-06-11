@@ -28,14 +28,23 @@ namespace WebAPI.Controllers
             }
             catch (ArgumentException ex)
             {
+                Console.WriteLine("❌ SaveChangesAsync failed");
+                Console.WriteLine("Message: " + ex.Message);
+                Console.WriteLine("InnerException: " + ex.InnerException?.Message);
                 return BadRequest(ex.Message);
             }
             catch (InvalidOperationException ex)
             {
+                Console.WriteLine("❌ SaveChangesAsync failed");
+                Console.WriteLine("Message: " + ex.Message);
+                Console.WriteLine("InnerException: " + ex.InnerException?.Message);
                 return Conflict(ex.Message);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) { 
+             Console.WriteLine("❌ SaveChangesAsync failed");
+            Console.WriteLine("Message: " + ex.Message);
+            Console.WriteLine("InnerException: " + ex.InnerException?.Message);
+            
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while adding the user. {ex.Message}");
             }
         }
