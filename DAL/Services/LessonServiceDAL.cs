@@ -1,6 +1,7 @@
 ﻿
 
 using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,8 +14,8 @@ namespace DAL.Services
 {
     public class LessonServiceDAL : ILessonServiceDAL
     {
-        private readonly MyDbContext dbContext;
-        public LessonServiceDAL(MyDbContext _dbContext)
+        private readonly LearningHubDbContext dbContext;
+        public LessonServiceDAL(LearningHubDbContext _dbContext)
         {
             dbContext = _dbContext;
         }
@@ -22,13 +23,13 @@ namespace DAL.Services
         {
             return await dbContext.Lessons.ToListAsync();
         }
-        public async Task<List<Lesson>> GetLessonsByTeacherName(string teacherName)
+        public async Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName)
         {
             var teacher = await dbContext.Teachers
-                .FirstOrDefaultAsync(t => t.TeacherNavigation.FullName.Equals(teacherName));
+                .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName.Equals(firstName)&& t.TeacherNavigation.LastName.Equals(lastName));
             if (teacher == null)
             {
-                throw new Exception($"Teacher with Name {teacherName} not found.");
+                throw new Exception($"Teacher with Name {firstName}{lastName} not found.");
             }
             return await dbContext.Lessons
                 .Where(l => l.TeacherId == teacher.TeacherId)

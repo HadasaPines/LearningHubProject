@@ -1,4 +1,5 @@
 ﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,9 +12,9 @@ namespace DAL.Services
 {
     public class StudentServiceDAL : IStudentServiceDAL
     {
-        private readonly MyDbContext dbContext;
+        private readonly LearningHubDbContext dbContext;
 
-        public StudentServiceDAL(MyDbContext context)
+        public StudentServiceDAL(LearningHubDbContext context)
         {
             dbContext = context;
         }
@@ -28,14 +29,14 @@ namespace DAL.Services
             return await dbContext.Students.FindAsync(studentId);
         }
 
-        public async Task<Student> GetStudentByName(string studentName)
+        public async Task<Student> GetStudentByName(string firstName, string lastName)
         {
-            var user = dbContext.Users
-                .Where(u => u.FullName == studentName)
-                .Select(u => u.Student)
-                .FirstOrDefaultAsync();
-            return await dbContext.Students
-                .FirstOrDefaultAsync(s => s.StudentId == user.Id);
+            var student = await dbContext.Students
+                .FirstOrDefaultAsync(s => s.StudentNavigation.FirstName == firstName && s.StudentNavigation.LastName == lastName);
+                  
+                
+            return  student;
+                
         }
 
         public async Task AddStudent(Student student)

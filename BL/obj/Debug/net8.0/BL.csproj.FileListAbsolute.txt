@@ -1,59 +1,31 @@
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\bin\Debug\net8.0\BL.deps.json
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\bin\Debug\net8.0\BL.dll
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\bin\Debug\net8.0\BL.pdb
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.dll
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\refint\BL.dll
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\BL.pdb
-C:\Users\User\Documents\dvora\LearningHubProject\LearningHub\BL\obj\Debug\net8.0\ref\BL.dll
-H:\FinalProject\LearningHubProject\BL\bin\Debug\net8.0\BL.deps.json
-H:\FinalProject\LearningHubProject\BL\bin\Debug\net8.0\BL.dll
-H:\FinalProject\LearningHubProject\BL\bin\Debug\net8.0\BL.pdb
-H:\FinalProject\LearningHubProject\BL\bin\Debug\net8.0\DAL.dll
-H:\FinalProject\LearningHubProject\BL\bin\Debug\net8.0\DAL.pdb
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.AssemblyReference.cache
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.sourcelink.json
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.Up2Date
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.dll
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\refint\BL.dll
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\BL.pdb
-H:\FinalProject\LearningHubProject\BL\obj\Debug\net8.0\ref\BL.dll
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\bin\Debug\net8.0\BL.deps.json
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\bin\Debug\net8.0\BL.dll
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\bin\Debug\net8.0\BL.pdb
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\bin\Debug\net8.0\DAL.dll
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\bin\Debug\net8.0\DAL.pdb
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.AssemblyReference.cache
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.sourcelink.json
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.Up2Date
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.dll
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\refint\BL.dll
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\BL.pdb
-C:\Users\User\Documents\dvora\LearningHubFinalProj\LearningHubProject\BL\obj\Debug\net8.0\ref\BL.dll
-D:\שולחן עבודה\project\LearningHubProject\BL\bin\Debug\net8.0\BL.deps.json
-D:\שולחן עבודה\project\LearningHubProject\BL\bin\Debug\net8.0\BL.dll
-D:\שולחן עבודה\project\LearningHubProject\BL\bin\Debug\net8.0\BL.pdb
-D:\שולחן עבודה\project\LearningHubProject\BL\bin\Debug\net8.0\DAL.dll
-D:\שולחן עבודה\project\LearningHubProject\BL\bin\Debug\net8.0\DAL.pdb
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.AssemblyReference.cache
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.sourcelink.json
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.Up2Date
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.dll
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\refint\BL.dll
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\BL.pdb
-D:\שולחן עבודה\project\LearningHubProject\BL\obj\Debug\net8.0\ref\BL.dll
+D:\שולחן עבודה\LearningHubProject\BL\bin\Debug\net8.0\BL.deps.json
+D:\שולחן עבודה\LearningHubProject\BL\bin\Debug\net8.0\BL.dll
+D:\שולחן עבודה\LearningHubProject\BL\bin\Debug\net8.0\BL.pdb
+D:\שולחן עבודה\LearningHubProject\BL\bin\Debug\net8.0\DAL.dll
+D:\שולחן עבודה\LearningHubProject\BL\bin\Debug\net8.0\DAL.pdb
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.AssemblyReference.cache
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.Up2Date
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.dll
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\refint\BL.dll
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\BL.pdb
+D:\שולחן עבודה\LearningHubProject\BL\obj\Debug\net8.0\ref\BL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\bin\Debug\net8.0\BL.deps.json
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\bin\Debug\net8.0\BL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\bin\Debug\net8.0\BL.pdb
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\bin\Debug\net8.0\DAL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\bin\Debug\net8.0\DAL.pdb
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.AssemblyReference.cache
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.GeneratedMSBuildEditorConfig.editorconfig
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfoInputs.cache
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.AssemblyInfo.cs
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.CoreCompileInputs.cache
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.csproj.Up2Date
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\refint\BL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.pdb
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\ref\BL.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\BL\obj\Debug\net8.0\BL.sourcelink.json

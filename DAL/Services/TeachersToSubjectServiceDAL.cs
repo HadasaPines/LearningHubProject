@@ -1,4 +1,5 @@
 ﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,8 +12,8 @@ namespace DAL.Services
 {
     public class TeachersToSubjectServiceDAL : ITeachersToSubjectServiceDAL
     {
-        private readonly MyDbContext _context;
-        public TeachersToSubjectServiceDAL(MyDbContext dbContext)
+        private readonly LearningHubDbContext _context;
+        public TeachersToSubjectServiceDAL(LearningHubDbContext dbContext)
         {
             _context = dbContext;
         }
@@ -40,13 +41,13 @@ namespace DAL.Services
             return teachersToSubject.Select(t => t.Teacher).ToList();
 
         }
-        public async Task<List<Subject>> GetSubjectToTeacherByTeacherName(string teacherName)
+        public async Task<List<Subject>> GetSubjectToTeacherByTeacherName(string firstName, string lastName)
         {
 
-            var teacher = await _context.Users.FirstOrDefaultAsync(t => t.FullName.Equals(teacherName));
+            var teacher = await _context.Users.FirstOrDefaultAsync(t => t.FirstName==firstName&&t.LastName==lastName);
             if (teacher == null)
             {
-                throw new Exception($"Teacher with Name {teacherName} not found.");
+                throw new Exception($"Teacher with Name {firstName}{lastName} not found.");
             }
 
             var teachersToSubject = await _context.TeachersToSubjects
@@ -55,7 +56,7 @@ namespace DAL.Services
                 .Where(t => t.Teacher.TeacherId == teacher.UserId).ToListAsync();
             if (teachersToSubject == null)
             {
-                throw new Exception($"Teacher with Name {teacherName} doesnt have subjects.");
+                throw new Exception($"Teacher with Name {firstName}{lastName} doesnt have subjects.");
             }
 
             return teachersToSubject.Select(s => s.Subject).ToList();
@@ -65,12 +66,12 @@ namespace DAL.Services
             await _context.TeachersToSubjects.AddAsync(teachersToSubject);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteTeacherToSubjectByTeacherAndSubjectNam(string teacherName, string subjectName)
+        public async Task DeleteTeacherToSubjectByTeacherAndSubjectNam(string firstName, string lastName, string subjectName)
         {
-            var teacher = await _context.Users.FirstOrDefaultAsync(t => t.FullName.Equals(teacherName));
+            var teacher = await _context.Users.FirstOrDefaultAsync(t=> t.FirstName == firstName && t.LastName == lastName);
             if (teacher == null)
             {
-                throw new Exception($"Teacher with Name {teacherName} not found.");
+                throw new Exception($"Teacher with Name {firstName}{lastName} not found.");
             }
 
             var subject = await _context.Subjects.FirstOrDefaultAsync(s => s.Name.Equals(subjectName));
@@ -84,7 +85,7 @@ namespace DAL.Services
 
             if (teachersToSubject == null)
             {
-                throw new Exception($"Teacher {teacherName} is not assigned to Subject {subjectName}.");
+                throw new Exception($"Teacher {firstName}{lastName}  is not assigned to Subject {subjectName}.");
             }
 
             _context.TeachersToSubjects.Remove(teachersToSubject);

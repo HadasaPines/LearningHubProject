@@ -1,4 +1,5 @@
 ﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,43 +12,43 @@ namespace DAL.Services
 {
     public class TecherServiceDAL : ITecherServiceDAL
     {
-        private readonly MyDbContext dbContext;
-        public TecherServiceDAL(MyDbContext _dbContext)
+        private readonly LearningHubDbContext dbContext;
+        public TecherServiceDAL(LearningHubDbContext _dbContext)
         {
             dbContext = _dbContext;
         }
 
-        public async Task<List<Teacher>> GetAllTeachersAsync()
+        public async Task<List<Teacher>> GetAllTeachers()
         {
             return await dbContext.Teachers
                 .Include(t => t.TeacherNavigation)
                 .Include(t => t.Lessons)
                 .ToListAsync();
         }
-        public async Task<Teacher?> GetTeacherByNameAsync(int teacherId)
+        public async Task<Teacher?> GetTeacherByName(string firstName,string lastName)
+        {
+            return await dbContext.Teachers
+                .Include(t => t.TeacherNavigation)
+                .Include(t => t.Lessons)
+                .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName == firstName&&t.TeacherNavigation.LastName==lastName);
+        }
+        public async Task<Teacher?> GetTeacherByUserId(int teacherId)
         {
             return await dbContext.Teachers
                 .Include(t => t.TeacherNavigation)
                 .Include(t => t.Lessons)
                 .FirstOrDefaultAsync(t => t.TeacherId == teacherId);
         }
-        public async Task<Teacher?> GetTeacherByUserIdAsync(int userId)
-        {
-            return await dbContext.Teachers
-                .Include(t => t.TeacherNavigation)
-                .Include(t => t.Lessons)
-                .FirstOrDefaultAsync(t => t.TeacherNavigation.UserId == userId);
-        }
-        public async Task<Teacher> AddTeacherAsync(Teacher teacher)
+        public async Task<Teacher> AddTeacher(Teacher teacher)
         {
             dbContext.Teachers.Add(teacher);
             await dbContext.SaveChangesAsync();
             return teacher;
         }
-        public async Task<Teacher> UpdateTeacherBioAsync(string bio, string name)
+        public async Task<Teacher> UpdateTeacherBio(string bio, string firstName,string lastName)
         {
             var user = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.FullName == name);
+                .FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -64,7 +65,7 @@ namespace DAL.Services
             await dbContext.SaveChangesAsync();
             return teacher;
         }
-        public async Task<bool> DeleteTeacherAsync(int teacherId)
+        public async Task<bool> DeleteTeacher(int teacherId)
         {
             var teacher = await dbContext.Teachers.FindAsync(teacherId);
             if (teacher == null)
@@ -76,7 +77,7 @@ namespace DAL.Services
             await dbContext.SaveChangesAsync();
             return true;
         }
-        public async Task<List<Teacher>> GetTeachersBySubjectAsync(int subjectId)
+        public async Task<List<Teacher>> GetTeachersBySubject(int subjectId)
         {
             return await dbContext.Teachers
                 .Include(t => t.TeachersToSubjects)

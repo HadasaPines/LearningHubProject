@@ -1,4 +1,5 @@
 ﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,12 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
+
 namespace DAL.Services
 {
     public class UserServiceDAL : IUserServiceDAL
     {
-        private readonly MyDbContext dbContext;
-        public UserServiceDAL(MyDbContext context)
+        private readonly LearningHubDbContext dbContext;
+        public UserServiceDAL(LearningHubDbContext context)
         {
             dbContext = context;
         }
@@ -21,13 +24,14 @@ namespace DAL.Services
         {
             return await dbContext.Users.FindAsync(userId);
         }
-        public async Task<User> GetUserByName(string name)
+        public async Task<User> GetUserByName(string firstName,string lastName)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(u => u.FullName == name);
+
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
         }
-        public async Task<bool> IsPasswordMatchToName(string name, string password)
+        public async Task<bool> IsPasswordMatchToName(string firstName, string lastName, string password)
         {
-            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.FullName == name);
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
             if (user == null)
                 return false;
             return user.PasswordHash == password;
@@ -37,13 +41,13 @@ namespace DAL.Services
             dbContext.Users.Add(user);
             await dbContext.SaveChangesAsync();
         }
-        public async Task UpdateUserName(int id, string name)
+        public async Task UpdateUserName(int id, string firstName, string lastName)
         {
             var user = await dbContext.Users
                .FirstOrDefaultAsync(u => u.UserId == id);
-            if (user == null)
-                throw new Exception($"User with ID {id} not found.");
-            user.FullName = name;
+          
+            user.FirstName = firstName;
+            user.LastName=lastName;
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
         }
@@ -52,8 +56,7 @@ namespace DAL.Services
         {
             var user = await dbContext.Users
                .FirstOrDefaultAsync(u => u.UserId == id);
-            if (user == null)
-                throw new Exception($"User with ID {id} not found.");
+            
             user.Email = email;
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
@@ -63,8 +66,7 @@ namespace DAL.Services
         {
             var user = await dbContext.Users
                .FirstOrDefaultAsync(u => u.UserId == id);
-            if (user == null)
-                throw new Exception($"User with ID {id} not found.");
+           
             user.PasswordHash = password;
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
@@ -74,8 +76,7 @@ namespace DAL.Services
         public async Task DeleteUser(int userId)
         {
             var user = await GetUserById(userId);
-            if (user == null)
-                throw new Exception($"User with ID {userId} not found.");
+           
             dbContext.Users.Remove(user);
             await dbContext.SaveChangesAsync();
         }

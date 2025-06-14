@@ -49,15 +49,15 @@ namespace WebAPI.Controllers
             }
         }
         [HttpGet("getuserbynameandpassword")]
-        public async Task<IActionResult> GetUserByNameAndPassword(string username, string password)
+        public async Task<IActionResult> GetUserByNameAndPassword(string firstName, string lastName, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(firstName)|| string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(password))
             {
                 return BadRequest("Username and password are required.");
             }
             try
             {
-                var user = await _userManager.GetUserByNameAndPassword(username, password);
+                var user = await _userManager.GetUserByNameAndPassword(firstName, lastName, password);
                 if (user == null)
                 {
                     return NotFound("User not found.");
@@ -70,11 +70,11 @@ namespace WebAPI.Controllers
             }
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser(int userId , string userName)
+        public async Task<IActionResult> DeleteUser(int userId , string firstName, string lastName)
         {
             try
             {
-                await _userManager.DeleteUser(userName, userId);
+                await _userManager.DeleteUser(firstName, lastName, userId);
                 return Ok();
             }
             catch (Exception ex)

@@ -8,6 +8,6 @@ namespace DAL.Api
         Task DeleteStudent(int studentId);
         Task<List<Student>> GetAllStudents();
         Task<Student> GetStudentById(int studentId);
-        Task<Student> GetStudentByName(string studentName);
+        Task<Student> GetStudentByName(string firstName,string lastName);
     }
 }

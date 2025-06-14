@@ -10,7 +10,7 @@ namespace DAL.Api
         Task<Lesson> GetLessonById(int lessonId);
         Task<List<Lesson>> GetLessonsByDate(DateOnly date);
         Task<List<Lesson>> GetLessonsBySubjectName(string subjectName);
-        Task<List<Lesson>> GetLessonsByTeacherName(string teacherName);
+        Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName);
         Task UpdateLessonDate(int lessonId, DateOnly newDate);
         Task UpdateLessonTime(int lessonId, TimeOnly newStartTime, TimeOnly newEndTime);
     }

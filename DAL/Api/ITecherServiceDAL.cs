@@ -4,12 +4,12 @@ namespace DAL.Api
 {
     public interface ITecherServiceDAL
     {
-        Task<Teacher> AddTeacherAsync(Teacher teacher);
-        Task<bool> DeleteTeacherAsync(int teacherId);
-        Task<List<Teacher>> GetAllTeachersAsync();
-        Task<Teacher?> GetTeacherByNameAsync(int teacherId);
-        Task<Teacher?> GetTeacherByUserIdAsync(int userId);
-        Task<List<Teacher>> GetTeachersBySubjectAsync(int subjectId);
-        Task<Teacher> UpdateTeacherBioAsync(string bio, string name);
+        Task<Teacher> AddTeacher(Teacher teacher);
+        Task<bool> DeleteTeacher(int teacherId);
+        Task<List<Teacher>> GetAllTeachers();
+        Task<Teacher?> GetTeacherByName(string firstName, string lastName);
+        Task<Teacher?> GetTeacherByUserId(int teacherId);
+        Task<List<Teacher>> GetTeachersBySubject(int subjectId);
+        Task<Teacher> UpdateTeacherBio(string bio, string firstName,string lastName);
     }
 }

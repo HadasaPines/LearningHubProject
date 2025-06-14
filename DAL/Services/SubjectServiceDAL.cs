@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -14,8 +15,8 @@ namespace DAL.Services
 {
     public class SubjectServiceDAL : ISubjectServiceDAL
     {
-        private readonly MyDbContext _context;
-        public SubjectServiceDAL(MyDbContext dbContext)
+        private readonly LearningHubDbContext _context;
+        public SubjectServiceDAL(LearningHubDbContext dbContext)
         {
             _context = dbContext;
         }

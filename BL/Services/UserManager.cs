@@ -53,29 +53,31 @@ namespace BL.Services
             return sum % 10 == 0;
         }
 
-        public async Task<User> GetUserByNameAndPassword(string username, string password)
+        public async Task<User> GetUserByNameAndPassword(string firstName, string lastName, string password)
         {
-            // בדיקת תקינות שם משתמש וסיסמה
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
-            // בדיקת התאמה
-           
-            User user = await _userService.GetUserByName(username);
+
+            User user = await _userService.GetUserByName(firstName, lastName);
+
+            if (user == null)
+                throw new UnauthorizedAccessException("שם משתמש או סיסמה שגויים");
 
             var hasher = new PasswordHasher<User>();
             var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
             if (result == PasswordVerificationResult.Failed)
                 throw new UnauthorizedAccessException("שם משתמש או סיסמה שגויים");
 
-
             return user;
         }
-        public async Task DeleteUser(string name , int id)
+
+        public async Task DeleteUser(string firstName,string lastName, int id)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(firstName)|| string.IsNullOrWhiteSpace(lastName) )
                 throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
-            User user = await _userService.GetUserByName(name);
-            if (user.UserId!=id)
+            User user = await _userService.GetUserByName(firstName,lastName);
+            if (user.UserId != id)
             {
                 throw new Exception("name and id not mach");
             }

@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Contexts;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,31 +12,31 @@ namespace DAL.Services
 {
     public class RegistrationServiceDAL
     {
-        private readonly MyDbContext dbContext;
-        public RegistrationServiceDAL(MyDbContext _dbContext)
+        private readonly LearningHubDbContext dbContext;
+        public RegistrationServiceDAL(LearningHubDbContext _dbContext)
         {
             dbContext = _dbContext;
         }
-        public async Task<List<Registration>> GetRegistrationsToStudentAsync(string name)
+        public async Task<List<Registration>> GetRegistrationsToStudentAsync(string firstName,string lastName)
         {
             var student = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.FullName == name);
-                
-            if (student == null )
+                .FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
+
+            if (student == null)
             {
-                throw new Exception($"User with Name {name} not found.");
+                throw new Exception($"User with Name {firstName}{lastName} not found.");
             }
-            
+
             var registrations = await dbContext.Registrations
                 .Include(r => r.Student)
                 .Where(r => r.Student.StudentId == student.UserId).ToListAsync();
             if (registrations == null || !registrations.Any())
             {
-                throw new Exception($"Student with Name {name} doesnt have registrations.");
+                throw new Exception($"Student with Name {firstName}{lastName} doesnt have registrations.");
             }
             return registrations;
         }
-        public async  Task AddRegistrationAsync(Registration registration)
+        public async Task AddRegistrationAsync(Registration registration)
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == registration.LessonId);
@@ -44,7 +45,7 @@ namespace DAL.Services
                 throw new Exception($"Lesson with ID {registration.LessonId} not found.");
             }
             lesson.Status = "Not available";
-            dbContext.Lessons.Update(lesson);   
+            dbContext.Lessons.Update(lesson);
             dbContext.Registrations.Add(registration);
             await dbContext.SaveChangesAsync();
         }
