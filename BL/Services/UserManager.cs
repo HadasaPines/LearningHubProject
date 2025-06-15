@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using BL.Exceptions.UserExceptions;
 
 namespace BL.Services
 {
@@ -26,7 +27,7 @@ namespace BL.Services
         public async Task AddUser(UserBL userBL)
         {
             if (!IsValidIsraeliId(userBL.UserId.ToString()))
-                throw new ArgumentException("מספר תעודת זהות שגוי");
+                throw new InvalidIdException();
 
             var passwordHasher = new PasswordHasher<UserBL>();
             userBL.PasswordHash = passwordHasher.HashPassword(userBL, userBL.PasswordHash);
