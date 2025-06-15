@@ -41,8 +41,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapper));
 
-
 var app = builder.Build();
+app.UseExceptionHandler("/error");
 
 if (app.Environment.IsDevelopment())
 {
