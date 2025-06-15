@@ -33,8 +33,6 @@ namespace DAL.Services
         {
             var student = await dbContext.Students
                 .FirstOrDefaultAsync(s => s.StudentNavigation.FirstName == firstName && s.StudentNavigation.LastName == lastName);
-                  
-                
             return  student;
                 
         }
@@ -49,10 +47,7 @@ namespace DAL.Services
         public async Task DeleteStudent(int studentId)
         {
             var student = await GetStudentById(studentId);
-            if (student == null)
-                throw new Exception($"Student with ID {studentId} not found.");
-            dbContext.Students.Remove(student);
-            await dbContext.SaveChangesAsync();
+            
 
         }
     }

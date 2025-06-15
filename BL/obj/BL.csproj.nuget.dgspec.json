@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\BL\\BL.csproj": {}
+    "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\BL\\BL.csproj": {}
   },
   "projects": {
-    "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\BL\\BL.csproj": {
+    "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\BL\\BL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\BL\\BL.csproj",
+        "projectUniqueName": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\BL\\BL.csproj",
         "projectName": "BL",
-        "projectPath": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\BL\\BL.csproj",
-        "packagesPath": "C:\\Users\\אורית\\.nuget\\packages\\",
-        "outputPath": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\BL\\obj\\",
+        "projectPath": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\BL\\BL.csproj",
+        "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\BL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\אורית\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\DAL.csproj"
+              "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\DAL.csproj"
               }
             }
           }
@@ -79,24 +79,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\DAL.csproj": {
+    "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\אורית\\.nuget\\packages\\",
-        "outputPath": "D:\\שולחן עבודה\\Dvora_Dassi_Orit_Project\\LearningHubProject\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\אורית\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -162,7 +162,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
