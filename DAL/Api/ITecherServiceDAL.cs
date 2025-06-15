@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace DAL.Api
 {
@@ -10,6 +11,8 @@ namespace DAL.Api
         Task<Teacher?> GetTeacherByName(string firstName, string lastName);
         Task<Teacher?> GetTeacherByUserId(int teacherId);
         Task<List<Teacher>> GetTeachersBySubject(int subjectId);
-        Task<Teacher> UpdateTeacherBio(string bio, string firstName,string lastName);
+        Task<Teacher> UpdateTeacher(int Id, JsonPatchDocument<Teacher> patchDoc);
+
+        Task<List<Teacher>> GetTeachersByAvailability(DateTime date, TimeSpan startTime, TimeSpan endTime);
     }
 }

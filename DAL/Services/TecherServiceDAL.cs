@@ -1,6 +1,7 @@
 ﻿using DAL.Api;
 using DAL.Contexts;
 using DAL.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -45,23 +46,13 @@ namespace DAL.Services
             await dbContext.SaveChangesAsync();
             return teacher;
         }
-        public async Task<Teacher> UpdateTeacherBio(string bio, string firstName,string lastName)
+        public async Task<Teacher> UpdateTeacher(int Id, JsonPatchDocument<Teacher> patchDoc)
         {
-            var user = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
             var teacher = await dbContext.Teachers
-                .Include(t => t.TeacherNavigation)
-                .FirstOrDefaultAsync(t => t.TeacherNavigation.UserId == user.UserId);
-            if (teacher == null)
-            {
-                throw new Exception("teacher not found");
-            }
-            teacher.Bio = bio;
-            dbContext.Teachers.Update(teacher);
+                .FirstOrDefaultAsync(t => t.TeacherId ==Id);
+
+            patchDoc.ApplyTo(teacher);
+
             await dbContext.SaveChangesAsync();
             return teacher;
         }
@@ -84,16 +75,16 @@ namespace DAL.Services
                 .Where(t => t.TeachersToSubjects.Any(ts => ts.SubjectId == subjectId))
                 .ToListAsync();
         }
-        //public async Task<List<Teacher>> GetTeachersByAvailabilityAsync(DateTime date, TimeSpan startTime, TimeSpan endTime)
-        //{
-        //    return await dbContext.Teachers
-        //        .Include(t => t.TeacherAvailabilities)
-        //        .Where(t => t.TeacherAvailabilities.Any(ta =>
-        //            ta.AvailabilityDate == date.Date &&
-        //            ta.StartTime <= startTime &&
-        //            ta.EndTime >= endTime))
-        //        .ToListAsync();
-        //}
+        public async Task<List<Teacher>> GetTeachersByAvailability(DateTime date, TimeSpan startTime, TimeSpan endTime)
+        {
+            return await dbContext.Teachers
+                .Include(t => t.TeacherAvailabilities)
+                .Where(t => t.TeacherAvailabilities.
+                Any(ta =>
+                   ((ta.StartTime.CompareTo(startTime) == -1) &&
+                    (ta.EndTime.CompareTo(endTime) == 1)))).ToListAsync();
+                
+        }
 
 
     }

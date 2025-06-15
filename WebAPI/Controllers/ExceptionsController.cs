@@ -149,7 +149,17 @@ namespace WebAPI.Controllers
                 statusCode: wrongPasswordException.StatusCode
                 );
             }
+            if (exceptionDetails?.Error is MismatchTeacherAndLessonException mismatchTeacherAndLessonException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndLessonException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
 
+                title: mismatchTeacherAndLessonException.Message,
+                statusCode: mismatchTeacherAndLessonException.StatusCode
+                );
+            }
 
             if (exceptionDetails?.Error is NullReferenceException)
                 {
