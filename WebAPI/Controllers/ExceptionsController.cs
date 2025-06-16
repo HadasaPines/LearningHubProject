@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BL.Exceptions;
 using System.Threading;
 using BL.Exceptions.UserExceptions;
+using BL.Exceptions.Exceptions;
 namespace WebAPI.Controllers
 {
     public class ExceptionsController : Controller
@@ -138,6 +139,17 @@ namespace WebAPI.Controllers
             }
 
 
+            if (exceptionDetails?.Error is WrongPasswordException wrongPasswordException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(wrongPasswordException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: wrongPasswordException.Message,
+                statusCode: wrongPasswordException.StatusCode
+                );
+            }
             if (exceptionDetails?.Error is WrongPasswordException wrongPasswordException)
             {
                 logger.LogInformation("*********************************************************************");

@@ -18,8 +18,8 @@ namespace BL.Models
 
         public int? Age { get; set; }
 
-        public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
+        //public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
 
-        public virtual User StudentNavigation { get; set; } = null!;
+        //public virtual User StudentNavigation { get; set; } = null!;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DAL.Api;
 using DAL.Contexts;
 using DAL.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -54,14 +55,17 @@ namespace DAL.Services
 
         public async Task UpdateStudent(Student student)
         {
-            if (student == null)
-            {
-                throw new ArgumentNullException(nameof(student), "Student cannot be null");
-            }
+            var existingStudent = await dbContext.Students.FindAsync(student.StudentId);
+            existingStudent = student;
+            dbContext.Students.Update(existingStudent);
+            await dbContext.SaveChangesAsync();
 
-            dbContext.Students.Update(student);
+        }
+        public async Task AddRegistrationToStudent(Registration registration)
+        {
+            dbContext.Registrations.Add(registration);
             await dbContext.SaveChangesAsync();
         }
     }
-   
-    }
+
+}

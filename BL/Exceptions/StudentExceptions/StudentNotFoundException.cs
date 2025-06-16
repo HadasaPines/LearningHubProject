@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.StudentExceptions
 {
-    internal class StudentNotFoundException
+    internal class StudentNotFoundException : Exception
     {
+
+        public StudentNotFoundException(string messege) : base(messege)
+        {
+
+        }
+        public int? StatusCode { get; } = 445;
+
     }
 }

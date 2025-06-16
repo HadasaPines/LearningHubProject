@@ -8,10 +8,10 @@ namespace BL.Exceptions.StudentExceptions
 {
     internal class RegisterDoesNotMatchTheStudent: Exception
     {
-        public RegisterDoesNotMatchTheStudent() : base($"The student's ID does not match the student's ID in this registration.")
+        public RegisterDoesNotMatchTheStudent(string messege) : base(messege)
         {
 
         }
-        public int? StatusCode { get; } = 440;
+        public int? StatusCode { get; } = 445;
     }
 }
