@@ -9,9 +9,9 @@ namespace DAL.Api
         Task<bool> DeleteTeacher(int teacherId);
         Task<List<Teacher>> GetAllTeachers();
         Task<Teacher?> GetTeacherByName(string firstName, string lastName);
-        Task<Teacher?> GetTeacherByUserId(int teacherId);
+        Task<Teacher?> GetTeacherById(int teacherId);
         Task<List<Teacher>> GetTeachersBySubject(int subjectId);
-        Task<Teacher> UpdateTeacher(int Id, JsonPatchDocument<Teacher> patchDoc);
+        Task<Teacher> UpdateTeacher(int Id, Teacher teacher);
 
         Task<List<Teacher>> GetTeachersByAvailability(DateTime date, TimeSpan startTime, TimeSpan endTime);
     }

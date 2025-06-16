@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BL.Exceptions;
 using System.Threading;
 using BL.Exceptions.UserExceptions;
+using BL.Exceptions.TeacherExceptions;
 namespace WebAPI.Controllers
 {
     public class ExceptionsController : Controller
@@ -158,6 +158,30 @@ namespace WebAPI.Controllers
 
                 title: mismatchTeacherAndLessonException.Message,
                 statusCode: mismatchTeacherAndLessonException.StatusCode
+                );
+            }
+
+            if (exceptionDetails?.Error is MismatchTeacherAndAvailabilityException mismatchTeacherAndAvibilityException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndAvibilityException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: mismatchTeacherAndAvibilityException.Message,
+                statusCode: mismatchTeacherAndAvibilityException.StatusCode
+                );
+            }
+
+            if (exceptionDetails?.Error is MismatchTeacherAndSubjectException mismatchTeacherAndSubjectException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndSubjectException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: mismatchTeacherAndSubjectException.Message,
+                statusCode: mismatchTeacherAndSubjectException.StatusCode
                 );
             }
 

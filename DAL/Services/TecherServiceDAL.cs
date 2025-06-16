@@ -33,11 +33,9 @@ namespace DAL.Services
                 .Include(t => t.Lessons)
                 .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName == firstName&&t.TeacherNavigation.LastName==lastName);
         }
-        public async Task<Teacher?> GetTeacherByUserId(int teacherId)
+        public async Task<Teacher?> GetTeacherById(int teacherId)
         {
             return await dbContext.Teachers
-                .Include(t => t.TeacherNavigation)
-                .Include(t => t.Lessons)
                 .FirstOrDefaultAsync(t => t.TeacherId == teacherId);
         }
         public async Task<Teacher> AddTeacher(Teacher teacher)
@@ -46,27 +44,19 @@ namespace DAL.Services
             await dbContext.SaveChangesAsync();
             return teacher;
         }
-        public async Task<Teacher> UpdateTeacher(int Id, JsonPatchDocument<Teacher> patchDoc)
+        public async Task<Teacher> UpdateTeacher(int Id, Teacher teacher)
         {
-            var teacher = await dbContext.Teachers
-                .FirstOrDefaultAsync(t => t.TeacherId ==Id);
-
-            patchDoc.ApplyTo(teacher);
-
+            var teacherToUpdate = await dbContext.Teachers.FirstOrDefaultAsync(t => t.TeacherId == Id);
+            teacherToUpdate = teacher;
+            dbContext.Teachers.Update(teacherToUpdate);
             await dbContext.SaveChangesAsync();
-            return teacher;
+            return teacherToUpdate;
         }
-        public async Task<bool> DeleteTeacher(int teacherId)
+        public async Task DeleteTeacher(int teacherId)
         {
             var teacher = await dbContext.Teachers.FindAsync(teacherId);
-            if (teacher == null)
-            {
-                return false;
-            }
-
             dbContext.Teachers.Remove(teacher);
             await dbContext.SaveChangesAsync();
-            return true;
         }
         public async Task<List<Teacher>> GetTeachersBySubject(int subjectId)
         {
