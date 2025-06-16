@@ -2,13 +2,18 @@ using BL.Api;
 using BL.Services;
 using DAL.Api;
 using DAL.Contexts;
-using DAL.Models;
 using DAL.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson();
 
 var relativeDbPath = Path.Combine("..", "..", "..", "..", "DAL", "database", "LearningHubDB.mdf");
 var fullDbPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeDbPath));
@@ -40,6 +45,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapper));
+
 
 var app = builder.Build();
 app.UseExceptionHandler("/error");
