@@ -1,6 +1,6 @@
 # Ignore build results
-[Bb]in/
-[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
 *.exe
 *.dll
 *.app
