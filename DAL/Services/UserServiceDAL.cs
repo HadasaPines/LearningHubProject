@@ -20,15 +20,40 @@ namespace DAL.Services
         {
             dbContext = context;
         }
-        public async Task<User> GetUserById(int userId)
+        public async Task<User?> GetUserByIdIncludeRole(int userId)
         {
-            return await dbContext.Users.FindAsync(userId);
-        }
-        public async Task<User> GetUserByName(string firstName,string lastName)
-        {
+            var user = await dbContext.Users
+                          .Include(u => u.Teacher)
+                          .Include(u => u.Student)
+                          .FirstOrDefaultAsync(u => u.UserId == userId);
+            return user;
 
-            return await dbContext.Users.FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
+
         }
+        public async Task<User?> GetUserById(int userId)
+        {
+            var user = await dbContext.Users
+                          .FirstOrDefaultAsync(u => u.UserId == userId);
+            return user;
+        }
+        public async Task<User> GetUserByNameIncludeRole(string firstName, string lastName)
+        {
+            var user = await dbContext.Users
+                .Include(u => u.Teacher)
+                .Include(u => u.Student)
+                .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
+            return user;
+
+           
+        }
+
+        public async Task<User?> GetUserByName(string firstName, string lastName)
+        {
+            var user = await dbContext.Users
+                .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
+            return user;
+        }
+
         public async Task<bool> IsPasswordMatchToName(string firstName, string lastName, string password)
         {
             var user = await dbContext.Users.FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
@@ -36,47 +61,25 @@ namespace DAL.Services
                 return false;
             return user.PasswordHash == password;
         }
-        public async Task AddUser(User user)
+        public async Task AddUser(User user, Teacher? techer, Student? student)
         {
             dbContext.Users.Add(user);
+            if (techer != null)
+            {
+                dbContext.Teachers.Add(techer);
+            }
+            if (student != null)
+            {
+                dbContext.Students.Add(student);
+            }
             await dbContext.SaveChangesAsync();
-        }
-        public async Task UpdateUserName(int id, string firstName, string lastName)
-        {
-            var user = await dbContext.Users
-               .FirstOrDefaultAsync(u => u.UserId == id);
-          
-            user.FirstName = firstName;
-            user.LastName=lastName;
-            dbContext.Users.Update(user);
-            await dbContext.SaveChangesAsync();
-        }
 
-        public async Task UpdateUserEmail(int id, string email)
-        {
-            var user = await dbContext.Users
-               .FirstOrDefaultAsync(u => u.UserId == id);
-            
-            user.Email = email;
-            dbContext.Users.Update(user);
-            await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateUserPassword(int id, string password)
+        public async Task DeleteUser(User user)
         {
-            var user = await dbContext.Users
-               .FirstOrDefaultAsync(u => u.UserId == id);
-           
-            user.PasswordHash = password;
-            dbContext.Users.Update(user);
-            await dbContext.SaveChangesAsync();
-        }
 
 
-        public async Task DeleteUser(int userId)
-        {
-            var user = await GetUserById(userId);
-           
             dbContext.Users.Remove(user);
             await dbContext.SaveChangesAsync();
         }
@@ -84,6 +87,7 @@ namespace DAL.Services
         {
             return await dbContext.Users.ToListAsync();
         }
+
 
 
 

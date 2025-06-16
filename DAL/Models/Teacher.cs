@@ -9,8 +9,6 @@ public partial class Teacher
 
     public string? Bio { get; set; }
 
-    public string Phone { get; set; } = null!;
-
     public string Gender { get; set; } = null!;
 
     public DateOnly? BirthDate { get; set; }

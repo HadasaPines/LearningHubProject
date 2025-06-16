@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Models;
 
@@ -11,6 +12,7 @@ public partial class Student
 
     public DateOnly BirthDate { get; set; }
 
+   
     public int? Age { get; set; }
 
     public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();

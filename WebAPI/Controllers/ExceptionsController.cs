@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BL.Exceptions;
 using System.Threading;
 using BL.Exceptions.UserExceptions;
+using BL.Exceptions.StudentExceptions;
 namespace WebAPI.Controllers
 {
     public class ExceptionsController : Controller
@@ -147,6 +148,28 @@ namespace WebAPI.Controllers
 
                 title: wrongPasswordException.Message,
                 statusCode: wrongPasswordException.StatusCode
+                );
+            }
+            if (exceptionDetails?.Error is RegisterDoesNotMatchTheStudent registerDoesNotMatchTheStudent)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(registerDoesNotMatchTheStudent.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: registerDoesNotMatchTheStudent.Message,
+                statusCode: registerDoesNotMatchTheStudent.StatusCode
+                );
+            }
+            if (exceptionDetails?.Error is StudentNotFoundException studentNotFoundException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(studentNotFoundException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: studentNotFoundException.Message,
+                statusCode: studentNotFoundException.StatusCode
                 );
             }
 

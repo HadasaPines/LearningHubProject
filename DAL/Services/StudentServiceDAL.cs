@@ -1,6 +1,7 @@
 ﻿using DAL.Api;
 using DAL.Contexts;
 using DAL.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,8 @@ namespace DAL.Services
         {
             var student = await dbContext.Students
                 .FirstOrDefaultAsync(s => s.StudentNavigation.FirstName == firstName && s.StudentNavigation.LastName == lastName);
-                  
-                
-            return  student;
-                
+            return student;
+
         }
 
         public async Task AddStudent(Student student)
@@ -49,11 +48,24 @@ namespace DAL.Services
         public async Task DeleteStudent(int studentId)
         {
             var student = await GetStudentById(studentId);
-            if (student == null)
-                throw new Exception($"Student with ID {studentId} not found.");
             dbContext.Students.Remove(student);
+
+
+        }
+
+        public async Task UpdateStudent(Student student)
+        {
+            var existingStudent = await dbContext.Students.FindAsync(student.StudentId);
+            existingStudent = student;
+            dbContext.Students.Update(existingStudent);
             await dbContext.SaveChangesAsync();
 
         }
+        public async Task AddRegistrationToStudent(Registration registration)
+        {
+            dbContext.Registrations.Add(registration);
+            await dbContext.SaveChangesAsync();
+        }
     }
+
 }
