@@ -6,11 +6,15 @@ using DAL.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+
+using Microsoft.AspNetCore.JsonPatch;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services
     .AddControllers()
     .AddNewtonsoftJson();
@@ -35,16 +39,17 @@ builder.Services.AddScoped<ITecherServiceDAL, TecherServiceDAL>();
 //builder.Services.AddSingleton<ITeacherAvailabilityServiceDAL, TeacherAvailabilityServiceDAL>();
 builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
 
-builder.Services.AddScoped<IUserManager, UserManager>();
+//builder.Services.AddScoped<IUserManager, UserServiceDAL>();
 
 //builder.Services.AddSingleton<IUserManager, UserManager>();
 
 // builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
 
-builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapper));
+
 
 
 var app = builder.Build();

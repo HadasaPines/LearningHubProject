@@ -5,6 +5,7 @@ namespace DAL.Models;
 
 public partial class Lesson
 {
+   
     public int LessonId { get; set; }
 
     public int TeacherId { get; set; }
@@ -23,11 +24,16 @@ public partial class Lesson
 
     public string Gender { get; set; } = null!;
 
+   
     public string Status { get; set; } = null!;
 
+    
     public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
 
+   
     public virtual Subject Subject { get; set; } = null!;
 
+
     public virtual Teacher Teacher { get; set; } = null!;
+
 }

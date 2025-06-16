@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    internal class TeachersToSubjectBL
+    public class TeachersToSubjectBL
     {
+        public int Id { get; set; }
+
+        public int TeacherId { get; set; }
+
+        public int SubjectId { get; set; }
     }
 }
