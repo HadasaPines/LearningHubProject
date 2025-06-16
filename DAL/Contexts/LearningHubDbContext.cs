@@ -32,9 +32,9 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=LearningHubDB;Integrated Security=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\user1\\Documents\\תכנות\\Final Project\\LearningHubProject\\DAL\\database\\LearningHubDB.mdf;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,10 +45,12 @@ public partial class LearningHubDbContext : DbContext
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
-                .IsFixedLength();
+                .IsFixedLength()
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
-                .HasDefaultValue("Available");
+                .HasDefaultValue("Available")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Lessons)
                 .HasForeignKey(d => d.SubjectId)
@@ -88,7 +90,8 @@ public partial class LearningHubDbContext : DbContext
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
-                .IsFixedLength();
+                .IsFixedLength()
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
             entity.HasOne(d => d.StudentNavigation).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.StudentId)
@@ -100,7 +103,9 @@ public partial class LearningHubDbContext : DbContext
         {
             entity.HasKey(e => e.SubjectId).HasName("PK__Subjects__AC1BA3A8209A45EB");
 
-            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 
         modelBuilder.Entity<Teacher>(entity =>
@@ -108,11 +113,12 @@ public partial class LearningHubDbContext : DbContext
             entity.HasKey(e => e.TeacherId).HasName("PK__Teachers__EDF2596463D03245");
 
             entity.Property(e => e.TeacherId).ValueGeneratedNever();
+            entity.Property(e => e.Bio).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsUnicode(false)
-                .IsFixedLength();
-            entity.Property(e => e.Phone).HasMaxLength(20);
+                .IsFixedLength()
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
             entity.HasOne(d => d.TeacherNavigation).WithOne(p => p.Teacher)
                 .HasForeignKey<Teacher>(d => d.TeacherId)
@@ -149,16 +155,29 @@ public partial class LearningHubDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4CBBBFE00F");
+            entity.HasKey(e => e.UserId).HasName("PK__tmp_ms_x__1788CC4C790A0DFA");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D10534101E6145").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__tmp_ms_x__A9D1053414355A08").IsUnique();
 
             entity.Property(e => e.UserId).ValueGeneratedNever();
-            entity.Property(e => e.Email).HasMaxLength(100);
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.LastName).HasMaxLength(100);
-            entity.Property(e => e.PasswordHash).HasMaxLength(255);
-            entity.Property(e => e.Role).HasMaxLength(10);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(50)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.LastName)
+                .HasMaxLength(100)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(255)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(20)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Role)
+                .HasMaxLength(10)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 
         OnModelCreatingPartial(modelBuilder);

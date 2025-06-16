@@ -886,10 +886,7 @@
           "Microsoft.AspNetCore.Identity": "2.3.1"
         },
         "runtime": {
-          "BL.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "BL.dll": {}
         }
       },
       "DAL/1.0.0": {
@@ -897,10 +894,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.6"
         },
         "runtime": {
-          "DAL.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "DAL.dll": {}
         }
       }
     }

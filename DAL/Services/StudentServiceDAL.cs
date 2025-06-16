@@ -33,8 +33,8 @@ namespace DAL.Services
         {
             var student = await dbContext.Students
                 .FirstOrDefaultAsync(s => s.StudentNavigation.FirstName == firstName && s.StudentNavigation.LastName == lastName);
-            return  student;
-                
+            return student;
+
         }
 
         public async Task AddStudent(Student student)
@@ -47,8 +47,21 @@ namespace DAL.Services
         public async Task DeleteStudent(int studentId)
         {
             var student = await GetStudentById(studentId);
-            
+            dbContext.Students.Remove(student);
+
 
         }
+
+        public async Task UpdateStudent(Student student)
+        {
+            if (student == null)
+            {
+                throw new ArgumentNullException(nameof(student), "Student cannot be null");
+            }
+
+            dbContext.Students.Update(student);
+            await dbContext.SaveChangesAsync();
+        }
     }
-}
+   
+    }
