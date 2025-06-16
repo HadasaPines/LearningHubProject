@@ -23,5 +23,5 @@ public partial class TeacherAvailability
 
     [ForeignKey("TeacherId")]
     [InverseProperty("TeacherAvailabilities")]
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual TeacherAPI Teacher { get; set; } = null!;
 }

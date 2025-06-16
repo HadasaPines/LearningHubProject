@@ -25,5 +25,5 @@ public partial class User
     public virtual Student? Student { get; set; }
 
     [InverseProperty("TeacherNavigation")]
-    public virtual Teacher? Teacher { get; set; }
+    public virtual TeacherAPI? Teacher { get; set; }
 }

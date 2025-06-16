@@ -42,5 +42,5 @@ public partial class Lesson
 
     [ForeignKey("TeacherId")]
     [InverseProperty("Lessons")]
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual TeacherAPI Teacher { get; set; } = null!;
 }

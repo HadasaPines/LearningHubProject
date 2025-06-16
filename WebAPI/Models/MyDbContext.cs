@@ -23,9 +23,9 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Subject> Subjects { get; set; }
 
-    public virtual DbSet<Teacher> Teachers { get; set; }
+    public virtual DbSet<TeacherAPI> Teachers { get; set; }
 
-    public virtual DbSet<TeacherAvailability> TeacherAvailabilities { get; set; }
+    public virtual DbSet<TeacherAvailabilityAPI> TeacherAvailabilities { get; set; }
 
     public virtual DbSet<TeachersToSubject> TeachersToSubjects { get; set; }
 
@@ -85,7 +85,7 @@ public partial class MyDbContext : DbContext
             entity.HasKey(e => e.SubjectId).HasName("PK__Subjects__AC1BA3A8E48D8BD9");
         });
 
-        modelBuilder.Entity<Teacher>(entity =>
+        modelBuilder.Entity<TeacherAPI>(entity =>
         {
             entity.HasKey(e => e.TeacherId).HasName("PK__tmp_ms_x__EDF2596470721750");
 
@@ -97,7 +97,7 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("FK_Teachers_Users");
         });
 
-        modelBuilder.Entity<TeacherAvailability>(entity =>
+        modelBuilder.Entity<TeacherAvailabilityAPI>(entity =>
         {
             entity.HasKey(e => e.AvailabilityId).HasName("PK__TeacherA__DA3979B10A85D472");
 
