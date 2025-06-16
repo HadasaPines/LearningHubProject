@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    public class TeacherAvailabilityBL
+    public class TeacherBL
     {
         public int TeacherId { get; set; }
 
-        public int WeekDay { get; set; }
+        public string? Bio { get; set; }
 
-        public TimeOnly StartTime { get; set; }
+        public string Gender { get; set; } = null!;
 
-        public TimeOnly EndTime { get; set; }
+        public DateOnly? BirthDate { get; set; }
+
     }
 }

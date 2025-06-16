@@ -44,7 +44,7 @@ namespace DAL.Services
                 .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
             return user;
 
-           
+
         }
 
         public async Task<User?> GetUserByName(string firstName, string lastName)
@@ -61,12 +61,12 @@ namespace DAL.Services
                 return false;
             return user.PasswordHash == password;
         }
-        public async Task AddUser(User user, Teacher? techer, Student? student)
+        public async Task AddUser(User user, Teacher? teacher, Student? student)
         {
             dbContext.Users.Add(user);
-            if (techer != null)
+            if (teacher != null)
             {
-                dbContext.Teachers.Add(techer);
+                dbContext.Teachers.Add(teacher);
             }
             if (student != null)
             {

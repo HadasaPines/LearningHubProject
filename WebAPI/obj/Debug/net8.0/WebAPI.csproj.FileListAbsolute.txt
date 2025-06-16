@@ -298,3 +298,7 @@ C:\Users\user1\Documents\תכנות\Final Project\LearningHubProject\WebAPI\bin\
 C:\Users\user1\Documents\תכנות\Final Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\user1\Documents\תכנות\Final Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\user1\Documents\תכנות\Final Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\שולחן עבודה\Dvora_Dassi_Orit_Project\LearningHubProject\WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

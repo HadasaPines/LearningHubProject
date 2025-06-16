@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.StudentExceptions
 {
-    internal class RegisterDoesNotMatchTheStudent: Exception
+    public class RegisterDoesNotMatchTheStudent: Exception
     {
         public RegisterDoesNotMatchTheStudent(string messege) : base(messege)
         {

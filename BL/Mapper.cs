@@ -11,7 +11,7 @@ public class Mapper : Profile
 
         CreateMap<DAL.Models.Student, BL.Models.StudentBL>().ReverseMap();
 
-        CreateMap<DAL.Models.Teacher, BL.Models.TecherBL>().ReverseMap();
+        CreateMap<DAL.Models.Teacher, BL.Models.TeacherBL>().ReverseMap();
 
         CreateMap<DAL.Models.TeacherAvailability, BL.Models.TeacherAvailabilityBL>().ReverseMap();
 
