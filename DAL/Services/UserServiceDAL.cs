@@ -20,12 +20,17 @@ namespace DAL.Services
         {
             dbContext = context;
         }
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await dbContext.Users.ToListAsync();
+        }
         public async Task<User?> GetUserByIdIncludeRole(int userId)
         {
             var user = await dbContext.Users
                           .Include(u => u.Teacher)
                           .Include(u => u.Student)
                           .FirstOrDefaultAsync(u => u.UserId == userId);
+
             return user;
 
 
@@ -46,47 +51,30 @@ namespace DAL.Services
 
 
         }
-
         public async Task<User?> GetUserByName(string firstName, string lastName)
         {
             var user = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
             return user;
         }
-
-        public async Task<bool> IsPasswordMatchToName(string firstName, string lastName, string password)
-        {
-            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
-            if (user == null)
-                return false;
-            return user.PasswordHash == password;
-        }
-        public async Task AddUser(User user, Teacher? teacher, Student? student)
+        public async Task AddUser(User user)
         {
             dbContext.Users.Add(user);
-            if (teacher != null)
-            {
-                dbContext.Teachers.Add(teacher);
-            }
-            if (student != null)
-            {
-                dbContext.Students.Add(student);
-            }
+
             await dbContext.SaveChangesAsync();
 
         }
-
         public async Task DeleteUser(User user)
         {
-
-
             dbContext.Users.Remove(user);
             await dbContext.SaveChangesAsync();
         }
-        public async Task<List<User>> GetAllUsers()
+        public async Task UpdateUser(User user)
         {
-            return await dbContext.Users.ToListAsync();
+            dbContext.Users.Update(user);
+            await dbContext.SaveChangesAsync();
         }
+
 
 
 
