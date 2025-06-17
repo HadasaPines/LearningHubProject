@@ -1,7 +1,7 @@
 ﻿using BL.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace BL.Services
+namespace BL.Api
 {
     internal interface IUserServiceBL
     {
