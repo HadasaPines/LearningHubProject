@@ -4,6 +4,7 @@ using BL.Exceptions;
 using System.Threading;
 using BL.Exceptions.UserExceptions;
 using BL.Exceptions.StudentExceptions;
+using BL.Exceptions.TeacherAvailabilityExceptions;
 namespace WebAPI.Controllers
 {
     public class ExceptionsController : Controller
@@ -170,6 +171,18 @@ namespace WebAPI.Controllers
 
                 title: studentNotFoundException.Message,
                 statusCode: studentNotFoundException.StatusCode
+                );
+            }
+
+            if (exceptionDetails?.Error is TeacherAvailabilityNotFoundException teacherAvailabilityNotFoundException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(teacherAvailabilityNotFoundException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: teacherAvailabilityNotFoundException.Message,
+                statusCode: teacherAvailabilityNotFoundException.StatusCode
                 );
             }
 

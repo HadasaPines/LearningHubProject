@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.TeacherAvailabilityExceptions
 {
-    internal class TeacherAvailabilityNotFoundException
+    public class TeacherAvailabilityNotFoundException:Exception
     {
+        public TeacherAvailabilityNotFoundException(string messege) : base(messege)
+        {
+
+        }
+        public int? StatusCode { get; } = 451;
     }
 }

@@ -8,6 +8,7 @@ namespace BL.Models
 {
     public class TeacherAvailabilityBL
     {
+        public int AvailabilityId { get; set; }
         public int TeacherId { get; set; }
 
         public int WeekDay { get; set; }
