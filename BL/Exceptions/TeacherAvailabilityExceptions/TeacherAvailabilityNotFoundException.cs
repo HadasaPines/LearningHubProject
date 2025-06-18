@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL.Services
+namespace BL.Exceptions.TeacherAvailabilityExceptions
 {
-    internal class TeacheAvailabilityServiceBL
+    internal class TeacherAvailabilityNotFoundException
     {
     }
 }
