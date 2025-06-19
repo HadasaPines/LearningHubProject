@@ -15,6 +15,7 @@ namespace BL.Models
 
 
         [Key]
+        [IsraeliId(ErrorMessage = "Invalid Israeli ID number")]
         public int StudentId { get; set; }
 
         [Required(ErrorMessage = "Gender is required")]
