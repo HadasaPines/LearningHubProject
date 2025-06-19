@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Api
 {
@@ -10,6 +11,7 @@ namespace DAL.Api
         Task<User?> GetUserById(int userId);
         Task<User?> GetUserByIdIncludeRole(int userId);
         Task<User?> GetUserByName(string firstName, string lastName);
+        Task<User?> GetUserByEmail(string email);   
         Task<User> GetUserByNameIncludeRole(string firstName, string lastName);
         Task UpdateUser(User user);
     }

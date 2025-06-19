@@ -8,7 +8,7 @@ namespace BL.Exceptions.UserExceptions
 {
     public class RequiredFieldsNotFilledException:Exception
     {
-        public RequiredFieldsNotFilledException() : base($"Not all required fields have been filled in.")
+        public RequiredFieldsNotFilledException(string message) : base(message)
         {
 
         }

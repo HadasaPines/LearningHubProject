@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.UserExceptions
 {
-    public class UserNameNotFoundException : Exception
+    public class UserNotFoundException : Exception
     {
-        public UserNameNotFoundException(string firstName, string lastName) : base($"The user with the name: {firstName}{lastName} does not exist")
-        {
+        public UserNotFoundException(string message) : base(message)
+        { 
 
         }
-        public int? StatusCode { get; } = 440;
+        public int? StatusCode { get; } = 404;
     }
 }
 

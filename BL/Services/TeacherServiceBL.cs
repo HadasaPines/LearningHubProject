@@ -49,7 +49,7 @@ namespace BL.Services
         public async Task<TeacherBL?> GetTeacherByName(string firstName, string lastName)
         {
             if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
-                throw new RequiredFieldsNotFilledException();
+                throw new RequiredFieldsNotFilledException("first name/last name can't be null or empty");
 
             var teacher = await _teacherService.GetTeacherByName(firstName, lastName);
             return _mapper.Map<TeacherBL>(teacher);
@@ -76,9 +76,9 @@ namespace BL.Services
         public async Task<TeacherBL> UpdateTeacher(int id, JsonPatchDocument<TeacherBL> patchDoc)
         {
             var teacher = await _teacherService.GetTeacherById(id);
-            var techerBL = _mapper.Map<TeacherBL>(teacher);
             if (teacher == null)
-                throw new UserIdNotFoundException(id);
+                throw new UserNotFoundException($"No user found by ID:{id}");
+            var techerBL = _mapper.Map<TeacherBL>(teacher);
             patchDoc.ApplyTo(techerBL);
             var updateTeacher = _mapper.Map<Teacher>(techerBL);
             await _teacherService.UpdateTeacher(id, updateTeacher);
@@ -92,7 +92,7 @@ namespace BL.Services
 
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
             if (teacher.TeacherAvailabilities.Any(t => t.StartTime <= lessonBL.StartTime
             && t.EndTime >= lessonBL.EndTime) && teacher.Gender == lessonBL.Gender &&
             teacher.TeachersToSubjects.Any(t => t.SubjectId == lessonBL.SubjectId))
@@ -109,7 +109,7 @@ namespace BL.Services
         {
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
             return _mapper.Map<List<LessonBL>>(teacher.Lessons);
         }
 
@@ -129,7 +129,7 @@ namespace BL.Services
 
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
 
 
             if (teacherId != availabilityBL.TeacherId)
@@ -150,7 +150,7 @@ namespace BL.Services
         {
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
 
             return _mapper.Map<List<TeacherAvailabilityBL>>(teacher.TeacherAvailabilities);
         }
@@ -162,7 +162,7 @@ namespace BL.Services
 
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
 
             if (teacherId != teachersToSubjectBL.TeacherId)
             {
@@ -177,7 +177,7 @@ namespace BL.Services
         {
             var teacher = await _teacherService.GetTeacherById(teacherId);
             if (teacher == null)
-                throw new UserIdNotFoundException(teacherId);
+                throw new UserNotFoundException($"No user found by ID:{teacherId}");
 
             return _mapper.Map<List<TeachersToSubjectBL>>(teacher.TeachersToSubjects);
         }

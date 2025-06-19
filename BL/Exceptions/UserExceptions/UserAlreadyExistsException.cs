@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.UserExceptions
 {
-    public class UserIdAlreadyExistsException : Exception
+    public class UserAlreadyExistsException : Exception
     {
-        public UserIdAlreadyExistsException(int id) : base($"The user with the id: {id} already exist")
+        public UserAlreadyExistsException(string message) : base(message)
         {
 
         }
