@@ -41,7 +41,14 @@ namespace DAL.Services
         public async Task AddStudent(Student student)
         {
             dbContext.Students.Add(student);
-            await dbContext.SaveChangesAsync();
+            try {
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException?.Message);
+            }
         }
 
 

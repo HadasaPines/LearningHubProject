@@ -164,9 +164,12 @@ namespace BL.Services
 
             if (string.IsNullOrWhiteSpace(userBL.FirstName) || string.IsNullOrWhiteSpace(userBL.LastName))
                 throw new RequiredFieldsNotFilledException("user details can't be null or empty");
+            string passwordHash = HashPassword(userBL.Password);
 
             var user = _mapper.Map<User>(userBL);
+            user.PasswordHash = passwordHash;
             await _userService.AddUser(user);
+
             return userBL;
 
         }
@@ -220,14 +223,19 @@ namespace BL.Services
             {
                 throw new RequiredFieldsNotFilledException("Password can't be null or empty");
             }
-            return user.PasswordHash == password;
+          string passwordHash= HashPassword(password);
+            return user.PasswordHash == passwordHash;
 
 
-
-
-
-
-
+        }
+        private string HashPassword(string password)
+        {
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = System.Text.Encoding.UTF8.GetBytes(password);
+                var hash = sha.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
         }
     }
 }

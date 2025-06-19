@@ -10,21 +10,37 @@ namespace BL.Models
 {
     public class UserBL
     {
+
+
         public int UserId { get; set; }
 
+        [Required(ErrorMessage = "First name is required")]
+        [StringLength(50, ErrorMessage = "First name must be at most 50 characters")]
         public string FirstName { get; set; } = null!;
+
+        [Required(ErrorMessage = "Last name is required")]
+        [StringLength(50, ErrorMessage = "Last name must be at most 50 characters")]
         public string LastName { get; set; } = null!;
-        [MaxLength(10), MinLength(10)]
 
+        [Required(ErrorMessage = "Phone is required")]
+        [Phone(ErrorMessage = "Invalid phone number")]
         public string Phone { get; set; } = null!;
-        //Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid email format")]
         public string Email { get; set; } = null!;
-        // Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
 
-        //var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-        public string PasswordHash { get; set; } = null!;
+        [Required(ErrorMessage = "Password is required")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$",
+     ErrorMessage = "Password must be at least 6 characters long, and include at least one uppercase letter, one lowercase letter, and one digit")]
+        public string Password { get; set; } = null!;
 
+        [Required(ErrorMessage = "Role is required")]
+        [RegularExpression("^(Admin|Student|Teacher)$", ErrorMessage = "Role must be Admin, Student, or Teacher")]
         public string Role { get; set; } = null!;
     }
+
+
+
+
 }
