@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
         {
 
             _subjectServiceBL.AddSubject(subjectBL);
-            return Ok();
+            return Ok("subject added successfully");
         }
-       
+
         [HttpDelete("deleteSubjectByName/{subjectName}")]
 
         public IActionResult Delete(string name)
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
             var subject = _subjectServiceBL.GetSubjectByName(name);
 
             _subjectServiceBL.DeleteSubjectByName(name);
-            return NoContent();
+            return Ok("subject deleted successfully");
         }
         [HttpPatch("updateSubject/{id}")]
         public IActionResult UpdateSubject(int id, [FromBody] JsonPatchDocument<SubjectBL> patchDoc)
