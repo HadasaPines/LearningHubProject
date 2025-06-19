@@ -81,7 +81,7 @@ namespace BL.Services
                 throw new UserIdNotFoundException(id);
             patchDoc.ApplyTo(techerBL);
             var updateTeacher = _mapper.Map<Teacher>(techerBL);
-            await _teacherService.UpdateTeacher(id, updateTeacher);
+            await _teacherService.UpdateTeacher( updateTeacher);
             return techerBL;
         }
 
@@ -99,7 +99,7 @@ namespace BL.Services
             {
                 var lesson = _mapper.Map<Lesson>(lessonBL);
                 teacher.Lessons.Add(lesson);
-                await _teacherService.UpdateTeacher(teacher.TeacherId, teacher);
+                await _teacherService.UpdateTeacher(teacher);
 
             }
             else throw new MismatchTeacherAndLessonException();
@@ -138,7 +138,7 @@ namespace BL.Services
             }
             var availability = _mapper.Map<TeacherAvailability>(availabilityBL);
             teacher.TeacherAvailabilities.Add(availability);
-            await _teacherService.UpdateTeacher(teacher.TeacherId, teacher);
+            await _teacherService.UpdateTeacher(teacher);
 
 
 
@@ -170,7 +170,7 @@ namespace BL.Services
             }
             var teachersToSubject = _mapper.Map<TeachersToSubject>(teachersToSubjectBL);
             teacher.TeachersToSubjects.Add(teachersToSubject);
-            await _teacherService.UpdateTeacher(teacher.TeacherId, teacher);
+            await _teacherService.UpdateTeacher( teacher);
         }
 
         public async Task<List<TeachersToSubjectBL>> GetTeachersSubjects(int teacherId)

@@ -64,9 +64,10 @@ namespace DAL.Services
         {
             return await dbContext.TeacherAvailabilities
                 .FirstOrDefaultAsync(ta => ta.AvailabilityId == id);
-                
+
 
 
 
         }
+    }
 }
