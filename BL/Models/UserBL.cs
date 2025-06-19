@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BL.ValidationAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BL.Models
     public class UserBL
     {
 
-
+        [IsraeliId]
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "First name is required")]
