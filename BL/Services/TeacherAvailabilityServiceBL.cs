@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BL.Api;
 using BL.Exceptions.TeacherAvailabilityExceptions;
 using BL.Models;
 using DAL.Models;

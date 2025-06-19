@@ -44,7 +44,9 @@ namespace DAL.Services
 
         public async Task UpdateSubject(Subject subject)
         {
-            _context.Subjects.Update(subject);
+            var existingSubject = await _context.Subjects.FindAsync(subject.SubjectId);
+            existingSubject = subject;
+            _context.Subjects.Update(existingSubject);
            await  _context.SaveChangesAsync();
         }
         public async Task DeleteSubjectByName(string name)

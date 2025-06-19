@@ -17,8 +17,5 @@ namespace BL.Models
 
         public DateTime RegistrationDate { get; set; }
 
-        public virtual Lesson Lesson { get; set; } = null!;
-
-        public virtual Student Student { get; set; } = null!;
     }
 }
