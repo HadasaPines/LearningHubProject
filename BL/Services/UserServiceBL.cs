@@ -3,86 +3,231 @@ using BL.Exceptions.UserExceptions;
 using BL.Models;
 using DAL.Api;
 using DAL.Models;
+using DAL.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BL.Api;
 
 namespace BL.Services
 {
-    internal class UserServiceBL
+    public class UserServiceBL : IUserServiceBL
     {
         private readonly IMapper _mapper;
         private readonly IUserServiceDAL _userService;
+        private readonly IStudentServiceBL _studentServiceBL;
+        private readonly ITeacherServiceBL _teacherServiceBL;
+        public UserServiceBL(IMapper mapper, IUserServiceDAL userServiceDAL, IStudentServiceBL studentServiceBL, ITeacherServiceBL teacherServiceBL)
+        {
+            _mapper = mapper;
+            _userService = userServiceDAL;
+            _studentServiceBL = studentServiceBL;
+            _teacherServiceBL = teacherServiceBL;
 
-        ////public UserServiceBL(IMapper mapper, IUserServiceDAL userService)
-        ////{
-        ////    _mapper = mapper;
-        ////    _userService = userService;
-        ////}
-        ////public async Task AddUser(UserBL userBL)
-        ////{
-        ////    if (!IsValidIsraeliId(userBL.UserId.ToString()))
-        ////        throw new InvalidIdException();
+        }
+        public async Task<List<UserBL>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsers();
+            return _mapper.Map<List<UserBL>>(users);
+        }
 
-        ////    var passwordHasher = new PasswordHasher<UserBL>();
-        ////    userBL.PasswordHash = passwordHasher.HashPassword(userBL, userBL.PasswordHash);
+        public async Task<UserBL?> GetUserById(int userId)
+        {
+            if (userId <= 0)
+                throw new ArgumentException("User ID must be greater than zero");
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by ID:{userId}");
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL?> GetUserByName(string firstName, string lastName)
+        {
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+                throw new RequiredFieldsNotFilledException("first name/last name can't be null or empty");
+
+            var user = await _userService.GetUserByName(firstName, lastName);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by Name:{firstName} {lastName}");
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL?> GetUserByIdIncludeRole(int userId)
+        {
+            if (userId <= 0)
+                throw new ArgumentException("User ID must be greater than zero");
+
+            var user = await _userService.GetUserByIdIncludeRole(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by ID:{userId}");
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL> GetUserByNameIncludeRole(string firstName, string lastName)
+        {
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+                throw new RequiredFieldsNotFilledException("first name / last name can't be null or empty");
+
+            var user = await _userService.GetUserByNameIncludeRole(firstName, lastName);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by Name:{firstName} {lastName}");
+
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL?> GetUserByEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new RequiredFieldsNotFilledException("Email can't be null or empty");
+
+            var user = await _userService.GetUserByEmail(email);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found with email: {email}");
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL> GetUserByEmailAndPassword(string email, string password)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                throw new RequiredFieldsNotFilledException("email/password can't be null or empty");
+
+            var user = await _userService.GetUserByEmail(email);
+            if (!IsCorrectPassword(user, password))
+            {
+                throw new WrongPasswordException("Wrong password.");
+            }
+
+            return _mapper.Map<UserBL>(user);
+        }
+        public async Task<UserBL> GetUserByNameAndPassword(string firstName, string lastName, string password)
+        {
+            if (string.IsNullOrWhiteSpace(firstName)
+                || string.IsNullOrWhiteSpace(lastName)
+                || string.IsNullOrWhiteSpace(password))
+                throw new RequiredFieldsNotFilledException("first name/last name/password can't be null or empty");
+            var user = await _userService.GetUserByName(firstName, lastName);
+            if (!IsCorrectPassword(user, password))
+            {
+                throw new WrongPasswordException("Wrong password.");
+            }
+            return _mapper.Map<UserBL>(user);
+        }
+
+        public async Task<UserBL> GetUserByIdAndPassaword(int id, string passaword)
+        {
+            if(string.IsNullOrWhiteSpace(passaword))
+                throw new RequiredFieldsNotFilledException("Password cannot be null or empty.");
+                
+    
+            if (id <= 0)
+                throw new ArgumentException("User ID must be greater than zero", nameof(id));
+            var user= await _userService.GetUserById(id);
+            if (!IsCorrectPassword(user, passaword))
+            {
+                throw new WrongPasswordException("Wrong password.");
+            }
+            return _mapper.Map<UserBL>(user);
+
+        }
+
+        public async Task<UserBL> AddUser(UserBL userBL)
+
+        {
+            if (userBL == null)
+                throw new ArgumentNullException("User cannot be null");
+            var existingUser = await _userService.GetUserById(userBL.UserId);
+            if (existingUser != null)
+            {
+                throw new UserAlreadyExistsException($"User with ID {userBL.UserId} already exists.");
+            }
+
+            if (string.IsNullOrWhiteSpace(userBL.FirstName) || string.IsNullOrWhiteSpace(userBL.LastName))
+                throw new RequiredFieldsNotFilledException("user details can't be null or empty");
+
+            var user = _mapper.Map<User>(userBL);
+            await _userService.AddUser(user);
+            return userBL;
+
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            if (userId <= 0)
+                throw new ArgumentException("User ID must be greater than zero");
+
+            var user = await _userService.GetUserById(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by ID:{userId}");
+            }
+
+            //if (user.Role == "Admin")
+            //{
+            //    throw new InvalidOperationException("Cannot delete an admin user.");
+            //}
+            if (user.Student != null)
+            {
+                await _studentServiceBL.DeleteStudent(user.Student.StudentId);
+            }
+            if (user.Teacher != null)
+            {
+                await _teacherServiceBL.DeleteTeacher(user.Teacher.TeacherId);
+            }
+
+            await _userService.DeleteUser(user);
+        }
+
+        public async Task<UserBL> UpdateUser(int userId, JsonPatchDocument<UserBL> patchDoc)
+        {
+            var user = await _userService.GetUserById(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"No user found by ID:{userId}");
+            }
+            var userBL = _mapper.Map<UserBL>(user);
+            patchDoc.ApplyTo(userBL);
+           
+            var updatedUser = _mapper.Map<User>(userBL);
+            await _userService.UpdateUser(updatedUser);
+
+            return userBL;
+        }
+
+        private bool IsCorrectPassword(User user, string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new RequiredFieldsNotFilledException("Password can't be null or empty");
+            }
+            return user.PasswordHash == password;
 
 
-        ////    User user = _mapper.Map<User>(userBL);
-        ////    await _userService.AddUser(user);
-        ////}
 
-        ////private static bool IsValidIsraeliId(string id)
-        ////{
-        ////    id = id.Trim().PadLeft(9, '0');
-        ////    if (!Regex.IsMatch(id, @"^\d{9}$")) return false;
 
-        ////    int sum = 0;
-        ////    for (int i = 0; i < 9; i++)
-        ////    {
-        ////        int digit = int.Parse(id[i].ToString());
-        ////        int factor = (i % 2 == 0) ? 1 : 2;
-        ////        int product = digit * factor;
-        ////        sum += (product > 9) ? product - 9 : product;
-        ////    }
 
-        ////    return sum % 10 == 0;
-        ////}
 
-        ////public async Task<User> GetUserByNameAndPassword(string firstName, string lastName, string password)
-        ////{
-        ////    if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(password))
-        ////        throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
 
-        ////    User user = await _userService.GetUserByName(firstName, lastName);
-
-        ////    if (user == null)
-        ////        throw new UnauthorizedAccessException("שם משתמש או סיסמה שגויים");
-
-        ////    var hasher = new PasswordHasher<User>();
-        ////    var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
-
-        ////    if (result == PasswordVerificationResult.Failed)
-        ////        throw new UnauthorizedAccessException("שם משתמש או סיסמה שגויים");
-
-        ////    return user;
-        ////}
-
-        ////public async Task DeleteUser(string firstName, string lastName, int id)
-        ////{
-        ////    if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
-        ////        throw new ArgumentException("שם משתמש או סיסמה אינם תקינים");
-        ////    User user = await _userService.GetUserByName(firstName, lastName);
-        ////    if (user.UserId != id)
-        ////    {
-        ////        throw new Exception("name and id not mach");
-        ////    }
-        ////    await _userService.DeleteUser(id);
-        ////}
-
+        }
     }
 }

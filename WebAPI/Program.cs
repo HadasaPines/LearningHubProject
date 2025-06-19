@@ -38,12 +38,14 @@ builder.Services.AddScoped<IStudentServiceDAL, StudentServiceDAL>();
 builder.Services.AddScoped<ITecherServiceDAL, TecherServiceDAL>();
 //builder.Services.AddSingleton<ITeacherAvailabilityServiceDAL, TeacherAvailabilityServiceDAL>();
 builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
-
-//builder.Services.AddScoped<IUserManager, UserServiceDAL>();
-
-//builder.Services.AddSingleton<IUserManager, UserManager>();
-
+builder.Services.AddScoped<IUserServiceDAL, UserServiceDAL>();
 // builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
+
+builder.Services.AddScoped<IUserServiceBL, UserServiceBL>();
+builder.Services.AddScoped<IStudentServiceBL, StudentServiceBL>();
+builder.Services.AddScoped<ITeacherServiceBL, TeacherServiceBL>();
+
+
 
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 

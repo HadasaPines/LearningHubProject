@@ -30,42 +30,31 @@ namespace WebAPI.Controllers
             }
 
 
-            if (exceptionDetails?.Error is InvalidEmailException invalidEmailException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(invalidEmailException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
+            //if (exceptionDetails?.Error is InvalidEmailException invalidEmailException)
+            //{
+            //    logger.LogInformation("*********************************************************************");
+            //    logger.LogWarning(invalidEmailException.Message);
+            //    logger.LogInformation("*********************************************************************");
+            //    return Problem(
 
-                title: invalidEmailException.Message,
-                statusCode: invalidEmailException.StatusCode
-                );
+            //    title: invalidEmailException.Message,
+            //    statusCode: invalidEmailException.StatusCode
+            //    );
 
-            }
+            //}
 
-           if(exceptionDetails ?.Error is InvalidPasswordException invalidPasswordException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(invalidPasswordException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
+           //if(exceptionDetails ?.Error is InvalidPasswordException invalidPasswordException)
+           // {
+           //     logger.LogInformation("*********************************************************************");
+           //     logger.LogWarning(invalidPasswordException.Message);
+           //     logger.LogInformation("*********************************************************************");
+           //     return Problem(
 
-                title: invalidPasswordException.Message,
-                statusCode: invalidPasswordException.StatusCode
-                );
-            }
-
-            if (exceptionDetails?.Error is InvalidIdException invalidIdException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(invalidIdException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
-
-                title: invalidIdException.Message,
-                statusCode: invalidIdException.StatusCode
-                );
-            }
+           //     title: invalidPasswordException.Message,
+           //     statusCode: invalidPasswordException.StatusCode
+           //     );
+           // }
+ 
 
             if (exceptionDetails?.Error is RequiredFieldsNotFilledException requiredFieldsNotFilledException)
             {
@@ -79,51 +68,27 @@ namespace WebAPI.Controllers
                 );
             }
 
-            if (exceptionDetails?.Error is UserIdAlreadyExistsException userIdAlreadyExistsException)
+            if (exceptionDetails?.Error is UserAlreadyExistsException userAlreadyExistsException)
             {
                 logger.LogInformation("*********************************************************************");
-                logger.LogWarning(userIdAlreadyExistsException.Message);
+                logger.LogWarning(userAlreadyExistsException.Message);
                 logger.LogInformation("*********************************************************************");
                 return Problem(
 
-                title: userIdAlreadyExistsException.Message,
-                statusCode: userIdAlreadyExistsException.StatusCode
+                title: userAlreadyExistsException.Message,
+                statusCode: userAlreadyExistsException.StatusCode
                 );
             }
 
-            if (exceptionDetails?.Error is UserIdNotFoundException userIdNotFoundException)
+            if (exceptionDetails?.Error is UserNotFoundException userNotFoundException)
             {
                 logger.LogInformation("*********************************************************************");
-                logger.LogWarning(userIdNotFoundException.Message);
+                logger.LogWarning(userNotFoundException.Message);
                 logger.LogInformation("*********************************************************************");
                 return Problem(
 
-                title: userIdNotFoundException.Message,
-                statusCode: userIdNotFoundException.StatusCode
-                );
-            }
-
-            if (exceptionDetails?.Error is UserNameAlreadyExistsException userNameAlreadyExistsException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(userNameAlreadyExistsException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
-
-                title: userNameAlreadyExistsException.Message,
-                statusCode: userNameAlreadyExistsException.StatusCode
-                );
-            }
-
-            if (exceptionDetails?.Error is UserNameNotFoundException userNameNotFoundException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(userNameNotFoundException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
-
-                title: userNameNotFoundException.Message,
-                statusCode: userNameNotFoundException.StatusCode
+                title: userNotFoundException.Message,
+                statusCode: userNotFoundException.StatusCode
                 );
             }
 
@@ -139,7 +104,6 @@ namespace WebAPI.Controllers
                 );
             }
 
-
             if (exceptionDetails?.Error is WrongPasswordException wrongPasswordException)
             {
                 logger.LogInformation("*********************************************************************");
@@ -151,6 +115,7 @@ namespace WebAPI.Controllers
                 statusCode: wrongPasswordException.StatusCode
                 );
             }
+
             if (exceptionDetails?.Error is RegisterDoesNotMatchTheStudent registerDoesNotMatchTheStudent)
             {
                 logger.LogInformation("*********************************************************************");
@@ -162,6 +127,7 @@ namespace WebAPI.Controllers
                 statusCode: registerDoesNotMatchTheStudent.StatusCode
                 );
             }
+
             if (exceptionDetails?.Error is StudentNotFoundException studentNotFoundException)
             {
                 logger.LogInformation("*********************************************************************");

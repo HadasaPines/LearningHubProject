@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace BL.Services
 {
-    internal class StudentServiceBL : IStudentServiceBL
+    public class StudentServiceBL : IStudentServiceBL
     {
         private readonly IStudentServiceDAL _studentServiceDAL;
         private readonly IMapper _mapper;
