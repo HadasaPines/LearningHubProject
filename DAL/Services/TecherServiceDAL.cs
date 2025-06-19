@@ -44,13 +44,11 @@ namespace DAL.Services
             await dbContext.SaveChangesAsync();
             return teacher;
         }
-        public async Task<Teacher> UpdateTeacher(int Id, Teacher teacher)
+        public async Task<Teacher> UpdateTeacher(Teacher teacher)
         {
-            var teacherToUpdate = await dbContext.Teachers.FirstOrDefaultAsync(t => t.TeacherId == Id);
-            teacherToUpdate = teacher;
-            dbContext.Teachers.Update(teacherToUpdate);
+            dbContext.Teachers.Update(teacher);
             await dbContext.SaveChangesAsync();
-            return teacherToUpdate;
+            return teacher;
         }
         public async Task DeleteTeacher(int teacherId)
         {

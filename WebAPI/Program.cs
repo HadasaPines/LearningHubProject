@@ -47,6 +47,7 @@ builder.Services.AddScoped<ITeacherServiceBL, TeacherServiceBL>();
 
 
 
+builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

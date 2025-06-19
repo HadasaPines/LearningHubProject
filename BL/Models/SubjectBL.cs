@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    internal class SubjectBL
+    public class SubjectBL
     {
-      
 
+        //public int SubjectId { get; set; }
+        public string Name { get; set; } = null!;
     }
 }
