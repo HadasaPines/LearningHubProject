@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\SubjectException\" />
+  </ItemGroup>
+
 </Project>

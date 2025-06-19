@@ -45,6 +45,7 @@ builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
 
 // builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
 
+builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

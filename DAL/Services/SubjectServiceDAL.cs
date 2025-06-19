@@ -27,10 +27,13 @@ namespace DAL.Services
         public async Task<Subject> GetSubjectByName(string name)
         {
             var subject = await _context.Subjects.FirstOrDefaultAsync(s => s.Name.Equals(name));
-            if (subject == null)
-            {
-                throw new Exception($"Subject with Name {name} not found.");
-            }
+
+            return subject;
+        }
+        public async Task<Subject> GetSubjectById(int id)
+        {
+            var subject = await _context.Subjects.FirstOrDefaultAsync(s => s.SubjectId == id);
+
             return subject;
         }
         public async Task AddSubject(Subject subject)
@@ -38,33 +41,49 @@ namespace DAL.Services
             await _context.Subjects.AddAsync(subject);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateSubject(Subject subject)
+        {
+            _context.Subjects.Update(subject);
+           await  _context.SaveChangesAsync();
+        }
         public async Task DeleteSubjectByName(string name)
         {
-            var subject = await _context.Subjects.FirstOrDefaultAsync(s => s.Name.Equals(name));
-            if (subject == null)
-            {
-                throw new Exception($"Subject with Name {name} not found.");
-            }
+            var subject = await _context.Subjects
+               .Include(s => s.TeachersToSubjects)
+               .Include(l=>l.Lessons)
+               .FirstOrDefaultAsync(s => s.Name == name);
+
+
+            _context.TeachersToSubjects.RemoveRange(subject.TeachersToSubjects);
+            _context.Lessons.RemoveRange(subject.Lessons);
             _context.Subjects.Remove(subject);
+
             await _context.SaveChangesAsync();
         }
-        //public async Task UpdateSubject(Subject subject)
-        //{
-        //    var existingSubject = _context.Subjects.FirstOrDefault(s => s.SubjectId == subject.SubjectId);
-        //    if (existingSubject != null)
-        //    {
-        //        existingSubject.Name = subject.Name;
-        //        existingSubject.Description = subject.Description;
-        //        _context.SaveChanges();
-        //    }
-        //}
-        //public async Task<List<Subject>> GetSubjectsToTeacherByTeacherName(string teacherName)
-        //{
-        //    var subjects = await _context.Subjects
-        //        .Where(s => s..FullName.Equals(teacherName))
-        //        .ToListAsync();
-        //}
 
-    }
+      
+
+        public async Task<List<Teacher>> GetTeachersBySubjectName(string name)
+        {
+            var subject = await _context.Subjects
+                    .Include(s => s.TeachersToSubjects)
+                    .ThenInclude(ts => ts.Teacher)
+                    .FirstOrDefaultAsync(s => s.Name == name);
+            return subject.TeachersToSubjects.Select(ts=>ts.Teacher).ToList();
+        }
+
+        public async Task<List<Lesson>> GetLessonsBySubjectName(string name)
+        {
+            var subject = await _context.Subjects
+                .Include(s => s.Lessons)
+                .FirstOrDefaultAsync(s => s.Name==name);
+
+            return subject.Lessons.ToList();
+        }
+
+
+      
+
+        }
 }
-
