@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
         [HttpGet("getUserByIdAndPassword/{userId}/{password}")]
         public async Task<ActionResult<UserBL>> GetUserByIdAndPassword(int userId, string password)
         {
-            var user = await _userServiceBL.GetUserByIdAndPassaword(userId, password);
+            var user = await _userServiceBL.GetUserByIdAndPassword(userId, password);
             if (user == null)
             {
                 return NotFound("User not found with the provided ID and password.");

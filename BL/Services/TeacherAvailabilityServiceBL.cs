@@ -25,8 +25,9 @@ namespace BL.Services
 
         public async Task AddTeacherAvailability(TeacherAvailabilityBL teacherAvailabilityBL)
         {
+
             if (teacherAvailabilityBL == null)
-                throw new ArgumentNullException("TeachersToSubject cannot be null");
+                throw new ArgumentNullException(nameof(teacherAvailabilityBL), "Teacher availability cannot be null");
             TeacherAvailability teacherAvailability = _mapper.Map<TeacherAvailability>(teacherAvailabilityBL);
             await _teacherAvailabilityServiceDAL.AddTeacherAvailability(teacherAvailability);
         }
@@ -36,10 +37,11 @@ namespace BL.Services
             if (patchDoc == null)
                 throw new ArgumentNullException("TeachersToSubject cannot be null");
             var teacherAvailability = await _teacherAvailabilityServiceDAL.GetTeacherAvailabilitiesById(id);
-            var teacherAvailabilityBL = _mapper.Map<TeacherAvailabilityBL>(teacherAvailability);
+           
             if (teacherAvailability == null)
 
                 throw new TeacherAvailabilityNotFoundException("teacher availability not found to update");
+            var teacherAvailabilityBL = _mapper.Map<TeacherAvailabilityBL>(teacherAvailability);
             patchDoc.ApplyTo(teacherAvailabilityBL);
             var updateTeacherAvailability = _mapper.Map<TeacherAvailability>(teacherAvailabilityBL);
             await _teacherAvailabilityServiceDAL.UpdateTeacherAvailability(updateTeacherAvailability);

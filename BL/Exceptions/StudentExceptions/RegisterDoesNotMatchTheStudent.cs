@@ -12,6 +12,6 @@ namespace BL.Exceptions.StudentExceptions
         {
 
         }
-        public int? StatusCode { get; } = 445;
+        public int? StatusCode { get; } = 403;
     }
 }

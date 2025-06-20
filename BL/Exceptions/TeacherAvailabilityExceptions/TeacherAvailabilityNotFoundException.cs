@@ -12,6 +12,6 @@ namespace BL.Exceptions.TeacherAvailabilityExceptions
         {
 
         }
-        public int? StatusCode { get; } = 451;
+        public int? StatusCode { get; } = 404;
     }
 }
