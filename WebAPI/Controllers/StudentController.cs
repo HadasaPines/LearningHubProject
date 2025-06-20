@@ -21,6 +21,10 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllStudents()
         {
             var students = await _studentServiceBL.GetAllStudents();
+            if (students == null || !students.Any())
+            {
+                return NotFound("No students found.");
+            }
             return Ok(students);
         }
         [HttpGet("{studentId}")]
@@ -37,69 +41,39 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetStudentByName(string firstName, string lastName)
         {
             var student = await _studentServiceBL.GetStudentByName(firstName, lastName);
-            if (student == null)
-            {
-                return NotFound($"Student with Name {firstName} {lastName} not found.");
-            }
             return Ok(student);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddStudent([FromBody] StudentBL studentBL)
         {
-            if (studentBL == null)
-            {
-                return BadRequest("Student data is null.");
-            }
             await _studentServiceBL.AddStudent(studentBL);
             return CreatedAtAction(nameof(GetStudentById), new { studentId = studentBL.StudentId }, studentBL);
         }
         [HttpDelete("{studentId}")]
         public async Task<IActionResult> DeleteStudent(int studentId)
         {
-            try
-            {
+
                 await _studentServiceBL.DeleteStudent(studentId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return Ok($"Student with ID {studentId} deleted successfully.");
+
         }
         [HttpPatch("{studentId}")]
         public async Task<IActionResult> UpdateStudent(int studentId, [FromBody] JsonPatchDocument<StudentBL> patchDoc)
         {
-            if (patchDoc == null)
-            {
-                return BadRequest("Patch document is null.");
-            }
-            try
-            {
+
+
                 var updatedStudent = await _studentServiceBL.UpdateStudent(studentId, patchDoc);
                 return Ok(updatedStudent);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+
         }
         [HttpPost("{studentId}/registration")]
         public async Task<IActionResult> AddRegistrationToStudent(int studentId, [FromBody] RegistrationBL registrationBL)
         {
-            if (registrationBL == null)
-            {
-                return BadRequest("Registration data is null.");
-            }
-            try
-            {
+
                 var registration = await _studentServiceBL.AddRegistrationToStudent(studentId, registrationBL);
-                return CreatedAtAction(nameof(GetStudentById), new { studentId = studentId }, registration);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return Ok($"Registration added successfully to student with id {studentId}");
+
 
         }
 
