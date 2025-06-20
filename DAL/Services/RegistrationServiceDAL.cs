@@ -1,4 +1,5 @@
-﻿using DAL.Contexts;
+﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,65 +11,91 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    public class RegistrationServiceDAL
+    public class RegistrationServiceDAL : IRegistrationServiceDAL
     {
         private readonly LearningHubDbContext dbContext;
         public RegistrationServiceDAL(LearningHubDbContext _dbContext)
         {
             dbContext = _dbContext;
         }
-        public async Task<List<Registration>> GetRegistrationsToStudentAsync(string firstName,string lastName)
+        public async Task<List<Registration>> GetAllRegistrations()
         {
-            var student = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.FirstName == firstName&&u.LastName==lastName);
+            return await dbContext.Registrations
+                .Include(r => r.Student)
+                .Include(r => r.Lesson)
+                .ToListAsync();
+        }
+        public async Task<Registration> GetRegistrationById(int registrationId)
+        {
+            return await dbContext.Registrations
+                .Include(r => r.Student)
+                .Include(r => r.Lesson)
+                .FirstOrDefaultAsync(r => r.RegistrationId == registrationId);
+        }
+        public async Task<List<Registration>> GetRegistrationsToLesson(Lesson lesson)
+        {
+            var registrations = await dbContext.Registrations
+                .Include(r => r.Lesson)
+                .Where(r => r.Lesson.LessonId == lesson.LessonId).ToListAsync();
+            return registrations;
+        }
+        public async Task<Lesson> GetLessonByRegistrationId(int id)
+        {
+            var registration = await dbContext.Registrations
+                .Include(r => r.Lesson)
+                .FirstOrDefaultAsync(r => r.RegistrationId == id);
 
-            if (student == null)
-            {
-                throw new Exception($"User with Name {firstName}{lastName} not found.");
-            }
+            return registration.Lesson;
+
+        }
+        public async Task<Student> GetStudentByRegistrationId(int id)
+        {
+            var registration = await dbContext.Registrations
+                .Include(r => r.Student)
+                .FirstOrDefaultAsync(r => r.RegistrationId == id);
+
+            return registration.Student;
+        }
+        public async Task<List<Registration>> GetRegistrationsToStudent(Student student)
+        {
+
 
             var registrations = await dbContext.Registrations
                 .Include(r => r.Student)
-                .Where(r => r.Student.StudentId == student.UserId).ToListAsync();
-            if (registrations == null || !registrations.Any())
-            {
-                throw new Exception($"Student with Name {firstName}{lastName} doesnt have registrations.");
-            }
+                .Where(r => r.Student.StudentId == student.StudentId).ToListAsync();
             return registrations;
         }
-        public async Task AddRegistrationAsync(Registration registration)
+        public async Task AddRegistration(Registration registration, Lesson lesson)
         {
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == registration.LessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {registration.LessonId} not found.");
-            }
-            lesson.Status = "Not available";
+
+            lesson.Status = "booked";
             dbContext.Lessons.Update(lesson);
             dbContext.Registrations.Add(registration);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteRegistration(int registrationId)
-        {
-            var registration = await dbContext.Registrations
-                .FirstOrDefaultAsync(r => r.RegistrationId == registrationId);
-            if (registration == null)
-            {
-                throw new Exception($"Registration with ID {registrationId} not found.");
-            }
 
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == registration.LessonId);
-            if (lesson != null)
+        public async Task DeleteRegistration(Registration registration, Lesson lesson)
+        {
+            if (lesson.LessonDate >= DateOnly.FromDateTime(DateTime.Today))
             {
                 lesson.Status = "Available";
                 dbContext.Lessons.Update(lesson);
             }
 
+
             dbContext.Registrations.Remove(registration);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateRegistration(Registration registration)
+        {
+            var existingRegistration = await dbContext.Registrations
+                .FirstOrDefaultAsync(r => r.RegistrationId == registration.RegistrationId);
+            existingRegistration = registration;
+            dbContext.Registrations.Update(existingRegistration);
+            await dbContext.SaveChangesAsync();
+
         }
     }
 }
