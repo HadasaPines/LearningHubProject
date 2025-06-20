@@ -15,7 +15,7 @@ namespace BL.Models
 
         public int StudentId { get; set; }
 
-        public DateTime RegistrationDate { get; set; }
+        public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
     }
 }
