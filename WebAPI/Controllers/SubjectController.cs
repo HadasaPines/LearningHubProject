@@ -17,12 +17,14 @@ namespace WebAPI.Controllers
             _subjectServiceBL = subjectServiceBL;
         }
         [HttpGet("getAllSubjects")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-
-            var subjects = _subjectServiceBL.GetAllSubjects();
+            var subjects = await _subjectServiceBL.GetAllSubjects();
+            if (subjects == null || !subjects.Any())
+            {
+                return NotFound("No subjects found.");
+            }
             return Ok(subjects);
-
         }
         [HttpGet("getSubjectById/{subjectId}")]
         public IActionResult GetSubjectByID(int id)
@@ -56,15 +58,23 @@ namespace WebAPI.Controllers
 
         }
         [HttpGet("getTeachersBySubjectName/{subjectName}")]
-        public IActionResult GetTeachersBySubjectName(string name)
+        public async Task<IActionResult> GetTeachersBySubjectName(string name)
         {
-            var teachers = _subjectServiceBL.GetTeachersBySubjectName(name);
+            var teachers = await _subjectServiceBL.GetTeachersBySubjectName(name);
+            if (teachers == null || !teachers.Any())
+            {
+                return NotFound($"No teachers found for subject: {name}");
+            }
             return Ok(teachers);
         }
         [HttpGet("getLessonsBySubjectName/{subjectName}")]
-        public IActionResult GetLessonsBySubjectName(string name)
+        public async Task<IActionResult> GetLessonsBySubjectName(string name)
         {
-            var lessons = _subjectServiceBL.GetLessonsBySubjectName(name);
+            var lessons = await _subjectServiceBL.GetLessonsBySubjectName(name);
+            if (lessons == null || !lessons.Any())
+            {
+                return NotFound($"No lessons found for subject: {name}");
+            }
             return Ok(lessons);
         }
     }

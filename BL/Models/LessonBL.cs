@@ -8,7 +8,7 @@ namespace BL.Models
 {
     public class LessonBL
     {
-       
+        public int LessonId { get; set; }
 
         public int TeacherId { get; set; }
 
