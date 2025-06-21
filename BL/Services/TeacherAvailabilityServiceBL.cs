@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using BL.Api;
 using BL.Exceptions.TeacherAvailabilityExceptions;
 using BL.Models;
+using DAL.Api;
 using DAL.Models;
 using DAL.Services;
 using Microsoft.AspNetCore.JsonPatch;
@@ -14,9 +16,9 @@ namespace BL.Services
 {
     public class TeacherAvailabilityServiceBL : ITeacherAvailabilityServiceBL
     {
-        private readonly TeacherAvailabilityServiceDAL _teacherAvailabilityServiceDAL;
+        private readonly ITeacherAvailabilityServiceDAL _teacherAvailabilityServiceDAL;
         private readonly IMapper _mapper;
-        public TeacherAvailabilityServiceBL(TeacherAvailabilityServiceDAL teacherAvailabilityServiceDAL, IMapper mapper)
+        public TeacherAvailabilityServiceBL(ITeacherAvailabilityServiceDAL teacherAvailabilityServiceDAL, IMapper mapper)
         {
             _teacherAvailabilityServiceDAL = teacherAvailabilityServiceDAL;
             _mapper = mapper;

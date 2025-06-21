@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BL.Models;
-using BL.Services;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace WebAPI.Controllers
@@ -12,9 +11,9 @@ namespace WebAPI.Controllers
     public class TeacherAvailabilityController : ControllerBase
     {
         private readonly ITeacherAvailabilityServiceBL _teacherAvailabilityServiceBL;
-        public TeacherAvailabilityController(ITeacherAvailabilityServiceBL _teacherAvailabilityServiceBL)
+        public TeacherAvailabilityController(ITeacherAvailabilityServiceBL teacherAvailabilityServiceBL)
         {
-            _teacherAvailabilityServiceBL = _teacherAvailabilityServiceBL;
+            _teacherAvailabilityServiceBL = teacherAvailabilityServiceBL;
         }
         [HttpGet]
         public async Task<List<TeacherAvailabilityBL>> GetAllTeacherAvailabilities()
