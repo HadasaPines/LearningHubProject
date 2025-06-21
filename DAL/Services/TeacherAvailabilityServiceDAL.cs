@@ -1,4 +1,5 @@
-﻿using DAL.Contexts;
+﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    public class TeacherAvailabilityServiceDAL
+    public class TeacherAvailabilityServiceDAL : ITeacherAvailabilityServiceDAL
     {
         private readonly LearningHubDbContext dbContext;
         public TeacherAvailabilityServiceDAL(LearningHubDbContext _dbContext)

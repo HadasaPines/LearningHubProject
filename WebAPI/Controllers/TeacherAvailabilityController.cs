@@ -11,6 +11,17 @@ namespace WebAPI.Controllers
     public class TeacherAvailabilityController : ControllerBase
     {
         private readonly ITeacherAvailabilityServiceBL _teacherAvailabilityServiceBL;
+<<<<<<< HEAD
+        public TeacherAvailabilityController(ITeacherAvailabilityServiceBL teacherAvailabilityServiceBL)
+        {
+            _teacherAvailabilityServiceBL = teacherAvailabilityServiceBL;
+        }
+        [HttpGet]
+        public async Task<List<TeacherAvailabilityBL>> GetAllTeacherAvailabilities()
+        {
+            return await _teacherAvailabilityServiceBL.GetAllTeacherAvailabilities();
+=======
+>>>>>>> 58df8417fb507111da981abd4d790aecbbe02a05
 
         public TeacherAvailabilityController(ITeacherAvailabilityServiceBL teacherAvailabilityServiceBL)
         {
