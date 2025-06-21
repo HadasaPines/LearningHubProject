@@ -12,6 +12,6 @@ namespace BL.Exceptions.UserExceptions
         {
 
         }
-        public int? StatusCode { get; } = 440;
+        public int? StatusCode { get; } = 400;
     }
 }

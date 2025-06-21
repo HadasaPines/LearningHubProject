@@ -44,7 +44,7 @@ namespace BL.Services
             var user = await _userService.GetUserById(userId);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by ID:{userId}");
+                throw new UserNotFoundException($"User with ID {userId} not found");
             }
 
             return _mapper.Map<UserBL>(user);
@@ -58,7 +58,7 @@ namespace BL.Services
             var user = await _userService.GetUserByName(firstName, lastName);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by Name:{firstName} {lastName}");
+                throw new UserNotFoundException($"User with name {firstName} {lastName} not found");
             }
 
             return _mapper.Map<UserBL>(user);
@@ -72,7 +72,7 @@ namespace BL.Services
             var user = await _userService.GetUserByIdIncludeRole(userId);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by ID:{userId}");
+                throw new UserNotFoundException($"User with ID {userId} not found");
             }
 
             return _mapper.Map<UserBL>(user);
@@ -86,7 +86,7 @@ namespace BL.Services
             var user = await _userService.GetUserByNameIncludeRole(firstName, lastName);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by Name:{firstName} {lastName}");
+                throw new UserNotFoundException($"User with name {firstName}{lastName} not found");
 
             }
 
@@ -101,7 +101,7 @@ namespace BL.Services
             var user = await _userService.GetUserByEmail(email);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found with email: {email}");
+                throw new UserNotFoundException($"User with email {email} not found");
             }
 
             return _mapper.Map<UserBL>(user);
@@ -113,6 +113,10 @@ namespace BL.Services
                 throw new RequiredFieldsNotFilledException("email/password can't be null or empty");
 
             var user = await _userService.GetUserByEmail(email);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"User with email {email} not found");
+            }
             if (!IsCorrectPassword(user, password))
             {
                 throw new WrongPasswordException("Wrong password.");
@@ -127,23 +131,32 @@ namespace BL.Services
                 || string.IsNullOrWhiteSpace(password))
                 throw new RequiredFieldsNotFilledException("first name/last name/password can't be null or empty");
             var user = await _userService.GetUserByName(firstName, lastName);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"User with name {firstName} {lastName} not found");
+            }
+
             if (!IsCorrectPassword(user, password))
             {
-                throw new WrongPasswordException("Wrong password.");
+                throw new WrongPasswordException("Wrong password");
             }
             return _mapper.Map<UserBL>(user);
         }
 
-        public async Task<UserBL> GetUserByIdAndPassaword(int id, string passaword)
+        public async Task<UserBL> GetUserByIdAndPassword(int id, string password)
         {
-            if(string.IsNullOrWhiteSpace(passaword))
+            if(string.IsNullOrWhiteSpace(password))
                 throw new RequiredFieldsNotFilledException("Password cannot be null or empty.");
                 
     
             if (id <= 0)
                 throw new ArgumentException("User ID must be greater than zero", nameof(id));
             var user= await _userService.GetUserById(id);
-            if (!IsCorrectPassword(user, passaword))
+            if (user == null)
+            {
+                throw new UserNotFoundException($"User with ID {id} not found");
+            }
+            if (!IsCorrectPassword(user, password))
             {
                 throw new WrongPasswordException("Wrong password.");
             }
@@ -179,7 +192,7 @@ namespace BL.Services
             var user = await _userService.GetUserById(userId);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by ID:{userId}");
+                throw new UserNotFoundException($"User with ID {userId} not found");
             }
 
             //if (user.Role == "Admin")
@@ -200,10 +213,14 @@ namespace BL.Services
 
         public async Task<UserBL> UpdateUser(int userId, JsonPatchDocument<UserBL> patchDoc)
         {
+            if (patchDoc == null)
+            {
+                throw new ArgumentNullException(nameof(patchDoc), "Patch document cannot be null");
+            }
             var user = await _userService.GetUserById(userId);
             if (user == null)
             {
-                throw new UserNotFoundException($"No user found by ID:{userId}");
+                throw new UserNotFoundException($"User with ID {userId} not found");
             }
             var userBL = _mapper.Map<UserBL>(user);
             patchDoc.ApplyTo(userBL);

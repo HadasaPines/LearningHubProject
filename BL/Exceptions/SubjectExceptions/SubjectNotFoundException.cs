@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL.Exceptions.LessonExceptions
+namespace BL.Exceptions.SubjectExceptions
 {
-    public class LessonNotFoundException : Exception
+    public class SubjectNotFoundException : Exception
     {
-        public LessonNotFoundException(string messege) : base(messege)
-        {
-
+       
+        public SubjectNotFoundException(string message) : base(message) { 
+        
         }
         public int? StatusCode { get; } = 404;
     }

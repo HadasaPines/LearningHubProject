@@ -12,10 +12,11 @@ namespace BL.Api
         Task<UserBL?> GetUserByIdIncludeRole(int userId);
         Task<UserBL?> GetUserByName(string firstName, string lastName);
         Task<UserBL> GetUserByNameIncludeRole(string firstName, string lastName);
+       
         Task<UserBL?> GetUserByEmail(string email);
         Task<UserBL> UpdateUser(int userId, JsonPatchDocument<UserBL> patchDoc);
         Task<UserBL> GetUserByEmailAndPassword(string email, string password);
-        Task<UserBL> GetUserByIdAndPassaword(int id, string passaword);
+        Task<UserBL> GetUserByIdAndPassword(int id, string password);
         Task<UserBL> GetUserByNameAndPassword(string firstName, string lastName, string password);
     }
 }

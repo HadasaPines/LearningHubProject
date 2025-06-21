@@ -12,6 +12,6 @@ namespace BL.Exceptions.RegistrationExceptions
         {
 
         }
-        public int? StatusCode { get; } = 444;
+        public int? StatusCode { get; } = 404;
     }
 }

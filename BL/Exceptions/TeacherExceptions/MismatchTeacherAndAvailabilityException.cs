@@ -8,10 +8,10 @@ namespace BL.Exceptions.TeacherExceptions
 {
    public class MismatchTeacherAndAvailabilityException:Exception
     {
-        public MismatchTeacherAndAvailabilityException() : base($"Mismatch between teacher and availability")
+        public MismatchTeacherAndAvailabilityException(string massage) : base(massage)
         {
 
         }
-        public int? StatusCode { get; } = 450;
+        public int? StatusCode { get; } = 403;
     }
 }

@@ -19,9 +19,15 @@ namespace WebAPI.Controllers
 
         }
         [HttpGet("getAllRegistrations")]
-        public IActionResult GetAllRegistrations()
+        public async Task<IActionResult> GetAllRegistrations()
         {
-            return Ok(_registrationServiceBL.GetAllRegistrations());
+            var registrations = await _registrationServiceBL.GetAllRegistrations();
+            if (registrations == null || !registrations.Any())
+            {
+                return NotFound("No registrations found");
+            }
+
+            return Ok(registrations);
         }
         [HttpGet("getRegistrationById/{registrationId}")]
         public IActionResult GetRegistrationById(int registrationId)
@@ -49,16 +55,24 @@ namespace WebAPI.Controllers
             return Ok("Registration deleted successfully");
         }
         [HttpGet("getRegistrationsToLesson")]
-        public IActionResult GetRegistrationsToLesson([FromBody] LessonBL lessonBL)
+        public async Task<IActionResult> GetRegistrationsToLesson([FromBody] LessonBL lessonBL)
         {
-            return Ok(_registrationServiceBL.GetRegistrationsToLesson(lessonBL));
+            var registrations = await _registrationServiceBL.GetRegistrationsToLesson(lessonBL);
+            if (registrations == null || !registrations.Any())
+            {
+                return NotFound("No registrations found for the specified lesson.");
+            }
+            return Ok(registrations);
         }
         [HttpGet("getRegistrationsToStudent")]
-        public IActionResult GetRegistrationsToStudent([FromBody] StudentBL studentBL)
+        public async Task<IActionResult> GetRegistrationsToStudent([FromBody] StudentBL studentBL)
         {
-            return Ok(_registrationServiceBL.GetRegistrationsToStudent(studentBL));
-
-
+            var registrations = await _registrationServiceBL.GetRegistrationsToStudent(studentBL);
+            if (registrations == null || !registrations.Any())
+            {
+                return NotFound("No registrations found for the specified student.");
+            }
+            return Ok(registrations);
         }
         [HttpGet("getLessonByRegistrationId/{registrationId}")]
 
