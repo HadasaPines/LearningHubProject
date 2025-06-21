@@ -17,7 +17,9 @@ namespace WebAPI.Controllers
             _teacherAvailabilityServiceBL = teacherAvailabilityServiceBL;
         }
 
+
         [HttpGet("getAllTeacherAvailability")]
+
         public async Task<IActionResult> GetAllTeacherAvailabilities()
         {
             var availabilities = await _teacherAvailabilityServiceBL.GetAllTeacherAvailabilities();
@@ -57,7 +59,9 @@ namespace WebAPI.Controllers
             return Ok($"Teacher availability with id {teacherAvailabilityBL.AvailabilityId} added successfully.");
         }
 
+
         [HttpPatch("updateTeacherAvailability/{id}")]
+
         public async Task<IActionResult> UpdateTeacherAvailability(int id, [FromBody] JsonPatchDocument<TeacherAvailabilityBL> patchDoc)
         {
             var updated = await _teacherAvailabilityServiceBL.UpdateTeacherAvailability(id, patchDoc);
@@ -66,6 +70,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("deleteTeacherAvailability{id}")]
+
         public async Task<IActionResult> DeleteTeacherAvailability(int id)
         {
             await _teacherAvailabilityServiceBL.DeleteTeacherAvailability(id);
