@@ -38,7 +38,7 @@ namespace BL.Services
             var student = await _studentServiceDAL.GetStudentById(studentId);
             if (student == null)
             {
-                throw new Exception($"Student with ID {studentId} not found.");
+                throw new UserNotFoundException($"Student with ID {studentId} not found.");
             }
             return _mapper.Map<StudentBL>(student);
         }
@@ -47,12 +47,16 @@ namespace BL.Services
             var student = await _studentServiceDAL.GetStudentByName(firstName, lastName);
             if (student == null)
             {
-                throw new Exception($"Student with Name {firstName} {lastName} not found.");
+                throw new UserNotFoundException($"Student with Name {firstName} {lastName} not found.");
             }
             return _mapper.Map<StudentBL>(student);
         }
         public async Task AddStudent(StudentBL studentBL)
         {
+            if (studentBL == null)
+            {
+                throw new ArgumentNullException(nameof(studentBL), "Student cannot be null");
+            }
             var student = _mapper.Map<Student>(studentBL);
             await _studentServiceDAL.AddStudent(student);
         }
@@ -61,7 +65,7 @@ namespace BL.Services
             var student = await _studentServiceDAL.GetStudentById(studentId);
             if (student == null)
             {
-                throw new Exception($"Student with ID {studentId} not found.");
+                throw new UserNotFoundException($"Student with ID {studentId} not found.");
             }
             await _studentServiceDAL.DeleteStudent(studentId);
         }
@@ -71,12 +75,26 @@ namespace BL.Services
             {
                 throw new ArgumentNullException(nameof(studentBL), "Student cannot be null");
             }
-            var student = _mapper.Map<Student>(studentBL);
+            var student = await _studentServiceDAL.GetStudentById(studentBL.StudentId);
+            if (student == null)
+            {
+                throw new UserNotFoundException($"Student with ID {studentBL.StudentId} not found.");
+            }
+            
             await _studentServiceDAL.DeleteStudent(student.StudentId);
         }
         public async Task<StudentBL> UpdateStudent(int studentId, JsonPatchDocument<StudentBL> patchDoc)
         {
+            if (patchDoc == null)
+            {
+                throw new ArgumentNullException(nameof(patchDoc), "Patch document cannot be null");
+            }
+
             var student = await _studentServiceDAL.GetStudentById(studentId);
+            if (student == null)
+            {
+                throw new UserNotFoundException($"No user found by ID:{studentId}");
+            }
             var studentBL = _mapper.Map<StudentBL>(student);
             patchDoc.ApplyTo(studentBL);
             var updatedStudent = _mapper.Map<Student>(studentBL);
@@ -96,7 +114,7 @@ namespace BL.Services
             var student = await _studentServiceDAL.GetStudentById(studentId);
             if (student == null)
             {
-                throw new StudentNotFoundException($"Student with ID {studentId} not found.");
+                throw new UserNotFoundException($"Student with ID {studentId} not found.");
             }
             var registration = _mapper.Map<Registration>(registrationBL);
             registration.Student = student;

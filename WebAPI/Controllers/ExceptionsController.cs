@@ -5,6 +5,10 @@ using System.Threading;
 using BL.Exceptions.UserExceptions;
 using BL.Exceptions.StudentExceptions;
 using BL.Exceptions.TeacherAvailabilityExceptions;
+using BL.Exceptions.LessonExceptions;
+using BL.Exceptions.RegistrationExceptions;
+using BL.Exceptions.TeacherExceptions;
+using BL.Exceptions.SubjectExceptions;
 namespace WebAPI.Controllers
 {
     public class ExceptionsController : Controller
@@ -28,32 +32,6 @@ namespace WebAPI.Controllers
                 logger.LogDebug(exceptionDetails.Error, "");
                 logger.LogInformation("*********************************************************************");
             }
-
-
-            //if (exceptionDetails?.Error is InvalidEmailException invalidEmailException)
-            //{
-            //    logger.LogInformation("*********************************************************************");
-            //    logger.LogWarning(invalidEmailException.Message);
-            //    logger.LogInformation("*********************************************************************");
-            //    return Problem(
-
-            //    title: invalidEmailException.Message,
-            //    statusCode: invalidEmailException.StatusCode
-            //    );
-
-            //}
-
-           //if(exceptionDetails ?.Error is InvalidPasswordException invalidPasswordException)
-           // {
-           //     logger.LogInformation("*********************************************************************");
-           //     logger.LogWarning(invalidPasswordException.Message);
-           //     logger.LogInformation("*********************************************************************");
-           //     return Problem(
-
-           //     title: invalidPasswordException.Message,
-           //     statusCode: invalidPasswordException.StatusCode
-           //     );
-           // }
  
 
             if (exceptionDetails?.Error is RequiredFieldsNotFilledException requiredFieldsNotFilledException)
@@ -92,17 +70,7 @@ namespace WebAPI.Controllers
                 );
             }
 
-            if (exceptionDetails?.Error is NameIdMismatchException nameIdMismatchException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(nameIdMismatchException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
-
-                title: nameIdMismatchException.Message,
-                statusCode: nameIdMismatchException.StatusCode
-                );
-            }
+          
 
             if (exceptionDetails?.Error is WrongPasswordException wrongPasswordException)
             {
@@ -128,17 +96,7 @@ namespace WebAPI.Controllers
                 );
             }
 
-            if (exceptionDetails?.Error is StudentNotFoundException studentNotFoundException)
-            {
-                logger.LogInformation("*********************************************************************");
-                logger.LogWarning(studentNotFoundException.Message);
-                logger.LogInformation("*********************************************************************");
-                return Problem(
-
-                title: studentNotFoundException.Message,
-                statusCode: studentNotFoundException.StatusCode
-                );
-            }
+       
 
             if (exceptionDetails?.Error is TeacherAvailabilityNotFoundException teacherAvailabilityNotFoundException)
             {
@@ -149,6 +107,73 @@ namespace WebAPI.Controllers
 
                 title: teacherAvailabilityNotFoundException.Message,
                 statusCode: teacherAvailabilityNotFoundException.StatusCode
+                );
+            }
+            if (exceptionDetails?.Error is LessonNotFoundException lessonNotFoundException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(lessonNotFoundException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: lessonNotFoundException.Message,
+                statusCode: lessonNotFoundException.StatusCode
+                );
+            }
+            if (exceptionDetails?.Error is SubjectNotFoundException subjectNotFoundException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(subjectNotFoundException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: subjectNotFoundException.Message,
+                statusCode: subjectNotFoundException.StatusCode
+                );
+            }
+
+
+            if (exceptionDetails?.Error is RegistrationNotFoundException registrationNotFoundException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(registrationNotFoundException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: registrationNotFoundException.Message,
+                statusCode: registrationNotFoundException.StatusCode
+                );
+            }
+          
+            if (exceptionDetails?.Error is MismatchTeacherAndSubjectException mismatchTeacherAndSubjectException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndSubjectException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+                    title: mismatchTeacherAndSubjectException.Message,
+                    statusCode: mismatchTeacherAndSubjectException.StatusCode
+                );
+            }
+            if (exceptionDetails?.Error is MismatchTeacherAndLessonException mismatchTeacherAndLessonException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndLessonException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+                    title: mismatchTeacherAndLessonException.Message,
+                    statusCode: mismatchTeacherAndLessonException.StatusCode
+                );
+            }
+
+            if (exceptionDetails?.Error is MismatchTeacherAndAvailabilityException mismatchTeacherAndAvailabilityException)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(mismatchTeacherAndAvailabilityException.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+                    title: mismatchTeacherAndAvailabilityException.Message,
+                    statusCode: mismatchTeacherAndAvailabilityException.StatusCode
                 );
             }
 
@@ -170,6 +195,8 @@ namespace WebAPI.Controllers
 
 
             }
+
+
 
 
         }
