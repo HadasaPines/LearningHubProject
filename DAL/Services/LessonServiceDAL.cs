@@ -23,31 +23,27 @@ namespace DAL.Services
         {
             return await dbContext.Lessons.ToListAsync();
         }
-        public async Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName)
-        {
-            var teacher = await dbContext.Teachers
-                .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName.Equals(firstName)&& t.TeacherNavigation.LastName.Equals(lastName));
-            if (teacher == null)
-            {
-                throw new Exception($"Teacher with Name {firstName}{lastName} not found.");
-            }
-            return await dbContext.Lessons
-                .Where(l => l.TeacherId == teacher.TeacherId)
-                .ToListAsync();
+        //public async Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName)
+        //{
+        //    var teacher = await dbContext.Teachers
+        //        .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName==firstName&& t.TeacherNavigation.LastName==lastName);
+        //    return await dbContext.Lessons
+        //        .Where(l => l.TeacherId == teacher.TeacherId)
+        //        .ToListAsync();
 
-        }
-        public async Task<List<Lesson>> GetLessonsBySubjectName(string subjectName)
-        {
-            var subject = await dbContext.Subjects
-                .FirstOrDefaultAsync(s => s.Name.Equals(subjectName));
-            if (subject == null)
-            {
-                throw new Exception($"Subject with Name {subjectName} not found.");
-            }
-            return await dbContext.Lessons
-                .Where(l => l.SubjectId == subject.SubjectId)
-                .ToListAsync();
-        }
+        //}
+        //public async Task<List<Lesson>> GetLessonsBySubjectName(string subjectName)
+        //{
+        //    var subject = await dbContext.Subjects
+        //        .FirstOrDefaultAsync(s => s.Name.Equals(subjectName));
+        //    if (subject == null)
+        //    {
+        //        throw new Exception($"Subject with Name {subjectName} not found.");
+        //    }
+        //    return await dbContext.Lessons
+        //        .Where(l => l.SubjectId == subject.SubjectId)
+        //        .ToListAsync();
+        //}
         public async Task<List<Lesson>> GetLessonsByDate(DateOnly date)
         {
             return await dbContext.Lessons
@@ -58,10 +54,7 @@ namespace DAL.Services
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
+
             return lesson;
         }
         public async Task AddLesson(Lesson lesson)
@@ -73,38 +66,78 @@ namespace DAL.Services
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
+
             dbContext.Lessons.Remove(lesson);
             await dbContext.SaveChangesAsync();
         }
-        public async Task UpdateLessonDate(int lessonId, DateOnly newDate)
+        public async Task<Lesson> UpdateLesson(Lesson lesson)
         {
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
-            lesson.LessonDate = newDate;
-            dbContext.Lessons.Update(lesson);
+            var lessonToUpdate = await dbContext.Lessons
+                .FirstOrDefaultAsync(l => l.LessonId == lesson.LessonId);
+
+            lessonToUpdate = lesson;
+            dbContext.Lessons.Update(lessonToUpdate);
             await dbContext.SaveChangesAsync();
+            return lessonToUpdate;
         }
-        public async Task UpdateLessonTime(int lessonId, TimeOnly newStartTime, TimeOnly newEndTime)
+        public async Task<List<Lesson>> GetLessonsByTeacherId(int teacherId)
         {
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
-            lesson.StartTime = newStartTime;
-            lesson.EndTime = newEndTime;
-            dbContext.Lessons.Update(lesson);
-            await dbContext.SaveChangesAsync();
+            return await dbContext.Lessons
+                .Where(l => l.TeacherId == teacherId)
+                .ToListAsync();
         }
+        public async Task<List<Lesson>> GetLessonsBySubjectId(int subjectId)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.SubjectId == subjectId)
+                .ToListAsync();
+        }
+        public async Task<List<Lesson>> GetLessonsByStatus(string status)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.Status == status)
+                .ToListAsync();
+        }
+        public async Task<List<Lesson>> GetLessonsByDateRange(DateOnly startDate, DateOnly endDate)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.LessonDate >= startDate && l.LessonDate <= endDate)
+                .ToListAsync();
+        }
+        //public async Task<List<Lesson>> GetLessonsByTeacherAndDate(int teacherId, DateOnly date)
+        //{
+        //    return await dbContext.Lessons
+        //        .Where(l => l.TeacherId == teacherId && l.LessonDate == date)
+        //        .ToListAsync();
+        //}
+        public async Task<List<Lesson>> GetLessonsByTeacherAndSubject(int teacherId, int subjectId)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.TeacherId == teacherId && l.SubjectId == subjectId)
+                .ToListAsync();
+        }
+        public async Task<List<Lesson>> GetLessonsByTimeRange(TimeOnly startTime, TimeOnly endTime)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.StartTime >= startTime && l.EndTime <= endTime)
+                .ToListAsync();
+        }
+        public async Task<List<Lesson>> GetLessonsByAgeRange(int? minAge, int? maxAge)
+        {
+            return await dbContext.Lessons
+                .Where(l => (l.MinAge == null || l.MinAge <= minAge) && (l.MaxAge == null || l.MaxAge >= maxAge))
+                .ToListAsync();
+        }
+        public async Task<List<Lesson>> GetLessonsByGender(string gender)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.Gender == gender)
+                .ToListAsync();
+        }
+
+
+
+
 
 
 

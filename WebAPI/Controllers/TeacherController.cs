@@ -23,14 +23,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddAvailabilityToTeacher(int teacherId, [FromBody] TeacherAvailabilityBL availability)
         {
             await _teacherServiceBL.AddAvailabilityToTeacher(teacherId, availability);
-            return Ok($"Teacher availability with id {availability.AvailabilityId} added successfully.");
+            return Ok($"Teacher availability  added successfully.");
         }
 
         [HttpPost("addLesson/{teacherId}")]
         public async Task<IActionResult> AddLessonToTeacher(int teacherId, [FromBody] LessonBL lessonBL)
         {
             await _teacherServiceBL.AddLessonToTeacher(teacherId, lessonBL);
-            return Ok($"Lesson with id {lessonBL.LessonId} added successfully to teacher with id {teacherId}.");
+            return Ok($"Lesson added successfully to teacher with id {teacherId}.");
         }
 
         [HttpPost("addSubject/{teacherId}")]
