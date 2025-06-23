@@ -56,13 +56,20 @@ builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilitySer
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 
 
-
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapper));
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
+app.UseCors("AllowAll");
 
 
 var app = builder.Build();
