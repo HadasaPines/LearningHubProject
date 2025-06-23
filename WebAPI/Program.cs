@@ -50,7 +50,7 @@ builder.Services.AddScoped<IUserServiceBL, UserServiceBL>();
 builder.Services.AddScoped<IStudentServiceBL, StudentServiceBL>();
 builder.Services.AddScoped<ITeacherServiceBL, TeacherServiceBL>();
 builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilityServiceBL>();
-//builder.Services.AddScoped<ILessonServiceBL, LessonServiceBL>();
+builder.Services.AddScoped<ILessonServiceBL, LessonServiceBL>();
 //builder.Services.AddScoped<ITeachersToSubjectServiceBL, TeachersToSubjectServiceBL>();
 //builder.Services.AddScoped<IRegistrationServiceBL, RegistrationServiceBL>();
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
