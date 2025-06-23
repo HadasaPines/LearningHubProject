@@ -1,4 +1,5 @@
-﻿using DAL.Contexts;
+﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -58,8 +59,6 @@ namespace DAL.Services
         }
         public async Task<List<Registration>> GetRegistrationsToStudent(Student student)
         {
->>>>>>> 58df8417fb507111da981abd4d790aecbbe02a05: DAL / Services / RegistrationServiceDAL.cs
-
 
             var registrations = await dbContext.Registrations
                 .Include(r => r.Student)
