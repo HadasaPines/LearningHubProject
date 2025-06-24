@@ -20,7 +20,6 @@ namespace BL.Models
         [Required(ErrorMessage = "StudentId is required")]
         [Range(1, int.MaxValue, ErrorMessage = "StudentId must be a positive number")]
         public int StudentId { get; set; }
-  
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
     }

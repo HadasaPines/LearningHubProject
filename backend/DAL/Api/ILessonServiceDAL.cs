@@ -8,10 +8,8 @@ namespace DAL.Api
         Task DeleteLessonById(int lessonId);
         Task<List<Lesson>> GetAllLessons();
         Task<Lesson> GetLessonById(int lessonId);
-        Task<List<Lesson>> GetLessonsByDate(DateOnly date);
-        Task<List<Lesson>> GetLessonsBySubjectName(string subjectName);
-        Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName);
-        Task UpdateLessonDate(int lessonId, DateOnly newDate);
-        Task UpdateLessonTime(int lessonId, TimeOnly newStartTime, TimeOnly newEndTime);
+        Task<List<Lesson>> GetAllLessonsIncludeDetails();
+        Task<Lesson> UpdateLesson(Lesson lesson);
+        Task SaveChangesAsync();
     }
 }

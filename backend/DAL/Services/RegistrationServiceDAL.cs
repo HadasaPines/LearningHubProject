@@ -59,7 +59,6 @@ namespace DAL.Services
         }
         public async Task<List<Registration>> GetRegistrationsToStudent(Student student)
         {
-
             var registrations = await dbContext.Registrations
                 .Include(r => r.Student)
                 .Where(r => r.Student.StudentId == student.StudentId).ToListAsync();

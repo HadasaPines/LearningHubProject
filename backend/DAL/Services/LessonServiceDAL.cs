@@ -19,49 +19,30 @@ namespace DAL.Services
         {
             dbContext = _dbContext;
         }
+        public async Task SaveChangesAsync()
+        {
+            await dbContext.SaveChangesAsync();
+        }
         public async Task<List<Lesson>> GetAllLessons()
         {
             return await dbContext.Lessons.ToListAsync();
         }
-        public async Task<List<Lesson>> GetLessonsByTeacherName(string firstName,string lastName)
+        public async Task<List<Lesson>> GetAllLessonsIncludeDetails()
         {
-            var teacher = await dbContext.Teachers
-                .FirstOrDefaultAsync(t => t.TeacherNavigation.FirstName.Equals(firstName)&& t.TeacherNavigation.LastName.Equals(lastName));
-            if (teacher == null)
-            {
-                throw new Exception($"Teacher with Name {firstName}{lastName} not found.");
-            }
             return await dbContext.Lessons
-                .Where(l => l.TeacherId == teacher.TeacherId)
+                .Include(l => l.Teacher)
+                .Include(l => l.Registrations)
+                .ThenInclude(r => r.Student)
                 .ToListAsync();
+        }
 
-        }
-        public async Task<List<Lesson>> GetLessonsBySubjectName(string subjectName)
-        {
-            var subject = await dbContext.Subjects
-                .FirstOrDefaultAsync(s => s.Name.Equals(subjectName));
-            if (subject == null)
-            {
-                throw new Exception($"Subject with Name {subjectName} not found.");
-            }
-            return await dbContext.Lessons
-                .Where(l => l.SubjectId == subject.SubjectId)
-                .ToListAsync();
-        }
-        public async Task<List<Lesson>> GetLessonsByDate(DateOnly date)
-        {
-            return await dbContext.Lessons
-                .Where(l => l.LessonDate == date)
-                .ToListAsync();
-        }
+
         public async Task<Lesson> GetLessonById(int lessonId)
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
+
+
             return lesson;
         }
         public async Task AddLesson(Lesson lesson)
@@ -73,38 +54,31 @@ namespace DAL.Services
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
+
             dbContext.Lessons.Remove(lesson);
             await dbContext.SaveChangesAsync();
         }
-        public async Task UpdateLessonDate(int lessonId, DateOnly newDate)
+        
+        public async Task<Lesson> UpdateLesson(Lesson lesson)
         {
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
-            lesson.LessonDate = newDate;
-            dbContext.Lessons.Update(lesson);
+            var lessonToUpdate = await dbContext.Lessons
+                .FirstOrDefaultAsync(l => l.LessonId == lesson.LessonId);
+
+            lessonToUpdate = lesson;
+            dbContext.Lessons.Update(lessonToUpdate);
             await dbContext.SaveChangesAsync();
+            return lessonToUpdate;
         }
-        public async Task UpdateLessonTime(int lessonId, TimeOnly newStartTime, TimeOnly newEndTime)
-        {
-            var lesson = await dbContext.Lessons
-                .FirstOrDefaultAsync(l => l.LessonId == lessonId);
-            if (lesson == null)
-            {
-                throw new Exception($"Lesson with ID {lessonId} not found.");
-            }
-            lesson.StartTime = newStartTime;
-            lesson.EndTime = newEndTime;
-            dbContext.Lessons.Update(lesson);
-            await dbContext.SaveChangesAsync();
-        }
+    
+ 
+    
+    
+
+
+
+
+
+>>>>>>> feature/add_lesson_managment
 
 
 
