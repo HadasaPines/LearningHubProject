@@ -55,6 +55,7 @@ builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilitySer
 //builder.Services.AddScoped<IRegistrationServiceBL, RegistrationServiceBL>();
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -63,16 +64,22 @@ builder.Services.AddAutoMapper(typeof(Mapper));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+    options.AddPolicy("AllowLocalhost5173", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
 
-app.UseCors("AllowAll");
+
+
 
 
 var app = builder.Build();
+app.UseCors("AllowLocalhost5173");
+
+app.UseCors("AllowAll");
 app.UseExceptionHandler("/error");
 
 if (app.Environment.IsDevelopment())
