@@ -4,7 +4,7 @@ import axios from 'axios';
 import type { SignupFormData } from '../models/userModel';
 
 const api = axios.create({
-  baseURL: 'http://localhost:7161/api',
+  baseURL: 'https://localhost:7161/api',
   headers: {
     'Content-Type': 'application/json',
   },
