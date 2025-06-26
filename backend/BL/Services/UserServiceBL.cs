@@ -30,13 +30,13 @@ namespace BL.Services
             _teacherServiceBL = teacherServiceBL;
 
         }
-        public async Task<List<UserBL>> GetAllUsers()
+        public async Task<List<UserIncludeRoleBL>> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
-            return _mapper.Map<List<UserBL>>(users);
+            return _mapper.Map<List<UserIncludeRoleBL>>(users);
         }
 
-        public async Task<UserBL?> GetUserById(int userId)
+        public async Task<UserWithoutPassBL?> GetUserById(int userId)
         {
             if (userId <= 0)
                 throw new ArgumentException("User ID must be greater than zero");
@@ -47,10 +47,10 @@ namespace BL.Services
                 throw new UserNotFoundException($"User with ID {userId} not found");
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserWithoutPassBL?>(user);
         }
 
-        public async Task<UserBL?> GetUserByName(string firstName, string lastName)
+        public async Task<UserWithoutPassBL?> GetUserByName(string firstName, string lastName)
         {
             if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
                 throw new RequiredFieldsNotFilledException("first name/last name can't be null or empty");
@@ -61,10 +61,10 @@ namespace BL.Services
                 throw new UserNotFoundException($"User with name {firstName} {lastName} not found");
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserWithoutPassBL?>(user);
         }
 
-        public async Task<UserBL?> GetUserByIdIncludeRole(int userId)
+        public async Task<UserIncludeRoleBL?> GetUserByIdIncludeRole(int userId)
         {
             if (userId <= 0)
                 throw new ArgumentException("User ID must be greater than zero");
@@ -75,10 +75,10 @@ namespace BL.Services
                 throw new UserNotFoundException($"User with ID {userId} not found");
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
         }
 
-        public async Task<UserBL> GetUserByNameIncludeRole(string firstName, string lastName)
+        public async Task<UserIncludeRoleBL?> GetUserByNameIncludeRole(string firstName, string lastName)
         {
             if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
                 throw new RequiredFieldsNotFilledException("first name / last name can't be null or empty");
@@ -90,10 +90,10 @@ namespace BL.Services
 
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
         }
 
-        public async Task<UserBL?> GetUserByEmail(string email)
+        public async Task<UserWithoutPassBL?> GetUserByEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 throw new RequiredFieldsNotFilledException("Email can't be null or empty");
@@ -104,10 +104,10 @@ namespace BL.Services
                 throw new UserNotFoundException($"User with email {email} not found");
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserWithoutPassBL?>(user);
         }
 
-        public async Task<UserBL> GetUserByEmailAndPassword(string email, string password)
+        public async Task<UserIncludeRoleBL?> GetUserByEmailAndPassword(string email, string password)
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 throw new RequiredFieldsNotFilledException("email/password can't be null or empty");
@@ -122,9 +122,9 @@ namespace BL.Services
                 throw new WrongPasswordException("Wrong password.");
             }
 
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
         }
-        public async Task<UserBL> GetUserByNameAndPassword(string firstName, string lastName, string password)
+        public async Task<UserIncludeRoleBL?> GetUserByNameAndPassword(string firstName, string lastName, string password)
         {
             if (string.IsNullOrWhiteSpace(firstName)
                 || string.IsNullOrWhiteSpace(lastName)
@@ -140,18 +140,18 @@ namespace BL.Services
             {
                 throw new WrongPasswordException("Wrong password");
             }
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
         }
 
-        public async Task<UserBL> GetUserByIdAndPassword(int id, string password)
+        public async Task<UserIncludeRoleBL?> GetUserByIdAndPassword(int id, string password)
         {
-            if(string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password))
                 throw new RequiredFieldsNotFilledException("Password cannot be null or empty.");
-                
-    
+
+
             if (id <= 0)
                 throw new ArgumentException("User ID must be greater than zero", nameof(id));
-            var user= await _userService.GetUserById(id);
+            var user = await _userService.GetUserById(id);
             if (user == null)
             {
                 throw new UserNotFoundException($"User with ID {id} not found");
@@ -160,11 +160,11 @@ namespace BL.Services
             {
                 throw new WrongPasswordException("Wrong password.");
             }
-            return _mapper.Map<UserBL>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
 
         }
 
-        public async Task<UserBL> AddUser(UserBL userBL)
+        public async Task<UserWithoutPassBL?> AddUser(UserBL userBL)
 
         {
             if (userBL == null)
@@ -183,14 +183,13 @@ namespace BL.Services
             user.PasswordHash = passwordHash;
             await _userService.AddUser(user);
 
-            return userBL;
-
+            return _mapper.Map<UserWithoutPassBL?>(user);
         }
 
         public async Task DeleteUser(int userId)
         {
-            if (userId <= 0)
-                throw new ArgumentException("User ID must be greater than zero");
+            //if (userId <= 0)
+            //    throw new ArgumentException("User ID must be greater than zero");
 
             var user = await _userService.GetUserById(userId);
             if (user == null)
@@ -227,7 +226,7 @@ namespace BL.Services
             }
             var userBL = _mapper.Map<UserBL>(user);
             patchDoc.ApplyTo(userBL);
-           
+
             var updatedUser = _mapper.Map<User>(userBL);
             await _userService.UpdateUser(updatedUser);
 
@@ -240,7 +239,7 @@ namespace BL.Services
             {
                 throw new RequiredFieldsNotFilledException("Password can't be null or empty");
             }
-          string passwordHash= HashPassword(password);
+            string passwordHash = HashPassword(password);
             return user.PasswordHash == passwordHash;
 
 

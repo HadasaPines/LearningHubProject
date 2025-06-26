@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BL.Models;
+using DAL.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Mapper : Profile
@@ -20,6 +22,15 @@ public class Mapper : Profile
         CreateMap<DAL.Models.Lesson, BL.Models.LessonBL>().ReverseMap();
 
         CreateMap<DAL.Models.Registration, BL.Models.RegistrationBL>().ReverseMap();
+
+        CreateMap<User, UserIncludeRoleBL>()
+            .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.Student))
+            .ForMember(dest => dest.Teacher, opt => opt.MapFrom(src => src.Teacher))
+            .ReverseMap();
+
+        CreateMap<User, UserWithoutPassBL>()
+          .ReverseMap()
+          .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
 
 
