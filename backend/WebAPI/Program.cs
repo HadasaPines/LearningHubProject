@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using WebAPI.Helpers;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +56,7 @@ builder.Services.AddScoped<ILessonServiceBL, LessonServiceBL>();
 //builder.Services.AddScoped<IRegistrationServiceBL, RegistrationServiceBL>();
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -63,16 +65,28 @@ builder.Services.AddAutoMapper(typeof(Mapper));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+    options.AddPolicy("AllowLocalhost5173", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
-app.UseCors("AllowAll");
+
+
 
 
 var app = builder.Build();
+app.UseCors("AllowLocalhost5173");
+
+app.UseCors("AllowAll");
 app.UseExceptionHandler("/error");
 
 if (app.Environment.IsDevelopment())

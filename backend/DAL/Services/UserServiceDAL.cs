@@ -22,7 +22,10 @@ namespace DAL.Services
         }
         public async Task<List<User>> GetAllUsers()
         {
-            return await dbContext.Users.ToListAsync();
+            var users = await dbContext.Users
+                     .Include(u => u.Teacher)
+                     .Include(u => u.Student).ToListAsync();
+            return users;
         }
         public async Task<User?> GetUserByIdIncludeRole(int userId)
         {
