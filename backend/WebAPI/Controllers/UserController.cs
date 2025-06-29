@@ -82,8 +82,8 @@ namespace WebAPI.Controllers
             return Ok(user);
         }
 
-        [HttpGet("getUserByIdAndPassword/{userId}/{password}")]
-        public async Task<IActionResult> GetUserByIdAndPassword(int userId, string password)
+        [HttpGet("getUserByIdAndPassword")]
+        public async Task<IActionResult> GetUserByIdAndPassword([FromQuery]int userId, [FromQuery] string password)
         {
             var user = await _userServiceBL.GetUserByIdAndPassword(userId, password);
 
