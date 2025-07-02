@@ -12,5 +12,6 @@ namespace BL.Api
         Task<List<LessonBL>> GetLessonsByDetails(LessonFilterDto filter);
         Task UpdateLesson(int id, JsonPatchDocument<LessonBL> patchDoc);
         Task GenerateLessonsAsync(DateOnly startDate, DateOnly endDate);
+        Task UpdatePastLessonsAsync();
     }
 }

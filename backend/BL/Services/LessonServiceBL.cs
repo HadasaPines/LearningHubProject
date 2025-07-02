@@ -159,6 +159,25 @@ namespace BL.Services
 
             await _lessonServiceDAL.SaveChangesAsync();
         }
+        public async Task UpdatePastLessonsAsync()
+        {
+            var allLessons = await _lessonServiceDAL.GetAllLessons();
+
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            var pastLessons = allLessons
+                .Where(lesson => lesson.LessonDate < today && lesson.Status != "Past")
+                .ToList();
+
+            foreach (var lesson in pastLessons)
+            {
+                lesson.Status = "Past";
+                await _lessonServiceDAL.UpdateLesson(lesson);
+            }
+
+            await _lessonServiceDAL.SaveChangesAsync();
+        }
+
 
     }
 }
