@@ -1,7 +1,5 @@
 ﻿
-
 using DAL.Api;
-using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +29,7 @@ namespace DAL.Services
         {
             return await dbContext.Lessons
                 .Include(l => l.Teacher)
-                .Include(l => l.Registrations)
+                .Include(l => l.Registration)
                 .ThenInclude(r => r.Student)
                 .ToListAsync();
         }
@@ -78,7 +76,7 @@ namespace DAL.Services
 
 
 
->>>>>>> feature/add_lesson_managment
+
 
 
 
