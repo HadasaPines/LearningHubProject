@@ -35,6 +35,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<LearningHubDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddHostedService<PastLessonUpdater>();
 
 
 
