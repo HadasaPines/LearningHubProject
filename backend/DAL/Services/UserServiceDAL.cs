@@ -27,6 +27,16 @@ namespace DAL.Services
                      .Include(u => u.Student).ToListAsync();
             return users;
         }
+
+
+        public async Task<List<User>> GetAllTeachers()
+        {
+            var users = await dbContext.Users
+                .Where(u=>u.Role== "Teacher")
+                     .Include(u => u.Teacher)
+                    .ToListAsync();
+            return users;
+        }
         public async Task<User?> GetUserByIdIncludeRole(int userId)
         {
             var user = await dbContext.Users

@@ -36,6 +36,12 @@ namespace BL.Services
             return _mapper.Map<List<UserIncludeRoleBL>>(users);
         }
 
+        public async Task<List<UserIncludeRoleBL>> GetAllTeachers()
+        {
+            var users = await _userService.GetAllTeachers();
+            return _mapper.Map<List<UserIncludeRoleBL>>(users);
+        }
+
         public async Task<UserWithoutPassBL?> GetUserById(int userId)
         {
             if (userId <= 0)

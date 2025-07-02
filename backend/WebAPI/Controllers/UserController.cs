@@ -30,6 +30,17 @@ namespace WebAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("getAllTeachers")]
+        public async Task<IActionResult> GetAllTeachers()
+        {
+            var teachers = await _userServiceBL.GetAllTeachers();
+            if (teachers == null || !teachers.Any())
+            {
+                return NotFound("No teachers found.");
+            }
+            return Ok(teachers);
+        }
+
         [HttpGet("getUserById/{userId}")]
         public async Task<IActionResult> GetUserById(int userId)
         {

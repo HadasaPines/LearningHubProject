@@ -30,13 +30,14 @@ const [errorMessages, setErrorMessages] = useState<string | null>(null);
     e.preventDefault();
     try {
       await loginUser(formData);
-      navigate("/home");
+      navigate("/registerLesson");
       setErrorMessages(null);
     } catch (error: any) {
       setErrorMessages(parseApiError(error));
     }
   };
 ;
+
 
 
 

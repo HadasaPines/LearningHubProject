@@ -8,6 +8,8 @@ namespace DAL.Api
         Task AddUser(User user);
         Task DeleteUser(User user);
         Task<List<User>> GetAllUsers();
+
+        Task<List<User>> GetAllTeachers();
         Task<User?> GetUserById(int userId);
         Task<User?> GetUserByIdIncludeRole(int userId);
         Task<User?> GetUserByName(string firstName, string lastName);

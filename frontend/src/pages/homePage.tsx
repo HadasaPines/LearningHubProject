@@ -8,7 +8,7 @@ const HomePage: React.FC = () => {
       <p className="mb-6">המערכת לניהול שיעורים פרטיים.</p>
 
       <div className="flex justify-center gap-4">
-        <Link to="/">
+        <Link to="/login">
           <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             התחברות
           </button>
