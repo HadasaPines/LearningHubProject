@@ -14,9 +14,10 @@ export interface RegisterFormData {
   password: string;
   phone: string;
   email: string;
-  role: "Student";
+  role: Role;
   studentDetails: StudentDetails;
 }
+
 
 export interface LoginFormData {
   userId: number;

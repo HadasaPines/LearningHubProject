@@ -62,10 +62,13 @@ namespace DAL.Services
 
         public async Task UpdateStudent(Student student)
         {
-            var existingStudent = await dbContext.Students.FindAsync(student.StudentId);
-            existingStudent = student;
-            dbContext.Students.Update(existingStudent);
+            var existingStudent = await dbContext.Users.FindAsync(student.StudentId);
+
+
+            dbContext.Entry(existingStudent).CurrentValues.SetValues(student);
+
             await dbContext.SaveChangesAsync();
+            
 
         }
         public async Task AddRegistrationToStudent(Registration registration)

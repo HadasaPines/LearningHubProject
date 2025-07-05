@@ -78,9 +78,6 @@ namespace DAL.Services
 
 
 
->>>>>>> feature/add_lesson_managment
-
-
 
 
 
