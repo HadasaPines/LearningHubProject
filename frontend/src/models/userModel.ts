@@ -24,7 +24,7 @@ export interface User {
   email: string;
   role: "Student";
   student: StudentDetails;
-  teacher: TeacherDetails;
+  teacher?: TeacherDetails;
 }
 
 export interface LoginFormData {

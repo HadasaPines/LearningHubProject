@@ -71,7 +71,7 @@ namespace DAL.Services
                 lesson.Status = "booked";
                 dbContext.Registrations.Add(registration);
                 dbContext.Lessons.Update(lesson);
-                Console.WriteLine("ggggg");
+
 
                 await dbContext.SaveChangesAsync();
                 Console.WriteLine("Changes Saved!");
