@@ -8,6 +8,8 @@ namespace BL.Api
         Task<UserWithoutPassBL?> AddUser(UserBL userBL);
         Task DeleteUser(int userId);
         Task<List<UserIncludeRoleBL>> GetAllUsers();
+
+        Task<List<UserIncludeRoleBL>> GetAllTeachers();
         Task<UserWithoutPassBL?> GetUserByEmail(string email);
         Task<UserIncludeRoleBL?> GetUserByEmailAndPassword(string email, string password);
         Task<UserWithoutPassBL?> GetUserById(int userId);

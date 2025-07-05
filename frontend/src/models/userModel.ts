@@ -1,13 +1,21 @@
-export type Role = "Teacher" | "Student" | "Admin";
-export type Gender = "Male" | "Female";
+// export type Role = "Teacher" | "Student" | "Admin";
+// export type Gender = "Male" | "Female";
 
 export interface StudentDetails {
-  gender: Gender;
+
+  gender: "M" | "F";
   age: number;
   birthDate: string;
 }
 
-export interface RegisterFormData {
+export interface TeacherDetails {
+
+  gender: "M" | "F";
+  bio: string;
+  birthDate: string;
+}
+
+export interface User {
   userId: number;
   firstName: string;
   lastName: string;
@@ -15,7 +23,8 @@ export interface RegisterFormData {
   phone: string;
   email: string;
   role: "Student";
-  studentDetails: StudentDetails;
+  student: StudentDetails;
+  teacher: TeacherDetails;
 }
 
 export interface LoginFormData {

@@ -32,7 +32,8 @@ public class Mapper : Profile
           .ReverseMap()
           .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
-
+        
+          
 
     }
 }

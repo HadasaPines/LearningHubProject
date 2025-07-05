@@ -10,7 +10,7 @@ namespace BL.Models
 {
     public class RegistrationBL
     {
-        [Required(ErrorMessage = "RegistrationId is required")]
+      
         public int RegistrationId { get; set; }
 
         [Required(ErrorMessage = "LessonId is required")]

@@ -7,7 +7,7 @@ namespace BL.Api
     public interface IRegistrationServiceBL
     {
         Task AddRegistration(RegistrationBL registrationBL);
-        Task DeleteRegistration(RegistrationBL registrationBL);
+        Task DeleteRegistration(int id);
         Task<List<RegistrationBL>> GetAllRegistrations();
         Task<RegistrationBL> GetRegistrationById(int registrationId);
         Task<List<RegistrationBL>> GetRegistrationsToLesson(LessonBL lessonBL);

@@ -66,26 +66,43 @@ namespace DAL.Services
         }
         public async Task AddRegistration(Registration registration, Lesson lesson)
         {
+            try
+            {
+                lesson.Status = "booked";
+                dbContext.Registrations.Add(registration);
+                dbContext.Lessons.Update(lesson);
+                Console.WriteLine("ggggg");
 
-            lesson.Status = "booked";
-            dbContext.Lessons.Update(lesson);
-            dbContext.Registrations.Add(registration);
-            await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
+                Console.WriteLine("Changes Saved!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error during SaveChangesAsync: " + ex.Message);
+            }
         }
 
 
-        public async Task DeleteRegistration(Registration registration, Lesson lesson)
+        public async Task DeleteRegistration(int registrationId, Lesson lesson)
         {
             if (lesson.LessonDate >= DateOnly.FromDateTime(DateTime.Today))
             {
                 lesson.Status = "Available";
-                dbContext.Lessons.Update(lesson);
+               
             }
+            else
+            {
+                lesson.Status = "passed";
 
+            }
+            dbContext.Lessons.Update(lesson);
+            var registration= await dbContext.Registrations
+                .FirstOrDefaultAsync(r => r.RegistrationId == registrationId);
 
             dbContext.Registrations.Remove(registration);
             await dbContext.SaveChangesAsync();
         }
+
 
         public async Task UpdateRegistration(Registration registration)
         {
