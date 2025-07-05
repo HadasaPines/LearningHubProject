@@ -18,11 +18,15 @@ namespace BL.Services
     public class RegistrationServiceBL : IRegistrationServiceBL
     {
         private readonly IRegistrationServiceDAL _registrationServiceDAL;
+        private readonly ILessonServiceDAL _lessonServiceDAL;
+        private readonly IUserServiceDAL _userServiceDAL;
         private readonly IMapper _mapper;
 
-        public RegistrationServiceBL(IRegistrationServiceDAL registrationServiceDAL, IMapper mapper)
+        public RegistrationServiceBL(IRegistrationServiceDAL registrationServiceDAL,ILessonServiceDAL lessonServiceDAL,IUserServiceDAL userServiceDAL, IMapper mapper)
         {
             _registrationServiceDAL = registrationServiceDAL;
+            _lessonServiceDAL = lessonServiceDAL;
+            _userServiceDAL = userServiceDAL;
             _mapper = mapper;
         }
 
@@ -48,10 +52,24 @@ namespace BL.Services
             {
                 throw new ArgumentNullException(nameof(registrationBL), "Registration cannot be null");
             }
-            var lesson = await _registrationServiceDAL.GetLessonByRegistrationId(registrationBL.RegistrationId);
+            var lesson = await _lessonServiceDAL.GetLessonById(registrationBL.LessonId);
             if (lesson == null)
             {
                 throw new LessonNotFoundException($"Lesson with ID {registrationBL.LessonId} not found");
+            }
+            var user = await _userServiceDAL.GetUserByIdIncludeRole(registrationBL.StudentId);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"User with ID {registrationBL.StudentId} not found");
+            }
+            if(lesson.Status!= "Available")
+            {
+                throw new NotAvailableLessonException($"Lesson with ID {registrationBL.LessonId} is not available for registration");
+            }
+            if(user.Role != "Student" || user.Student?.Age>lesson.MaxAge|| user.Student?.Age<lesson.MinAge||user.Student?.Gender!=lesson.Gender)
+            {
+                throw new RegistrationNotAllowedException($"Registration not allowed for user with ID {registrationBL.StudentId} to lesson with ID {registrationBL.LessonId}");
+
             }
 
             await _registrationServiceDAL.AddRegistration(_mapper.Map<Registration>(registrationBL), lesson);
@@ -70,23 +88,33 @@ namespace BL.Services
             }
             var registrationBL = _mapper.Map<RegistrationBL>(registration);
             patchDoc.ApplyTo(registrationBL);
-            _registrationServiceDAL.UpdateRegistration(registration);
+           await  _registrationServiceDAL.UpdateRegistration(registration);
         }
 
-        public async Task DeleteRegistration(RegistrationBL registrationBL)
+        public async Task DeleteRegistration(int id)
         {
-            if (registrationBL == null)
-            {
-                throw new ArgumentNullException(nameof(registrationBL), "Registration cannot be null");
+            if (id == 0)
+            { return; }
+            var registration = await _registrationServiceDAL.GetRegistrationById(id);
 
-            }
-            var lesson = await _registrationServiceDAL.GetLessonByRegistrationId(registrationBL.RegistrationId);
-            if (lesson == null)
+            if(registration == null)
             {
-                throw new LessonNotFoundException($"Lesson with ID {registrationBL.LessonId} not found");
+                throw new RegistrationNotFoundException($"registration with id: {id} not found");
+
+                
             }
-            _registrationServiceDAL.DeleteRegistration(_mapper.Map<Registration>(registrationBL), lesson);
-        }
+            var lesson=await  _lessonServiceDAL.GetLessonById(registration.LessonId);
+            if(lesson == null)
+            {
+                throw new LessonNotFoundException($"this lesson not found");
+               
+            }
+            await _registrationServiceDAL.DeleteRegistration(id, lesson);
+
+
+
+
+     }
         public async Task<List<RegistrationBL>> GetRegistrationsToLesson(LessonBL lessonBL)
         {
             var lesson = _mapper.Map<Lesson>(lessonBL);

@@ -157,7 +157,7 @@ namespace BL.Services
 
             if (id <= 0)
                 throw new ArgumentException("User ID must be greater than zero", nameof(id));
-            var user = await _userService.GetUserById(id);
+            var user = await _userService.GetUserByIdIncludeRole(id);
             if (user == null)
             {
                 throw new UserNotFoundException($"User with ID {id} not found");

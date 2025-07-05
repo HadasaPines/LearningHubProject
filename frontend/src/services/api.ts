@@ -1,9 +1,8 @@
-// src/api.ts
 
 import axios from 'axios';
-import type { RegisterFormData,LoginFormData } from '../models/userModel';
+import type { User,LoginFormData } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
-import type { Lesson } from '../models/lessonModel';
+import type { Registration } from '../models/registerationModel';
 
 
 const api = axios.create({
@@ -14,7 +13,7 @@ const api = axios.create({
 });
 
 
-export const addUser =async (userData: RegisterFormData) => {
+export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
 };
 
@@ -55,14 +54,14 @@ export const getLessonsByDetails =async (detailsData:LessonDetails) => {
 } });
 };
 
-export const getAllTechers =async () => {
+export const getAllTeachers =async () => {
   return api.get('/User/getAllTeachers');
 };
 export const getAllSubjects =async () => {
   return api.get('/Subject/getAllSubjects');
 };
-export const registerToLesson =async (lesson:Lesson) => {
-  return api.post('/Lesson/registerToLesson',lesson);
+export const addRegistration =async (registration:Registration) => {
+  return api.post('/Registration/addRegistration',registration);
 };
 
 export default api;

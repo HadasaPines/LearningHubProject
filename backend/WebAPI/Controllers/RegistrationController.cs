@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
             return Ok(_registrationServiceBL.GetRegistrationById(registrationId));
         }
         [HttpPost("addRegistration")]
-        public IActionResult AddRegistration([FromBody] RegistrationBL registrationBL)
+        public async Task<IActionResult> AddRegistration([FromBody] RegistrationBL registrationBL)
         {
-            _registrationServiceBL.AddRegistration(registrationBL);
+            await _registrationServiceBL.AddRegistration(registrationBL);
             return Ok("Registration added successfully");
         }
         [HttpPatch("updateRegistration/{id}")]
@@ -48,10 +48,10 @@ namespace WebAPI.Controllers
             return Ok("Registration updated successfully");
 
         }
-        [HttpDelete("deleteRegistration")]
-        public IActionResult DeleteRegistration([FromBody] RegistrationBL registrationBL)
+        [HttpDelete("deleteRegistration/{id}")]
+        public async Task<IActionResult> DeleteRegistration(int id)
         {
-            _registrationServiceBL.DeleteRegistration(registrationBL);
+            await _registrationServiceBL.DeleteRegistration(id);
             return Ok("Registration deleted successfully");
         }
         [HttpGet("getRegistrationsToLesson")]

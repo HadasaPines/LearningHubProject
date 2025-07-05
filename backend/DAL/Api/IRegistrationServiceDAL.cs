@@ -5,7 +5,7 @@ namespace DAL.Api
     public interface IRegistrationServiceDAL
     {
         Task AddRegistration(Registration registration, Lesson lesson);
-        Task DeleteRegistration(Registration registration, Lesson lesson);
+        Task DeleteRegistration(int reregistrationId, Lesson lesson);
         Task<List<Registration>> GetAllRegistrations();
         Task<Lesson> GetLessonByRegistrationId(int id);
         Task<Registration> GetRegistrationById(int registrationId);

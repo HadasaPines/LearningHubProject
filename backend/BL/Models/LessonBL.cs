@@ -14,7 +14,7 @@ namespace BL.Models
     {
 
 
-
+        public int LessonId { get; set; }
         [Required(ErrorMessage = "TeacherId is required.")]
         public int TeacherId { get; set; }
 
