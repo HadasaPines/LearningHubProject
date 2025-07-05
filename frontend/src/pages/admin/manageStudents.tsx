@@ -9,6 +9,7 @@ import {
   addUser2,
 } from "../../services/api";
 import type { User2, Student, Gender } from "../../models/studentModel";
+
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageStudents = () => {
@@ -29,6 +30,7 @@ const ManageStudents = () => {
   });
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [editUser, setEditUser] = useState<Partial<User2>>({});
+
   const [editStudent, setEditStudent] = useState<Partial<Student>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -60,6 +62,7 @@ const ManageStudents = () => {
       const [userRes, studentRes] = await Promise.all([getAllUsers(), getAllStudents()]);
       const studentUsers = userRes.data.filter((u: User2) => u.role === "Student");
       const fullList = studentUsers.map((user: User2) => {
+
         const student = studentRes.data.find((s: Student) => s.studentId === user.userId);
         return {
           ...user,
@@ -101,6 +104,7 @@ const ManageStudents = () => {
   };
 
   const handleEditClick = (student: User2 & Student) => {
+
     setEditingUserId(student.userId);
     setEditUser({ ...student });
     setEditStudent({

@@ -46,7 +46,7 @@ namespace DAL.Services
         }
         public async Task<Teacher> UpdateTeacher(Teacher teacher)
         {
-              var existingTeacher = await dbContext.Users.FindAsync(teacher.TeacherId);
+              var existingTeacher = await dbContext.Teachers.FindAsync(teacher.TeacherId);
             
 
             dbContext.Entry(existingTeacher).CurrentValues.SetValues(teacher);
