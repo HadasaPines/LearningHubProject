@@ -81,10 +81,7 @@ namespace DAL.Services
         public async Task UpdateUser(User user)
         {
             var existingUser = await dbContext.Users.FindAsync(user.UserId);
-            
-
             dbContext.Entry(existingUser).CurrentValues.SetValues(user);
-
             await dbContext.SaveChangesAsync();
         }
 

@@ -9,7 +9,7 @@ import type { User, Student } from "../models/studentModel";
 const api = axios.create({
   baseURL: 'https://localhost:7161/api',
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': "application/json-patch+json",
   },
 });
 
