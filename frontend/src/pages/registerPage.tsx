@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { RegisterFormData, Gender } from "../models/userModel";
+import type { User } from "../models/userModel";
 import { addUser, addStudent } from "../services/api";
 import { parseApiError } from "../utils/apiErrorParser";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const RegisterForm: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string | null>(null);
    const navigate = useNavigate();
-  const [formData, setFormData] = useState<RegisterFormData>({
+  const [formData, setFormData] = useState<User>({
     userId: 0,
     firstName: "",
     lastName: "",
@@ -15,11 +15,12 @@ const RegisterForm: React.FC = () => {
     phone: "",
     email: "",
     role: "Student",
-      studentDetails: {
-    gender: "Male", 
+      student: {
+    gender: "M", 
     age: 0,
     birthDate: ""
   }
+  
   });
 
 
@@ -35,7 +36,7 @@ const RegisterForm: React.FC = () => {
 
   const handleNestedChange = (
      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-     section: "studentDetails"
+     section: "student"
    ) => {
      const { name, value } = e.target;
      setFormData((prev) => ({
@@ -53,9 +54,9 @@ const RegisterForm: React.FC = () => {
       await addUser(formData);
     await addStudent({
           studentId: formData.userId,
-          gender: convertGender(formData.studentDetails.gender),
-          age: formData.studentDetails.age,
-          birthDate: formData.studentDetails.birthDate,
+          gender:formData.student.gender,
+          age: formData.student.age,
+          birthDate: formData.student.birthDate,
         });
          navigate("/");
       setErrorMessages(null);
@@ -64,8 +65,8 @@ const RegisterForm: React.FC = () => {
     }
   };
 
-  const convertGender = (gender: Gender): "M" | "F" =>
-    gender === "Male" ? "M" : "F";
+  // const convertGender = (gender: "M" | "F" =>
+  //   gender === "Male" ? "M" : "F";
 
   
   return (
@@ -124,24 +125,24 @@ const RegisterForm: React.FC = () => {
           <>
             <select
               name="gender"
-              onChange={(e) => handleNestedChange(e, "studentDetails")}
+              onChange={(e) => handleNestedChange(e, "student")}
               required
             >
               <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
             </select>
             <input
               type="number"
               name="age"
               placeholder="Age"
-              onChange={(e) => handleNestedChange(e, "studentDetails")}
+              onChange={(e) => handleNestedChange(e, "student")}
               required
             />
             <input
               type="date"
               name="birthDate"
-              onChange={(e) => handleNestedChange(e, "studentDetails")}
+              onChange={(e) => handleNestedChange(e, "student")}
               required
             />
           </>
