@@ -197,7 +197,7 @@ namespace BL.Services
             //if (userId <= 0)
             //    throw new ArgumentException("User ID must be greater than zero");
 
-            var user = await _userService.GetUserById(userId);
+            var user = await _userService.GetUserByIdIncludeRole(userId);
             if (user == null)
             {
                 throw new UserNotFoundException($"User with ID {userId} not found");
@@ -234,6 +234,7 @@ namespace BL.Services
             patchDoc.ApplyTo(userBL);
 
             var updatedUser = _mapper.Map<User>(userBL);
+            updatedUser.PasswordHash=user.PasswordHash; 
             await _userService.UpdateUser(updatedUser);
 
             return userBL;

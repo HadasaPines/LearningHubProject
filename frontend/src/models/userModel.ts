@@ -2,7 +2,7 @@
 // export type Gender = "Male" | "Female";
 
 export interface StudentDetails {
-
+  studentId?: number; // This should match userId
   gender: "M" | "F";
   age: number;
   birthDate: string;
@@ -25,7 +25,9 @@ export interface User {
   role: "Student";
   student: StudentDetails;
   teacher?: TeacherDetails;
+
 }
+
 
 export interface LoginFormData {
   userId: number;

@@ -3,6 +3,10 @@ import axios from 'axios';
 import type { User,LoginFormData } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
+import type { Student,User2 } from '../models/studentModel';
+
+
+
 
 
 const api = axios.create({
@@ -16,16 +20,25 @@ const api = axios.create({
 export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
 };
+export const addUser2 =async (userData:User2) => {
+  return api.post('/User/addUser', userData);
+};
+
+export const updateUser = (userId: number, patch: any) =>
+  api.patch(`/User/updateUser/${userId}`, patch);
+export const deleteUser = (userId: number) => api.delete(`/User/deleteUser/${userId}`);
+export const getAllUsers = () => api.get("/User/getAllUsers");
 
 
-export const addStudent = (studentData: {
-  studentId: number;
-  gender: "M" | "F";
-  age: number;
-  birthDate: string;
+export const addStudent = (studentData: Omit<Student, 'studentId'> & { studentId: number
 }) => {
   return api.post('/Student/addStudent', studentData);
 };
+export const updateStudent = (studentId: number, patch: any) =>
+  api.patch(`/Student/updateStudent/${studentId}`, patch);
+export const deleteStudent = (studentId: number) => api.delete(`/Student/deleteStudent/${studentId}`);
+export const getAllStudents = () => api.get("/Student/getAllStudents");
+
 export const loginUser = async (loginData: LoginFormData) => {
   return api.get('/User/getUserByIdAndPassword',
     {
@@ -54,6 +67,8 @@ export const getLessonsByDetails =async (detailsData:LessonDetails) => {
 } });
 };
 
+
+
 export const getAllTeachers =async () => {
   return api.get('/User/getAllTeachers');
 };
@@ -65,3 +80,4 @@ export const addRegistration =async (registration:Registration) => {
 };
 
 export default api;
+
