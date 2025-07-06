@@ -4,6 +4,7 @@ import type { User,LoginFormData } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
 import type { Student,User2 } from '../models/studentModel';
+import type { NewSubject } from '../models/subjectModel';
 
 
 
@@ -78,6 +79,16 @@ export const getAllSubjects =async () => {
 export const addRegistration =async (registration:Registration) => {
   return api.post('/Registration/addRegistration',registration);
 };
+export const addSubject = (subject: NewSubject) => {
+  return api.post(`/Subject/addSubject`, subject);
+};
+export const deleteSubject = (name: string) => {
+  return api.delete(`/Subject/deleteSubjectByName/${name}`);
+};
+export const updateSubject = (id: number, patch: any) => {
+  return api.patch(`/Subject/updateSubject/${id}`, patch);
 
+ 
+};
 export default api;
 

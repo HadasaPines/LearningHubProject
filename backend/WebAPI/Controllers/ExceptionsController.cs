@@ -131,8 +131,30 @@ namespace WebAPI.Controllers
                 statusCode: subjectNotFoundException.StatusCode
                 );
             }
+            if(exceptionDetails?.Error is CanNotDeleteSubject canNotDeleteSubject)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(canNotDeleteSubject.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: canNotDeleteSubject.Message,
+                statusCode: canNotDeleteSubject.StatusCode
+                );
+            }
 
 
+            if (exceptionDetails?.Error is SubjectAlreadyExist subjectAlreadyExist)
+            {
+                logger.LogInformation("*********************************************************************");
+                logger.LogWarning(subjectAlreadyExist.Message);
+                logger.LogInformation("*********************************************************************");
+                return Problem(
+
+                title: subjectAlreadyExist.Message,
+                statusCode: subjectAlreadyExist.StatusCode
+                );
+            }
             if (exceptionDetails?.Error is RegistrationNotFoundException registrationNotFoundException)
             {
                 logger.LogInformation("*********************************************************************");
