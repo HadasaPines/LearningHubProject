@@ -18,3 +18,7 @@
 # NuGet packages
 *.nupkg
 packages/
+
+# SQL Server database files
+*.mdf
+*.ldf
