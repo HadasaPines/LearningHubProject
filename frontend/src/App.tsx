@@ -5,6 +5,7 @@ import HomePage from "./pages/homePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage"
 
 import ManageStudents from "./pages/admin/manageStudents";
+import ManageLessons from "./pages/admin/manageLessons";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
 
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin/manage-students" element={<ManageStudents />} />
+        <Route path="/admin/manage-lessons" element={<ManageLessons />} />
+        {/* Add more routes as needed */}
       </Routes>
     </Router>
   );

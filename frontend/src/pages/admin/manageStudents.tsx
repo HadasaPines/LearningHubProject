@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import {
   getAllUsers,
@@ -6,15 +7,21 @@ import {
   deleteUser,
   updateUser,
   updateStudent,
-  addUser2,
+  addUser,
 } from "../../services/api";
-import type { User2, Student, Gender } from "../../models/studentModel";
+//import type { User2, Student, Gender } from "../../models/studentModel";
+import type {User,StudentDetails,Gender} from "../../models/userModel";
 
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageStudents = () => {
-  const [students, setStudents] = useState<(User2 & Student)[]>([]);
-  const [newUser, setNewUser] = useState<User2>({
+  const [students, setStudents] = useState<(User)[]>([]);
+    const [newStudent, setNewStudent] = useState<Omit<StudentDetails, "studentId">>({
+    gender: "M",
+    age: 0,
+    birthDate: "",
+  });
+  const [newUser, setNewUser] = useState<User>({
     userId: 0,
     firstName: "",
     lastName: "",
@@ -22,16 +29,15 @@ const ManageStudents = () => {
     phone: "",
     password: "",
     role: "Student",
-  });
-  const [newStudent, setNewStudent] = useState<Omit<Student, "studentId">>({
-    gender: "M",
-    age: 0,
-    birthDate: "",
-  });
-  const [editingUserId, setEditingUserId] = useState<number | null>(null);
-  const [editUser, setEditUser] = useState<Partial<User2>>({});
+    student:newStudent
 
-  const [editStudent, setEditStudent] = useState<Partial<Student>>({});
+    
+  });
+
+  const [editingUserId, setEditingUserId] = useState<number | null>(null);
+  const [editUser, setEditUser] = useState<Partial<User>>({});
+
+  const [editStudent, setEditStudent] = useState<Partial<StudentDetails>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -60,10 +66,10 @@ const ManageStudents = () => {
   const loadStudents = async () => {
     try {
       const [userRes, studentRes] = await Promise.all([getAllUsers(), getAllStudents()]);
-      const studentUsers = userRes.data.filter((u: User2) => u.role === "Student");
-      const fullList = studentUsers.map((user: User2) => {
+      const studentUsers = userRes.data.filter((u: User) => u.role === "Student");
+      const fullList = studentUsers.map((user: User) => {
 
-        const student = studentRes.data.find((s: Student) => s.studentId === user.userId);
+        const student = studentRes.data.find((s: StudentDetails) => s.studentId === user.userId);
         return {
           ...user,
           ...student,
@@ -78,7 +84,7 @@ const ManageStudents = () => {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addUser2(newUser);
+      await addUser(newUser);
       await addStudent({
         studentId: newUser.userId,
         ...newStudent,
@@ -103,14 +109,14 @@ const ManageStudents = () => {
     }
   };
 
-  const handleEditClick = (student: User2 & Student) => {
+  const handleEditClick = (student: User) => {
 
     setEditingUserId(student.userId);
     setEditUser({ ...student });
     setEditStudent({
-      gender: student.gender,
-      age: student.age,
-      birthDate: student.birthDate,
+      gender: student.student?.gender,
+      age: student.student?.age,
+      birthDate: student.student?.birthDate,
     });
   };
 
@@ -160,12 +166,12 @@ const ManageStudents = () => {
       phone: "",
       password: "",
       role: "Student",
-    });
-    setNewStudent({
-      gender: "M",
+      student: {
+        gender: "M",
       age: 0,
-      birthDate: "",
+      birthDate: ""}
     });
+   
   };
 
   return (
@@ -310,7 +316,7 @@ const ManageStudents = () => {
                     onChange={(e) => handleEditChange(e, "student")}
                   />
                 </td>
-                <td>{s.birthDate?.substring(0, 10)}</td>
+                <td>{s.student?.birthDate?.substring(0, 10)}</td>
                 <td>
                   <button onClick={handleSaveEdit} title="שמור">
                     💾
@@ -327,9 +333,9 @@ const ManageStudents = () => {
                 <td>{s.lastName}</td>
                 <td>{s.phone}</td>
                 <td>{s.email}</td>
-                <td>{s.gender}</td>
-                <td>{s.age}</td>
-                <td>{s.birthDate?.substring(0, 10)}</td>
+                <td>{s.student?.gender}</td>
+                <td>{s.student?.age}</td>
+                <td>{s.student?.birthDate?.substring(0, 10)}</td>
                 <td>
                   <button onClick={() => handleEditClick(s)} title="ערוך">
                     ✏️

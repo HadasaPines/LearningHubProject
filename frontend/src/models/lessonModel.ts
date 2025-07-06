@@ -7,6 +7,6 @@ export interface Lesson {
   endTime: string;
   minAge: number;
   maxAge: number;
-  gender: string;
+  gender: "M"| "F" ;
   status: string;
 }

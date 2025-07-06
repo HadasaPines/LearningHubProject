@@ -1,9 +1,10 @@
 
 import axios from 'axios';
-import type { User,LoginFormData } from '../models/userModel';
+import type { User,LoginFormData, StudentDetails } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
-import type { Student,User2 } from '../models/studentModel';
+import type { Lesson } from '../models/lessonModel';
+
 
 
 
@@ -20,9 +21,6 @@ const api = axios.create({
 export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
 };
-export const addUser2 =async (userData:User2) => {
-  return api.post('/User/addUser', userData);
-};
 
 export const updateUser = (userId: number, patch: any) =>
   api.patch(`/User/updateUser/${userId}`, patch);
@@ -30,7 +28,7 @@ export const deleteUser = (userId: number) => api.delete(`/User/deleteUser/${use
 export const getAllUsers = () => api.get("/User/getAllUsers");
 
 
-export const addStudent = (studentData: Omit<Student, 'studentId'> & { studentId: number
+export const addStudent = (studentData: Omit<StudentDetails, 'studentId'> & { studentId: number
 }) => {
   return api.post('/Student/addStudent', studentData);
 };
@@ -49,7 +47,8 @@ export const loginUser = async (loginData: LoginFormData) => {
     });
 
  };
-
+export const addLesson =async (lessonData: Omit<Lesson, 'lessonId'>) => {
+  return api.post('/Lesson/addLesson', lessonData);}
 
 export const getLessonsByDetails =async (detailsData:LessonDetails) => {
   return api.get('/Lesson/details', {

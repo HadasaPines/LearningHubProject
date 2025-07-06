@@ -54,9 +54,9 @@ const RegisterForm: React.FC = () => {
       await addUser(formData);
     await addStudent({
           studentId: formData.userId,
-          gender:formData.student.gender,
-          age: formData.student.age,
-          birthDate: formData.student.birthDate,
+          gender:formData.student?.gender?formData.student?.gender: "M",
+          age: formData.student?.age?formData.student?.age: 0,
+          birthDate: formData.student?.birthDate? formData.student?.birthDate: "",
         });
          navigate("/");
       setErrorMessages(null);
@@ -67,6 +67,7 @@ const RegisterForm: React.FC = () => {
 
   // const convertGender = (gender: "M" | "F" =>
   //   gender === "Male" ? "M" : "F";
+
 
   
   return (
@@ -127,6 +128,7 @@ const RegisterForm: React.FC = () => {
               name="gender"
               onChange={(e) => handleNestedChange(e, "student")}
               required
+             
             >
               <option value="">Select Gender</option>
               <option value="M">Male</option>
