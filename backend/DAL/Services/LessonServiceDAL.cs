@@ -62,10 +62,11 @@ namespace DAL.Services
             var lessonToUpdate = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lesson.LessonId);
 
-            lessonToUpdate = lesson;
-            dbContext.Lessons.Update(lessonToUpdate);
+           
+            dbContext.Entry(lessonToUpdate).CurrentValues.SetValues(lesson);
             await dbContext.SaveChangesAsync();
             return lessonToUpdate;
+
         }
     
  

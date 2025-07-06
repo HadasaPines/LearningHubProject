@@ -9,6 +9,7 @@ using DAL.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,23 +51,62 @@ namespace BL.Services
             }
             await _lessonServiceDAL.AddLesson(_mapper.Map<Lesson>(lessonBL));
         }
+
         public async Task UpdateLesson(int id, JsonPatchDocument<LessonBL> patchDoc)
         {
             if (patchDoc == null)
             {
                 throw new ArgumentNullException(nameof(patchDoc), "Patch document cannot be null");
             }
+
             var existingLesson = await _lessonServiceDAL.GetLessonById(id);
             if (existingLesson == null)
             {
                 throw new LessonNotFoundException($"Lesson with ID {id} not found");
             }
+
             var lessonBL = _mapper.Map<LessonBL>(existingLesson);
+
+
+            foreach (var operation in patchDoc.Operations)
+            {
+                if (operation.path.Contains("startTime") && operation.value != null)
+                {
+
+                    if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedStartTime))
+                    {
+                        operation.value = parsedStartTime;
+                    }
+                    else if (TimeOnly.TryParse(operation.value.ToString(), out var parsedStartDateTime))
+                    {
+                        operation.value = parsedStartDateTime;
+                    }
+                }
+                else if (operation.path.Contains("endTime") && operation.value != null)
+                {                   if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedEndTime))
+                    {
+                        operation.value = parsedEndTime;
+                    }
+                    else if (TimeOnly.TryParse(operation.value.ToString(), out var parsedEndDateTime))
+                    {
+                        operation.value = parsedEndDateTime;
+                    }
+                }
+                else if (operation.path.Contains("lessonDate") && operation.value != null)
+                {
+                    if (DateOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedLessonDate))
+                    {
+                        operation.value = parsedLessonDate;
+                    }
+                }
+            }
             patchDoc.ApplyTo(lessonBL);
+
             var updatedLesson = _mapper.Map<Lesson>(lessonBL);
             await _lessonServiceDAL.UpdateLesson(updatedLesson);
-
         }
+
+
         public async Task DeleteLesson(int id)
         {
             var existingLesson = await _lessonServiceDAL.GetLessonById(id);

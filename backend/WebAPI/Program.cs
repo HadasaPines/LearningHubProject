@@ -19,12 +19,12 @@ builder.Services.AddControllers()
     {
         options.SerializerSettings.Converters.Add(new NewtonsoftDateOnlyConverter());
         options.SerializerSettings.Converters.Add(new NewtonsoftTimeOnlyConverter());
-    })
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        options.JsonSerializerOptions.WriteIndented = true;
     });
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    //    options.JsonSerializerOptions.WriteIndented = true;
+    //});
 
 var relativeDbPath = Path.Combine("..", "..", "..", "..", "DAL", "database", "LearningHubDB.mdf");
 var fullDbPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeDbPath));

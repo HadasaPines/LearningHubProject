@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -48,7 +49,7 @@ namespace WebAPI.Controllers
 
 
         }
-        [HttpPatch("updateLesson {id:int}")]
+        [HttpPatch("updateLesson/{id}")]
         public async Task<IActionResult> UpdateLesson(int id, [FromBody] JsonPatchDocument<LessonBL> patchDoc)
         {
             await _lessonServiceBL.UpdateLesson(id, patchDoc);

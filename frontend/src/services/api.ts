@@ -50,6 +50,14 @@ export const loginUser = async (loginData: LoginFormData) => {
 export const addLesson =async (lessonData: Omit<Lesson, 'lessonId'>) => {
   return api.post('/Lesson/addLesson', lessonData);}
 
+  export const getAllLessons =async () => {
+  return api.get('/Lesson/getAllLessons');
+};
+
+export const updateLesson = (lessonId: number, patch: any) =>{
+  return api.patch(`/Lesson/updateLesson/${lessonId}`, patch);
+};
+
 export const getLessonsByDetails =async (detailsData:LessonDetails) => {
   return api.get('/Lesson/details', {
  params: {
