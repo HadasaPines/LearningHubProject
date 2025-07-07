@@ -53,9 +53,18 @@ namespace BL.Services
             if (subjectBL == null)
                 throw new ArgumentNullException(nameof(subjectBL), "Subject cannot be null");
 
+            var subjects = await _subjectServiceDAL.GetAllSubjects();
+
+            bool exists = subjects.Any(s =>
+                string.Equals(s.Name.Trim(), subjectBL.Name.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (exists)
+                throw new SubjectAlreadyExist($"Subject '{subjectBL.Name}' already exists.");
+
             var subject = _mapper.Map<Subject>(subjectBL);
             await _subjectServiceDAL.AddSubject(subject);
         }
+
         public async Task DeleteSubjectByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -64,6 +73,9 @@ namespace BL.Services
             var subject = await _subjectServiceDAL.GetSubjectByName(name);
             if (subject == null)
                 throw new SubjectNotFoundException($"Subject with name '{name}' not found");
+            var lessons = await _subjectServiceDAL.GetLessonsBySubjectName(name);
+            if (lessons!=null)
+                throw new CanNotDeleteSubject("Cannot delete subject with lessons ");
             await _subjectServiceDAL.DeleteSubjectByName(name);
         }
        

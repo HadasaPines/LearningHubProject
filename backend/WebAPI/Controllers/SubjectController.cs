@@ -27,26 +27,25 @@ namespace WebAPI.Controllers
             return Ok(subjects);
         }
         [HttpGet("getSubjectById/{subjectId}")]
-        public IActionResult GetSubjectByID(int id)
+        public async Task<IActionResult> GetSubjectByID(int subjectId)
         {
-            var subject = _subjectServiceBL.GetSubjectById(id);
+            var subject = await _subjectServiceBL.GetSubjectById(subjectId);
             return Ok(subject);
         }
         [HttpPost("addSubject")]
-        public IActionResult AddSubject([FromBody] SubjectBL subjectBL)
+        public async Task<IActionResult> AddSubject([FromBody] SubjectBL subjectBL)
         {
 
-            _subjectServiceBL.AddSubject(subjectBL);
+           await _subjectServiceBL.AddSubject(subjectBL);
             return Ok("subject added successfully");
         }
 
         [HttpDelete("deleteSubjectByName/{subjectName}")]
 
-        public IActionResult Delete(string name)
-        {
-            var subject = _subjectServiceBL.GetSubjectByName(name);
+        public async Task<IActionResult>  Delete(string subjectName)
+        { 
 
-            _subjectServiceBL.DeleteSubjectByName(name);
+           await _subjectServiceBL.DeleteSubjectByName(subjectName);
             return Ok("subject deleted successfully");
         }
         [HttpPatch("updateSubject/{id}")]
@@ -58,22 +57,22 @@ namespace WebAPI.Controllers
 
         }
         [HttpGet("getTeachersBySubjectName/{subjectName}")]
-        public async Task<IActionResult> GetTeachersBySubjectName(string name)
+        public async Task<IActionResult> GetTeachersBySubjectName(string subjectName)
         {
-            var teachers = await _subjectServiceBL.GetTeachersBySubjectName(name);
+            var teachers = await _subjectServiceBL.GetTeachersBySubjectName(subjectName);
             if (teachers == null || !teachers.Any())
             {
-                return NotFound($"No teachers found for subject: {name}");
+                return NotFound($"No teachers found for subject: {subjectName}");
             }
             return Ok(teachers);
         }
         [HttpGet("getLessonsBySubjectName/{subjectName}")]
-        public async Task<IActionResult> GetLessonsBySubjectName(string name)
+        public async Task<IActionResult> GetLessonsBySubjectName(string subjectName)
         {
-            var lessons = await _subjectServiceBL.GetLessonsBySubjectName(name);
+            var lessons = await _subjectServiceBL.GetLessonsBySubjectName(subjectName);
             if (lessons == null || !lessons.Any())
             {
-                return NotFound($"No lessons found for subject: {name}");
+                return NotFound($"No lessons found for subject: {subjectName}");
             }
             return Ok(lessons);
         }

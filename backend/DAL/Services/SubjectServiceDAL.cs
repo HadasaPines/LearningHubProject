@@ -45,26 +45,31 @@ namespace DAL.Services
         public async Task UpdateSubject(Subject subject)
         {
             var existingSubject = await _context.Subjects.FindAsync(subject.SubjectId);
-            existingSubject = subject;
-            _context.Subjects.Update(existingSubject);
-           await  _context.SaveChangesAsync();
+            _context.Entry(existingSubject).CurrentValues.SetValues(subject);
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteSubjectByName(string name)
         {
-            var subject = await _context.Subjects
-               .Include(s => s.TeachersToSubjects)
-               .Include(l=>l.Lessons)
-               .FirstOrDefaultAsync(s => s.Name == name);
+      
+            
+                var subject = await _context.Subjects
+                    .Include(s => s.TeachersToSubjects)
+                    .FirstOrDefaultAsync(s => s.Name == name);
 
 
-            _context.TeachersToSubjects.RemoveRange(subject.TeachersToSubjects);
-            _context.Lessons.RemoveRange(subject.Lessons);
-            _context.Subjects.Remove(subject);
 
-            await _context.SaveChangesAsync();
+
+                _context.TeachersToSubjects.RemoveRange(subject.TeachersToSubjects);
+
+                _context.Subjects.Remove(subject);
+
+                await _context.SaveChangesAsync();
+            
+
         }
 
-      
+
+
 
         public async Task<List<Teacher>> GetTeachersBySubjectName(string name)
         {
