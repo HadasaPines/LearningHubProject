@@ -10,10 +10,6 @@ import type { Lesson } from '../models/lessonModel';
 import type { NewSubject } from '../models/subjectModel';
 
 
-
-
-
-
 const api = axios.create({
   baseURL: 'https://localhost:7161/api',
   headers: {
@@ -116,5 +112,10 @@ export const addTeacher = (teacherData: Omit<TeacherDetails, 'teacherId'> & { te
 export const updateTeacher = (teacherId: number, patch: any) => {
   return api.patch(`/Teacher/updateTeacher/${teacherId}`, patch);
 };
+export const deleteTeacher = (teacherId: number) => {
+  return api.delete(`/Teacher/deleteTeacher/${teacherId}`);
+};
+export const getLessonsByTeacherId = async (teacherId: number) => {
+  return api.get(`/Lesson/getLessonsByTeacherId/${teacherId}`);}
 export default api;
 

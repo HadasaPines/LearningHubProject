@@ -11,5 +11,7 @@ namespace DAL.Api
         Task<List<Lesson>> GetAllLessonsIncludeDetails();
         Task<Lesson> UpdateLesson(Lesson lesson);
         Task SaveChangesAsync();
+
+        Task<List<Lesson>> GetLessonsByTeacherId(int teacherId);
     }
 }

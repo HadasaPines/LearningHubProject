@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from "react";
 import type { User } from "../../models/userModel";
-import { addUser, getAllTeachers, addTeacher, updateTeacher,updateUser } from "../../services/api";
+import { addUser, getAllTeachers, addTeacher, updateUser, deleteUser, getLessonsByTeacherId, updateTeacher,deleteTeacher } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageTeachers = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [newTeacher, setNewTeacher] = useState<Omit<User, "teacherId">>({
-    userId: 0,
-    firstName: "",
-    lastName: "",
-    password: "",
-    phone: "",
-    email: "",
-    role: "Teacher",
-    teacher: {
-      gender: "M",
-      bio: "",
-      birthDate: "",
-    },
+    userId: 0, firstName: "", lastName: "", password: "",
+    phone: "", email: "", role: "Teacher",
+    teacher: { gender: "M", bio: "", birthDate: "" },
   });
-
   const [editingTeacherId, setEditingTeacherId] = useState<number | null>(null);
   const [editTeacher, setEditTeacher] = useState<User | null>(null);
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -35,51 +24,37 @@ const ManageTeachers = () => {
   };
 
   useEffect(() => {
-    const fetchTeachers = async () => {
+    (async () => {
       try {
         const res = await getAllTeachers();
         setTeachers(res.data);
       } catch (err) {
         showMessage(parseApiError(err), "error");
       }
-    };
-    fetchTeachers();
+    })();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const teacherFields = ["gender", "bio", "birthDate"];
     if (teacherFields.includes(name)) {
-      setNewTeacher((prev) => ({
+      setNewTeacher(prev => ({
         ...prev,
-        teacher: {
-          ...prev.teacher!,
-          [name]: value,
-        },
+        teacher: { ...prev.teacher!, [name]: value }
       }));
     } else {
-      setNewTeacher((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setNewTeacher(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleEditChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!editTeacher) return;
     const { name, value } = e.target;
     const teacherFields = ["gender", "bio", "birthDate"];
     if (teacherFields.includes(name)) {
       setEditTeacher({
         ...editTeacher,
-        teacher: {
-          ...editTeacher.teacher!,
-          [name]: value,
-        },
+        teacher: { ...editTeacher.teacher!, [name]: value }
       });
     } else {
       setEditTeacher({ ...editTeacher, [name]: value });
@@ -98,18 +73,9 @@ const ManageTeachers = () => {
       });
       showMessage("המורה נוסף בהצלחה", "success");
       setNewTeacher({
-        userId: 0,
-        firstName: "",
-        lastName: "",
-        password: "",
-        phone: "",
-        email: "",
-        role: "Teacher",
-        teacher: {
-          gender: "M",
-          bio: "",
-          birthDate: "",
-        },
+        userId: 0, firstName: "", lastName: "", password: "",
+        phone: "", email: "", role: "Teacher",
+        teacher: { gender: "M", bio: "", birthDate: "" },
       });
       const res = await getAllTeachers();
       setTeachers(res.data);
@@ -131,10 +97,8 @@ const ManageTeachers = () => {
         { op: "replace", path: "/lastName", value: editTeacher.lastName },
         { op: "replace", path: "/email", value: editTeacher.email },
         { op: "replace", path: "/phone", value: editTeacher.phone },
-
       ];
-
-         const teacherPatch = [
+      const teacherPatch = [
         { op: "replace", path: "/bio", value: editTeacher.teacher!.bio },
       ];
       await updateUser(editTeacher.userId, userPatch);
@@ -144,6 +108,24 @@ const ManageTeachers = () => {
       setTeachers(res.data);
       setEditingTeacherId(null);
       setEditTeacher(null);
+    } catch (err) {
+      showMessage(parseApiError(err), "error");
+    }
+  };
+
+  const handleDeleteTeacher = async (userId: number) => {
+    try {
+      const lessons = await getLessonsByTeacherId(userId);
+      if (lessons.data.length > 0) {
+        showMessage("לא ניתן למחוק – יש שיעורים משוייכים למורה", "error");
+        return;
+      }
+
+      if (!window.confirm("האם אתה בטוח שברצונך למחוק את המורה?")) return;
+      await deleteUser(userId);
+      await deleteTeacher(userId);
+      showMessage("המורה נמחק בהצלחה", "success");
+      setTeachers(prev => prev.filter(t => t.userId !== userId));
     } catch (err) {
       showMessage(parseApiError(err), "error");
     }
@@ -173,6 +155,7 @@ const ManageTeachers = () => {
       </form>
 
       <hr />
+
       <h3>רשימת מורים</h3>
       <table>
         <thead>
@@ -181,7 +164,7 @@ const ManageTeachers = () => {
           </tr>
         </thead>
         <tbody>
-          {teachers.map((t) =>
+          {teachers.map(t =>
             editingTeacherId === t.userId && editTeacher ? (
               <tr key={t.userId}>
                 <td>
@@ -202,7 +185,18 @@ const ManageTeachers = () => {
                 <td>{t.email}</td>
                 <td>{t.phone}</td>
                 <td>{t.teacher?.bio}</td>
-                <td><button onClick={() => handleEditClick(t)}>✏️</button></td>
+                <td>
+                  <button onClick={() => handleEditClick(t)}>✏️</button>
+                <button
+  onClick={() => handleDeleteTeacher(t.userId)}
+  style={{
+    border: "none",
+    padding: "5px 10px",
+  }}
+>
+   🗑️
+</button>
+                </td>
               </tr>
             )
           )}
