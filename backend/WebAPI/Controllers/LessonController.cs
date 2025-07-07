@@ -88,5 +88,15 @@ namespace WebAPI.Controllers
             }
             return Ok(student);
         }
-    }
+        [HttpGet("getLessonsByTeacherId/{teacherId}")]
+        public async Task<IActionResult> GetLessonsByTeacherId(int teacherId)
+        {
+            var lessons = await _lessonServiceBL.GetLessonsByTeacherId(teacherId);
+            //if (lessons == null || !lessons.Any())
+            //{
+            //    return NotFound($"No lessons found for teacher ID {teacherId}.");
+            //}
+            return Ok(lessons);
+        }
+        }
 }

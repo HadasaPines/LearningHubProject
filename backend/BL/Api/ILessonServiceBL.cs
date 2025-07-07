@@ -1,4 +1,5 @@
 ﻿using BL.Models;
+using DAL.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace BL.Api
@@ -14,5 +15,7 @@ namespace BL.Api
         Task GenerateLessonsAsync(DateOnly startDate, DateOnly endDate);
         Task UpdatePastLessonsAsync();
         Task<UserBL> GetStudentToLesson(int lessonId);
+
+        Task<List<LessonBL>> GetLessonsByTeacherId(int teacherId);
     }
 }

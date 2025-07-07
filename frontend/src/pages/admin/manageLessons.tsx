@@ -133,7 +133,7 @@ const handleDeleteLessonWithStudent= async (lessonId: number) => {
       const massage=`${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
           if (window.confirm("אתה צריך להודיע לתלמיד על ביטול השיעור: " + massage)) {
     try {
- await deleteRegistrationByLessonId(lessonId);
+                await deleteRegistrationByLessonId(lessonId);
       await deleteLesson(lessonId); 
       setSuccessMessage("השיעור נמחק בהצלחה");
       const updatedLessons = await getAllLessons();

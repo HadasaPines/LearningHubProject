@@ -69,7 +69,15 @@ namespace DAL.Services
 
         }
 
-      
+        public async Task<List<Lesson>> GetLessonsByTeacherId(int teacherId)
+        {
+            return await dbContext.Lessons
+                .Where(l => l.TeacherId == teacherId)
+                .ToListAsync();
+
+        }
+
+
 
 
 

@@ -242,7 +242,13 @@ namespace BL.Services
 
 
         }
+        public async Task<List<LessonBL>> GetLessonsByTeacherId(int teacherId)
+        {
+            var lessons = await _lessonServiceDAL.GetLessonsByTeacherId(teacherId);
+
+            return _mapper.Map<List<LessonBL>>(lessons);
+        }
 
 
-    }
+        }
 }

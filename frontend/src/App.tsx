@@ -7,6 +7,7 @@ import ManageSubjects from "./pages/admin/manageSubjects";
 
 import ManageStudents from "./pages/admin/manageStudents";
 import ManageLessons from "./pages/admin/manageLessons";
+import ManageTeachers from "./pages/admin/managmentTeachers";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
 
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin/manage-students" element={<ManageStudents />} />
-
+       <Route path="/admin/manage-teachers" element={<ManageTeachers />} />
         <Route path="/admin/manage-lessons" element={<ManageLessons />} />
 
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />

@@ -3,16 +3,16 @@ export type Gender = "M" | "F";
 
 export interface StudentDetails {
   studentId?: number; 
-  gender: "M" | "F" ;
-  age :number;
-  birthDate: string;
+  gender?: "M" | "F" ;
+  age? :number;
+  birthDate?: string;
 }
 
 export interface TeacherDetails {
-
-  gender: "M" | "F";
-  bio: string;
-  birthDate: string;
+teacherId?: number;
+  gender?: "M" | "F";
+  bio?: string;
+  birthDate?: string;
 }
 
 export interface User {
@@ -22,8 +22,8 @@ export interface User {
   password: string;
   phone: string;
   email: string;
-  role: "Student";
-  student: StudentDetails;
+  role: "Student"|"Teacher";
+  student?: StudentDetails;
   teacher?: TeacherDetails;
 
 }
