@@ -1,5 +1,5 @@
 export interface TeacherAvailability {
-  AvailabilityId: number;
+  availabilityId: number;
   teacherId: number;
   weekDay: number;      
   startTime: string;     

@@ -122,11 +122,11 @@ export const getLessonsByTeacherId = async (teacherId: number) => {
 export const getAllAvailabilities = () =>
   api.get("/TeacherAvailability/getAllTeacherAvailability");
 
-export const addAvailability = (data: Omit<TeacherAvailability, "AvailabilityId">) =>
+export const addAvailability = (data: Omit<TeacherAvailability, "availabilityId">) =>
   api.post("/TeacherAvailability/AddTeacherAvailability", data);
 
-export const updateAvailability = (id: number, data: TeacherAvailability) =>
-  api.patch(`/availabilities/${id}`, data);
+export const updateAvailability = (id: number, patch:any) =>
+  api.patch(`/TeacherAvailability/updateTeacherAvailability/${id}`, patch);
 
 export const deleteAvailability = (id: number) =>
   api.delete(`/availabilities/${id}`);

@@ -25,11 +25,13 @@ namespace DAL.Services
         }
         public async Task<TeacherAvailability> UpdateTeacherAvailability(TeacherAvailability teacherAvailability)
         {
-
-
-            dbContext.TeacherAvailabilities.Update(teacherAvailability);
+            var existingAvailability = await dbContext.TeacherAvailabilities
+                .FirstOrDefaultAsync(ta => ta.AvailabilityId == teacherAvailability.AvailabilityId);
+            dbContext.Entry(existingAvailability).CurrentValues.SetValues(teacherAvailability);
             await dbContext.SaveChangesAsync();
             return teacherAvailability;
+
+
 
         }
 
