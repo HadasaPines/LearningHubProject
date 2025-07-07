@@ -9,7 +9,6 @@ import {
   updateStudent,
   addUser,
 } from "../../services/api";
-//import type { User2, Student, Gender } from "../../models/studentModel";
 import type {User,StudentDetails,Gender} from "../../models/userModel";
 
 import { parseApiError } from "../../utils/apiErrorParser";
@@ -88,7 +87,7 @@ const ManageStudents = () => {
       await addStudent({
         studentId: newUser.userId,
         ...newStudent,
-        birthDate: new Date(newStudent.birthDate).toISOString(),
+        birthDate:newStudent.birthDate? new Date(newStudent.birthDate).toISOString():"",
       });
       resetForm();
       loadStudents();

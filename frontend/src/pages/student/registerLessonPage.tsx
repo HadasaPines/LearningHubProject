@@ -27,6 +27,11 @@ const RegisterLessonForm: React.FC = () => {
   const user = localStorage.getItem("user");
   if (!user) return <div>משתמש לא מחובר</div>;
   const userData: User = JSON.parse(user);
+  if (userData.role !== "Student") {
+    return <div>גישה אסורה. רק תלמידים יכולים להירשם לשיעורים.</div>;
+  }
+  if(userData.student === undefined) {
+    return <div>משתמש לא מוגדר כתלמיד</div>;}
   const student: StudentDetails = userData.student ;
 
   const [formData, setFormData] = useState<LessonDetails>({

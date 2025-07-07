@@ -4,6 +4,7 @@ import { addUser, addStudent } from "../services/api";
 import { parseApiError } from "../utils/apiErrorParser";
 import { useNavigate } from "react-router-dom";
 
+
 const RegisterForm: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string | null>(null);
    const navigate = useNavigate();
@@ -39,6 +40,7 @@ const RegisterForm: React.FC = () => {
      section: "student"
    ) => {
      const { name, value } = e.target;
+
      setFormData((prev) => ({
        ...prev,
        [section]: {

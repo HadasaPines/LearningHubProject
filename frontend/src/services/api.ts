@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import type { User,LoginFormData, StudentDetails } from '../models/userModel';
+import type { User,LoginFormData, StudentDetails, TeacherDetails } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
 
@@ -98,7 +98,7 @@ export const deleteSubject = (name: string) => {
   return api.delete(`/Subject/deleteSubjectByName/${name}`);
 };
 export const updateSubject = (id: number, patch: any) => {
-  return api.patch(`/Subject/updateSubject/${id}`, patch);
+  return api.patch(`/Subject/updateSubject/${id}`, patch);}
 
 export const getStudentToLeeson =async (lessonId:number) => {
   return api.get(`/Lesson/getStudentToLeeson/${lessonId}`);
@@ -107,6 +107,11 @@ export const getStudentToLeeson =async (lessonId:number) => {
 export const deleteRegistrationByLessonId = (lessonId: number) => {
   return api.delete(`/Registration/deleteRegistrationByLessonId/${lessonId}`);
 
+};
+
+export const addTeacher = (teacherData: Omit<TeacherDetails, 'teacherId'> & { teacherId: number
+}) => {
+  return api.post('/Teacher/addTeacher', teacherData);
 };
 export default api;
 
