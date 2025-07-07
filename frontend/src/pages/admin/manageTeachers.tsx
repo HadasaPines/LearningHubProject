@@ -61,7 +61,7 @@ const ManageTeachers = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await addUser(newTeacher);
@@ -137,7 +137,7 @@ const ManageTeachers = () => {
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAdd}>
         <h3>הוספת מורה חדש</h3>
         <input name="userId" type="number" placeholder="ID" value={newTeacher.userId} onChange={handleChange} required />
         <input name="firstName" placeholder="שם פרטי" value={newTeacher.firstName} onChange={handleChange} required />

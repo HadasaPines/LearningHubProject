@@ -24,10 +24,10 @@ namespace WebAPI.Controllers
             public async Task<IActionResult> GetAllTeacherAvailabilities()
             {
                 var availabilities = await _teacherAvailabilityServiceBL.GetAllTeacherAvailabilities();
-                if (availabilities == null || !availabilities.Any())
-                {
-                    return NotFound("No teacher availabilities found.");
-                }
+                //if (availabilities == null || !availabilities.Any())
+                //{
+                //    return NotFound("No teacher availabilities found.");
+                //}
                 return Ok(availabilities);
             }
 
