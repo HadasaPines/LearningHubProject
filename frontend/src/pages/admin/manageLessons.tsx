@@ -5,6 +5,9 @@ import {
   getAllSubjects,
   getAllLessons,
   updateLesson,
+  deleteLesson,
+  getStudentToLeeson,
+    deleteRegistrationByLessonId,
 } from "../../services/api";
 import type { Lesson } from "../../models/lessonModel";
 import type { User } from "../../models/userModel";
@@ -63,6 +66,12 @@ const ManageLessons = () => {
     isEdit = false
   ) => {
     const { name, value } = e.target;
+   if(name=="teacherId" ){
+      const selectedTeacher = teachers.find((teacher) => teacher.userId === Number(value));
+      newLesson.gender= selectedTeacher?.teacher?.gender || "M";
+      editLesson.gender= selectedTeacher?.teacher?.gender || "M";
+
+   }
     const parsedValue = ["teacherId", "subjectId", "minAge", "maxAge"].includes(name)
       ? parseInt(value)
       : value;
@@ -101,6 +110,39 @@ const ManageLessons = () => {
     setEditingLessonId(lesson.lessonId);
     setEditLesson({ ...lesson });
   };
+
+const handleDeleteLesson = async (lessonId: number) => {
+
+  if (window.confirm("האם אתה בטוח שברצונך למחוק את השיעור הזה?")) {
+    try {
+      await deleteLesson(lessonId); 
+      setSuccessMessage("השיעור נמחק בהצלחה");
+      const updatedLessons = await getAllLessons();
+      setLessons(updatedLessons.data);
+    } catch (error) {
+      setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
+    }
+  }
+}
+
+const handleDeleteLessonWithStudent= async (lessonId: number) => {
+    const response= await getStudentToLeeson(lessonId);
+    const student:User=response.data;
+    if (student) {
+
+      const massage=`${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
+          if (window.confirm("אתה צריך להודיע לתלמיד על ביטול השיעור: " + massage)) {
+    try {
+ await deleteRegistrationByLessonId(lessonId);
+      await deleteLesson(lessonId); 
+      setSuccessMessage("השיעור נמחק בהצלחה");
+      const updatedLessons = await getAllLessons();
+      setLessons(updatedLessons.data);
+    } catch (error) {
+      setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
+    }}}
+}
+  
 const formatDateToDateOnly = (dateString: any) => {
   const date = new Date(dateString);
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -115,20 +157,12 @@ const formatTimeToTimeOnly = (timeString: any) => {
  const handleSaveEdit = async () => {
   if (!editingLessonId) return;
 
- console.log("נתונים שנשלחים ל-API:", {
-    teacherId: editLesson.teacherId,
-    subjectId: editLesson.subjectId,
-    //lessonDate: formatDateToDateOnly(editLesson.lessonDate),
-    startTime: formatTimeToTimeOnly(editLesson.startTime),
-    endTime: formatTimeToTimeOnly(editLesson.endTime),
-    minAge: editLesson.minAge,
-    maxAge: editLesson.maxAge,
-  });
 
   try {
     const lessonPatch = [
       { op: "replace", path: "/teacherId", value: editLesson.teacherId },
       { op: "replace", path: "/subjectId", value: editLesson.subjectId },
+        { op: "replace", path: "/gender", value: editLesson.gender },
       { op: "replace", path: "/lessonDate", value: formatDateToDateOnly(editLesson.lessonDate) },
      { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editLesson.startTime) },
       { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editLesson.endTime) },
@@ -149,6 +183,7 @@ const formatTimeToTimeOnly = (timeString: any) => {
   }
 };
 
+ 
 
   return (
     <div>
@@ -180,10 +215,6 @@ const formatTimeToTimeOnly = (timeString: any) => {
         <input name="endTime" type="time" value={newLesson.endTime} onChange={handleChange} />
         <input name="minAge" type="number" placeholder="גיל מינ'" value={newLesson.minAge} onChange={handleChange} />
         <input name="maxAge" type="number" placeholder="גיל מקס'" value={newLesson.maxAge} onChange={handleChange} />
-        <select name="gender" value={newLesson.gender} onChange={handleChange}>
-          <option value="M">זכר</option>
-          <option value="F">נקבה</option>
-        </select>
         <button type="submit">הוסף שיעור</button>
       </form>
 
@@ -252,7 +283,7 @@ const formatTimeToTimeOnly = (timeString: any) => {
                 <td>
                   {lesson.startTime} - {lesson.endTime}
                 </td>
-                <td>{teachers.find((t) => t.userId === lesson.teacherId)?.firstName}</td>
+                <td>{teachers.find((t) => t.userId === lesson.teacherId)?.firstName}{teachers.find((t) => t.userId === lesson.teacherId)?.lastName}</td>
                 <td>{subjects.find((s) => s.subjectId === lesson.subjectId)?.name}</td>
                 <td>
                   {lesson.minAge} - {lesson.maxAge}
@@ -271,6 +302,17 @@ const formatTimeToTimeOnly = (timeString: any) => {
 >
   ✏️
 </button>
+
+  <button
+  onClick={() =>lesson.status!="booked" ?handleDeleteLesson(lesson.lessonId):handleDeleteLessonWithStudent(lesson.lessonId)}
+  style={{
+    border: "none",
+    padding: "5px 10px",
+  }}
+>
+   🗑️
+</button>
+
                 </td>
               </tr>
             )

@@ -58,6 +58,8 @@ export const updateLesson = (lessonId: number, patch: any) =>{
   return api.patch(`/Lesson/updateLesson/${lessonId}`, patch);
 };
 
+export const deleteLesson = (lessonId: number) => api.delete(`/Lesson/deleteLesson/${lessonId}`);
+
 export const getLessonsByDetails =async (detailsData:LessonDetails) => {
   return api.get('/Lesson/details', {
  params: {
@@ -86,5 +88,12 @@ export const addRegistration =async (registration:Registration) => {
   return api.post('/Registration/addRegistration',registration);
 };
 
+export const getStudentToLeeson =async (lessonId:number) => {
+  return api.get(`/Lesson/getStudentToLeeson/${lessonId}`);
+};
+
+export const deleteRegistrationByLessonId = (lessonId: number) => {
+  return api.delete(`/Registration/deleteRegistrationByLessonId/${lessonId}`);
+};
 export default api;
 

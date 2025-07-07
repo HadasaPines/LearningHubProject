@@ -13,5 +13,6 @@ namespace BL.Api
         Task UpdateLesson(int id, JsonPatchDocument<LessonBL> patchDoc);
         Task GenerateLessonsAsync(DateOnly startDate, DateOnly endDate);
         Task UpdatePastLessonsAsync();
+        Task<UserBL> GetStudentToLesson(int lessonId);
     }
 }

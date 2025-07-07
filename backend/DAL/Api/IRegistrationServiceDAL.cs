@@ -9,9 +9,11 @@ namespace DAL.Api
         Task<List<Registration>> GetAllRegistrations();
         Task<Lesson> GetLessonByRegistrationId(int id);
         Task<Registration> GetRegistrationById(int registrationId);
-        Task<List<Registration>> GetRegistrationsToLesson(Lesson lesson);
+        Task<Registration> GetRegistrationByLessonId(int lessonId);
         Task<List<Registration>> GetRegistrationsToStudent(Student student);
         Task<Student> GetStudentByRegistrationId(int id);
         Task UpdateRegistration(Registration registration);
+
+        Task DeleteRegistrationByLessonId(int lessonId);
     }
 }
