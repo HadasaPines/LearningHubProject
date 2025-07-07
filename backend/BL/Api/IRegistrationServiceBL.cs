@@ -10,10 +10,12 @@ namespace BL.Api
         Task DeleteRegistration(int id);
         Task<List<RegistrationBL>> GetAllRegistrations();
         Task<RegistrationBL> GetRegistrationById(int registrationId);
-        Task<List<RegistrationBL>> GetRegistrationsToLesson(LessonBL lessonBL);
+        Task<RegistrationBL> GetRegistrationByLessonId(int lessonId);
         Task<List<RegistrationBL>> GetRegistrationsToStudent(StudentBL studentBL);
         Task UpdateRegistration(int id, JsonPatchDocument<RegistrationBL> patchDoc);
         Task<LessonBL> GetLessonByRegistrationId(int  registrationId);
         Task<StudentBL> GetStudentByRegistrationId(int  registrationId);
+
+        Task DeleteRegistrationByLessonId(int lessonId);
     }
 }

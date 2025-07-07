@@ -27,6 +27,7 @@ namespace WebAPI.Controllers
         [HttpPost("/error")]
         [HttpPut("/error")]
         [HttpDelete("/error")]
+        [HttpPatch("/error")]
         public IActionResult HandleError()
         {
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerFeature>();

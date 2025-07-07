@@ -1,10 +1,10 @@
-// export type Role = "Teacher" | "Student" | "Admin";
-// export type Gender = "Male" | "Female";
+export type Role = "Teacher" | "Student" | "Admin";
+export type Gender = "M" | "F";
 
 export interface StudentDetails {
-  studentId?: number; // This should match userId
-  gender: "M" | "F";
-  age: number;
+  studentId?: number; 
+  gender: "M" | "F" ;
+  age :number;
   birthDate: string;
 }
 

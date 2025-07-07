@@ -115,15 +115,28 @@ namespace BL.Services
 
 
      }
-        public async Task<List<RegistrationBL>> GetRegistrationsToLesson(LessonBL lessonBL)
+        public async Task DeleteRegistrationByLessonId(int lessonId)
         {
-            var lesson = _mapper.Map<Lesson>(lessonBL);
-            var registrations = await _registrationServiceDAL.GetRegistrationsToLesson(lesson);
-            if (registrations == null || !registrations.Any())
+            if (lessonId == 0)
+            { return; }
+            var lesson = await _lessonServiceDAL.GetLessonById(lessonId);
+            if (lesson == null)
             {
-                throw new RegistrationNotFoundException($"No registrations found for lesson with ID {lesson.LessonId}");
+                throw new LessonNotFoundException($"Lesson with ID {lessonId} not found");
             }
-            return _mapper.Map<List<RegistrationBL>>(registrations);
+            await _registrationServiceDAL.DeleteRegistrationByLessonId(lessonId);
+
+
+        }
+        public async Task<RegistrationBL> GetRegistrationByLessonId(int lessonId)
+        {
+            var registration = await _registrationServiceDAL.GetRegistrationByLessonId(lessonId);
+            if (registration == null)
+            {
+                throw new RegistrationNotFoundException($"Registration for lesson with ID {lessonId} not found");
+            }
+            return _mapper.Map<RegistrationBL>(registration);
+
         }
         public async Task<List<RegistrationBL>> GetRegistrationsToStudent(StudentBL studentBL)
         {

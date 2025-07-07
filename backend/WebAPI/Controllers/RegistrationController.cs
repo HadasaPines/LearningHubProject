@@ -54,16 +54,29 @@ namespace WebAPI.Controllers
             await _registrationServiceBL.DeleteRegistration(id);
             return Ok("Registration deleted successfully");
         }
-        [HttpGet("getRegistrationsToLesson")]
-        public async Task<IActionResult> GetRegistrationsToLesson([FromBody] LessonBL lessonBL)
+
+
+        [HttpDelete("deleteRegistrationByLessonId/{lessonId}")]
+        public async Task<IActionResult> DeleteRegistrationByLessonId(int lessonId)
         {
-            var registrations = await _registrationServiceBL.GetRegistrationsToLesson(lessonBL);
-            if (registrations == null || !registrations.Any())
-            {
-                return NotFound("No registrations found for the specified lesson.");
-            }
-            return Ok(registrations);
+            await _registrationServiceBL.DeleteRegistrationByLessonId(lessonId);
+            return Ok($"Registration for lesson ID {lessonId} deleted successfully.");
         }
+
+        [HttpGet("getRegistrationByLessonId/{lessonId}")]
+        public async Task<IActionResult> GetRegistrationByLessonId(int lessonId)
+        {
+            var registration = await _registrationServiceBL.GetRegistrationByLessonId(lessonId);
+            if (registration == null)
+            {
+                return NotFound($"No registration found for lesson ID {lessonId}.");
+            }
+            return Ok(registration);
+
+        }
+
+
+
         [HttpGet("getRegistrationsToStudent")]
         public async Task<IActionResult> GetRegistrationsToStudent([FromBody] StudentBL studentBL)
         {

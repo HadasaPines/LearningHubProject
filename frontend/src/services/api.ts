@@ -1,10 +1,14 @@
 
 import axios from 'axios';
-import type { User,LoginFormData } from '../models/userModel';
+import type { User,LoginFormData, StudentDetails } from '../models/userModel';
 import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
-import type { Student,User2 } from '../models/studentModel';
+
+import type { Lesson } from '../models/lessonModel';
+
+
 import type { NewSubject } from '../models/subjectModel';
+
 
 
 
@@ -21,9 +25,6 @@ const api = axios.create({
 export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
 };
-export const addUser2 =async (userData:User2) => {
-  return api.post('/User/addUser', userData);
-};
 
 export const updateUser = (userId: number, patch: any) =>
   api.patch(`/User/updateUser/${userId}`, patch);
@@ -31,7 +32,7 @@ export const deleteUser = (userId: number) => api.delete(`/User/deleteUser/${use
 export const getAllUsers = () => api.get("/User/getAllUsers");
 
 
-export const addStudent = (studentData: Omit<Student, 'studentId'> & { studentId: number
+export const addStudent = (studentData: Omit<StudentDetails, 'studentId'> & { studentId: number
 }) => {
   return api.post('/Student/addStudent', studentData);
 };
@@ -50,7 +51,18 @@ export const loginUser = async (loginData: LoginFormData) => {
     });
 
  };
+export const addLesson =async (lessonData: Omit<Lesson, 'lessonId'>) => {
+  return api.post('/Lesson/addLesson', lessonData);}
 
+  export const getAllLessons =async () => {
+  return api.get('/Lesson/getAllLessons');
+};
+
+export const updateLesson = (lessonId: number, patch: any) =>{
+  return api.patch(`/Lesson/updateLesson/${lessonId}`, patch);
+};
+
+export const deleteLesson = (lessonId: number) => api.delete(`/Lesson/deleteLesson/${lessonId}`);
 
 export const getLessonsByDetails =async (detailsData:LessonDetails) => {
   return api.get('/Lesson/details', {
@@ -88,7 +100,13 @@ export const deleteSubject = (name: string) => {
 export const updateSubject = (id: number, patch: any) => {
   return api.patch(`/Subject/updateSubject/${id}`, patch);
 
- 
+export const getStudentToLeeson =async (lessonId:number) => {
+  return api.get(`/Lesson/getStudentToLeeson/${lessonId}`);
+};
+
+export const deleteRegistrationByLessonId = (lessonId: number) => {
+  return api.delete(`/Registration/deleteRegistrationByLessonId/${lessonId}`);
+
 };
 export default api;
 

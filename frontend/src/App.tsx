@@ -6,6 +6,7 @@ import RegisterLessonForm from "./pages/student/registerLessonPage"
 import ManageSubjects from "./pages/admin/manageSubjects";
 
 import ManageStudents from "./pages/admin/manageStudents";
+import ManageLessons from "./pages/admin/manageLessons";
 
 function App() {
   return (
@@ -18,8 +19,12 @@ function App() {
 
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin/manage-students" element={<ManageStudents />} />
+
+        <Route path="/admin/manage-lessons" element={<ManageLessons />} />
+
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />
       
+
       </Routes>
     </Router>
   );

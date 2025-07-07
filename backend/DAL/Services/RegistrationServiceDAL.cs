@@ -33,12 +33,15 @@ namespace DAL.Services
                 .Include(r => r.Lesson)
                 .FirstOrDefaultAsync(r => r.RegistrationId == registrationId);
         }
-        public async Task<List<Registration>> GetRegistrationsToLesson(Lesson lesson)
+        public async Task<Registration> GetRegistrationByLessonId(int lessonId)
         {
-            var registrations = await dbContext.Registrations
+            return await dbContext.Registrations
+                .Include(r => r.Student)
+                .Include(r=>r.Student.StudentNavigation)
                 .Include(r => r.Lesson)
-                .Where(r => r.Lesson.LessonId == lesson.LessonId).ToListAsync();
-            return registrations;
+                .FirstOrDefaultAsync(r => r.Lesson.LessonId == lessonId);
+
+
         }
         public async Task<Lesson> GetLessonByRegistrationId(int id)
         {
@@ -101,6 +104,17 @@ namespace DAL.Services
 
             dbContext.Registrations.Remove(registration);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteRegistrationByLessonId(int lessonId)
+        {
+            var lesson =await dbContext.Lessons.FirstOrDefaultAsync(l => l.LessonId == lessonId);
+            var registration = await dbContext.Registrations
+                .Where(r => r.Lesson.LessonId == lessonId)
+                .Select(r => r.RegistrationId)
+                .FirstOrDefaultAsync();
+            if (registration == 0) return;
+           await DeleteRegistration(registration,lesson);
         }
 
 
