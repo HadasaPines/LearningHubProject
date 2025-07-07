@@ -14,6 +14,7 @@ using BL.Api;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using BL.Exceptions.TeacherExceptions;
+using DAL.Services;
 
 namespace BL.Services
 {
@@ -88,11 +89,11 @@ namespace BL.Services
             var teacher = await _teacherService.GetTeacherById(id);
             if (teacher == null)
                 throw new UserNotFoundException($"Teacher with ID {id} not found\"");
-            var techerBL = _mapper.Map<TeacherBL>(teacher);
-            patchDoc.ApplyTo(techerBL);
-            var updateTeacher = _mapper.Map<Teacher>(techerBL);
-            await _teacherService.UpdateTeacher( updateTeacher);
-            return techerBL;
+            var teacherBL = _mapper.Map<TeacherBL>(teacher);
+            patchDoc.ApplyTo(teacherBL);
+            var updateTeacher = _mapper.Map<Teacher>(teacherBL);
+            await _teacherService.UpdateTeacher(updateTeacher);
+            return teacherBL;
         }
 
         public async Task AddLessonToTeacher(int teacherId, LessonBL lessonBL)

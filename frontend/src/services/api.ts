@@ -109,9 +109,12 @@ export const deleteRegistrationByLessonId = (lessonId: number) => {
 
 };
 
-export const addTeacher = (teacherData: Omit<TeacherDetails, 'teacherId'> & { teacherId: number
-}) => {
+export const addTeacher = (teacherData: Omit<TeacherDetails, 'teacherId'> & { teacherId: number}) => {
   return api.post('/Teacher/addTeacher', teacherData);
+};
+
+export const updateTeacher = (teacherId: number, patch: any) => {
+  return api.patch(`/Teacher/updateTeacher/${teacherId}`, patch);
 };
 export default api;
 

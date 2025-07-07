@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { User } from "../../models/userModel";
-import { addUser, getAllTeachers, addTeacher } from "../../services/api";
+import { addUser, getAllTeachers, addTeacher, updateTeacher,updateUser } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageTeachers = () => {
@@ -20,40 +20,38 @@ const ManageTeachers = () => {
     },
   });
 
+  const [editingTeacherId, setEditingTeacherId] = useState<number | null>(null);
+  const [editTeacher, setEditTeacher] = useState<User | null>(null);
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const showMessage = (msg: string, type: "success" | "error") => {
+    type === "success" ? setSuccessMessage(msg) : setErrorMessage(msg);
+    setTimeout(() => {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+    }, 3000);
+  };
 
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
         const res = await getAllTeachers();
         setTeachers(res.data);
-      } catch (error) {
-        setErrorMessage(parseApiError(error));
+      } catch (err) {
+        showMessage(parseApiError(err), "error");
       }
     };
     fetchTeachers();
   }, []);
 
-
-    setTimeout(() => {
-      setErrorMessage(null);
-      setSuccessMessage(null);
-    }, 4000);
-  
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
-    if (name in newTeacher) {
-      setNewTeacher((prev) => ({
-        ...prev,
-        [name]: name === "userId" ? parseInt(value) : value,
-      }));
-    } else {
-
+    const teacherFields = ["gender", "bio", "birthDate"];
+    if (teacherFields.includes(name)) {
       setNewTeacher((prev) => ({
         ...prev,
         teacher: {
@@ -61,24 +59,44 @@ const ManageTeachers = () => {
           [name]: value,
         },
       }));
+    } else {
+      setNewTeacher((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleEditChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    if (!editTeacher) return;
+    const { name, value } = e.target;
+    const teacherFields = ["gender", "bio", "birthDate"];
+    if (teacherFields.includes(name)) {
+      setEditTeacher({
+        ...editTeacher,
+        teacher: {
+          ...editTeacher.teacher!,
+          [name]: value,
+        },
+      });
+    } else {
+      setEditTeacher({ ...editTeacher, [name]: value });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
       await addUser(newTeacher);
-
       await addTeacher({
         teacherId: newTeacher.userId,
-        gender: newTeacher.teacher?.gender || "M",
-        bio: newTeacher.teacher?.bio || "",
-        birthDate: newTeacher.teacher?.birthDate || "",
+        gender: newTeacher.teacher!.gender,
+        bio: newTeacher.teacher!.bio,
+        birthDate: newTeacher.teacher!.birthDate,
       });
-
-      setSuccessMessage("המורה נוסף בהצלחה ✅");
-
+      showMessage("המורה נוסף בהצלחה", "success");
       setNewTeacher({
         userId: 0,
         firstName: "",
@@ -93,96 +111,103 @@ const ManageTeachers = () => {
           birthDate: "",
         },
       });
+      const res = await getAllTeachers();
+      setTeachers(res.data);
+    } catch (err) {
+      showMessage(parseApiError(err), "error");
+    }
+  };
 
+  const handleEditClick = (t: User) => {
+    setEditingTeacherId(t.userId);
+    setEditTeacher({ ...t });
+  };
 
-      const updated = await getAllTeachers();
-      setTeachers(updated.data);
-    } catch (error) {
-      setErrorMessage(parseApiError(error));
+  const handleSaveEdit = async () => {
+    if (!editTeacher) return;
+    try {
+      const userPatch = [
+        { op: "replace", path: "/firstName", value: editTeacher.firstName },
+        { op: "replace", path: "/lastName", value: editTeacher.lastName },
+        { op: "replace", path: "/email", value: editTeacher.email },
+        { op: "replace", path: "/phone", value: editTeacher.phone },
+
+      ];
+
+         const teacherPatch = [
+        { op: "replace", path: "/bio", value: editTeacher.teacher!.bio },
+      ];
+      await updateUser(editTeacher.userId, userPatch);
+      await updateTeacher(editTeacher.userId, teacherPatch);
+      showMessage("המורה עודכן בהצלחה", "success");
+      const res = await getAllTeachers();
+      setTeachers(res.data);
+      setEditingTeacherId(null);
+      setEditTeacher(null);
+    } catch (err) {
+      showMessage(parseApiError(err), "error");
     }
   };
 
   return (
     <div>
       <h2>ניהול מורים</h2>
-
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
       <form onSubmit={handleSubmit}>
         <h3>הוספת מורה חדש</h3>
-        <input
-          type="number"
-          name="userId"
-          placeholder="תעודת זהות"
-          value={newTeacher.userId}
-          required
-          onChange={handleChange}
-        />
-        <input
-          name="firstName"
-          placeholder="שם פרטי"
-          value={newTeacher.firstName}
-          onChange={handleChange}
-        />
-        <input
-          name="lastName"
-          placeholder="שם משפחה"
-          value={newTeacher.lastName}
-          onChange={handleChange}
-        />
-        <input
-          name="phone"
-          placeholder="טלפון"
-          value={newTeacher.phone}
-          onChange={handleChange}
-        />
-        <input
-          name="email"
-          placeholder="אימייל"
-          value={newTeacher.email}
-          onChange={handleChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="סיסמה"
-          value={newTeacher.password}
-          onChange={handleChange}
-        />
-        <select
-          name="gender"
-          value={newTeacher.teacher?.gender || "M"}
-          onChange={handleChange}
-        >
+        <input name="userId" type="number" placeholder="ID" value={newTeacher.userId} onChange={handleChange} required />
+        <input name="firstName" placeholder="שם פרטי" value={newTeacher.firstName} onChange={handleChange} required />
+        <input name="lastName" placeholder="שם משפחה" value={newTeacher.lastName} onChange={handleChange} required />
+        <input name="phone" placeholder="טלפון" value={newTeacher.phone} onChange={handleChange} required />
+        <input name="email" placeholder="אימייל" value={newTeacher.email} onChange={handleChange} required />
+        <input name="password" type="password" placeholder="סיסמה" value={newTeacher.password} onChange={handleChange} required />
+        <select name="gender" value={newTeacher.teacher!.gender} onChange={handleChange}>
           <option value="M">זכר</option>
           <option value="F">נקבה</option>
         </select>
-        <input
-          name="birthDate"
-          type="date"
-          value={newTeacher.teacher?.birthDate || ""}
-          onChange={handleChange}
-        />
-        <textarea
-          name="bio"
-          placeholder="ביוגרפיה"
-          value={newTeacher.teacher?.bio || ""}
-          onChange={handleChange}
-        />
+        <input name="birthDate" type="date" value={newTeacher.teacher!.birthDate} onChange={handleChange} />
+        <textarea name="bio" placeholder="ביוגרפיה" value={newTeacher.teacher!.bio} onChange={handleChange} />
         <button type="submit">הוסף מורה</button>
       </form>
 
       <hr />
-
       <h3>רשימת מורים</h3>
-      <ul>
-        {teachers.map((t) => (
-          <li key={t.userId}>
-            {t.firstName} {t.lastName} ({t.email})
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>שם</th><th>אימייל</th><th>טלפון</th><th>ביוגרפיה</th><th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teachers.map((t) =>
+            editingTeacherId === t.userId && editTeacher ? (
+              <tr key={t.userId}>
+                <td>
+                  <input name="firstName" value={editTeacher.firstName} onChange={handleEditChange} />
+                  <input name="lastName" value={editTeacher.lastName} onChange={handleEditChange} />
+                </td>
+                <td><input name="email" value={editTeacher.email} onChange={handleEditChange} /></td>
+                <td><input name="phone" value={editTeacher.phone} onChange={handleEditChange} /></td>
+                <td><textarea name="bio" value={editTeacher.teacher!.bio} onChange={handleEditChange} /></td>
+                <td>
+                  <button onClick={handleSaveEdit}>💾</button>
+                  <button onClick={() => setEditingTeacherId(null)}>❌</button>
+                </td>
+              </tr>
+            ) : (
+              <tr key={t.userId}>
+                <td>{t.firstName} {t.lastName}</td>
+                <td>{t.email}</td>
+                <td>{t.phone}</td>
+                <td>{t.teacher?.bio}</td>
+                <td><button onClick={() => handleEditClick(t)}>✏️</button></td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
