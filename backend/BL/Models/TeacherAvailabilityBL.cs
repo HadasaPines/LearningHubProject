@@ -10,7 +10,7 @@ namespace BL.Models
     [AvailabilityTimeRange(ErrorMessage = "Invalid availability time range.")]
     public class TeacherAvailabilityBL
     {
-        //public int AvailabilityId { get; set; }
+        public int AvailabilityId { get; set; }
         public int TeacherId { get; set; }
 
         public int WeekDay { get; set; }

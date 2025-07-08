@@ -4,10 +4,10 @@ import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage"
 import ManageSubjects from "./pages/admin/manageSubjects";
-
+import ManageAvailability from "./pages/admin/manageAvailability";
 import ManageStudents from "./pages/admin/manageStudents";
 import ManageLessons from "./pages/admin/manageLessons";
-import ManageTeachers from "./pages/admin/managmentTeachers";
+import ManageTeachers from "./pages/admin/manageTeachers";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/registerLesson" element={<RegisterLessonForm/>}></Route>
-
+        <Route path="/admin/manage-availability" element={<ManageAvailability />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin/manage-students" element={<ManageStudents />} />
        <Route path="/admin/manage-teachers" element={<ManageTeachers />} />

@@ -24,10 +24,10 @@ namespace WebAPI.Controllers
             public async Task<IActionResult> GetAllTeacherAvailabilities()
             {
                 var availabilities = await _teacherAvailabilityServiceBL.GetAllTeacherAvailabilities();
-                if (availabilities == null || !availabilities.Any())
-                {
-                    return NotFound("No teacher availabilities found.");
-                }
+                //if (availabilities == null || !availabilities.Any())
+                //{
+                //    return NotFound("No teacher availabilities found.");
+                //}
                 return Ok(availabilities);
             }
 
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
                 return Ok(updated);
             }
 
-            [HttpDelete("deleteTeacherAvailability{id}")]
+            [HttpDelete("deleteTeacherAvailability/{id}")]
 
             public async Task<IActionResult> DeleteTeacherAvailability(int id)
             {

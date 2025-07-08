@@ -5,6 +5,7 @@ import type { LessonDetails } from '../models/lessonDetailsModel';
 import type { Registration } from '../models/registerationModel';
 
 import type { Lesson } from '../models/lessonModel';
+import type { TeacherAvailability } from '../models/availabilityModel';
 
 
 import type { NewSubject } from '../models/subjectModel';
@@ -116,6 +117,21 @@ export const deleteTeacher = (teacherId: number) => {
   return api.delete(`/Teacher/deleteTeacher/${teacherId}`);
 };
 export const getLessonsByTeacherId = async (teacherId: number) => {
-  return api.get(`/Lesson/getLessonsByTeacherId/${teacherId}`);}
+  return api.get<Lesson[]>(`/Lesson/getLessonsByTeacherId/${teacherId}`);}
+
+export const getAllAvailabilities = () =>
+  api.get("/TeacherAvailability/getAllTeacherAvailability");
+
+export const addAvailability = (data: Omit<TeacherAvailability, "availabilityId">) =>
+  api.post("/TeacherAvailability/AddTeacherAvailability", data);
+
+export const updateAvailability = (id: number, patch:any) =>
+  api.patch(`/TeacherAvailability/updateTeacherAvailability/${id}`, patch);
+
+export const deleteAvailability = (id: number) =>
+  api.delete(`/TeacherAvailability/deleteTeacherAvailability/${id}`);
+
+
+
 export default api;
 

@@ -83,7 +83,7 @@ const ManageLessons = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await addLesson(newLesson);
@@ -131,7 +131,7 @@ const handleDeleteLessonWithStudent= async (lessonId: number) => {
     if (student) {
 
       const massage=`${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
-          if (window.confirm("אתה צריך להודיע לתלמיד על ביטול השיעור: " + massage)) {
+          if (window.confirm("שיפ לב שהרישום לשיעור ימחק ואתה צריך להודיע לתלמיד על ביטול השיעור:  " + massage)) {
     try {
                 await deleteRegistrationByLessonId(lessonId);
       await deleteLesson(lessonId); 
@@ -192,7 +192,7 @@ const formatTimeToTimeOnly = (timeString: any) => {
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAdd}>
         <h3>הוספת שיעור חדש</h3>
         <select name="teacherId" value={newLesson.teacherId} onChange={handleChange}>
           <option value="">בחר מורה</option>

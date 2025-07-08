@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BL.Api;
+using BL.Exceptions.LessonExceptions;
 using BL.Exceptions.TeacherAvailabilityExceptions;
 using BL.Models;
 using DAL.Api;
@@ -8,6 +9,7 @@ using DAL.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,17 +40,52 @@ namespace BL.Services
             if (patchDoc == null)
                 throw new ArgumentNullException("TeachersToSubject cannot be null");
             var teacherAvailability = await _teacherAvailabilityServiceDAL.GetTeacherAvailabilitiesById(id);
-           
+
             if (teacherAvailability == null)
 
                 throw new TeacherAvailabilityNotFoundException("teacher availability not found to update");
-            var teacherAvailabilityBL = _mapper.Map<TeacherAvailabilityBL>(teacherAvailability);
-            patchDoc.ApplyTo(teacherAvailabilityBL);
-            var updateTeacherAvailability = _mapper.Map<TeacherAvailability>(teacherAvailabilityBL);
-            await _teacherAvailabilityServiceDAL.UpdateTeacherAvailability(updateTeacherAvailability);
-            return teacherAvailabilityBL;
+            if (patchDoc == null)
+            {
+                throw new ArgumentNullException(nameof(patchDoc), "Patch document cannot be null");
+            }
 
-        }
+            var teacherAvailabilityBL = _mapper.Map<TeacherAvailabilityBL>(teacherAvailability);
+
+
+            foreach (var operation in patchDoc.Operations)
+            {
+                if (operation.path.Contains("startTime") && operation.value != null)
+                {
+
+                    if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedStartTime))
+                    {
+                        operation.value = parsedStartTime;
+                    }
+                    else if (TimeOnly.TryParse(operation.value.ToString(), out var parsedStartDateTime))
+                    {
+                        operation.value = parsedStartDateTime;
+                    }
+                }
+                else if (operation.path.Contains("endTime") && operation.value != null)
+                {
+                    if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedEndTime))
+                    {
+                        operation.value = parsedEndTime;
+                    }
+                    else if (TimeOnly.TryParse(operation.value.ToString(), out var parsedEndDateTime))
+                    {
+                        operation.value = parsedEndDateTime;
+                    }
+                }
+            }
+
+                patchDoc.ApplyTo(teacherAvailabilityBL);
+
+                var updatedLesson = _mapper.Map<TeacherAvailability>(teacherAvailabilityBL);
+                await _teacherAvailabilityServiceDAL.UpdateTeacherAvailability(updatedLesson); ;
+                return teacherAvailabilityBL;
+            }
+        
 
         public async Task DeleteTeacherAvailability(int id)
         {
