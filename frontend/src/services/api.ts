@@ -129,7 +129,7 @@ export const updateAvailability = (id: number, patch:any) =>
   api.patch(`/TeacherAvailability/updateTeacherAvailability/${id}`, patch);
 
 export const deleteAvailability = (id: number) =>
-  api.delete(`/availabilities/${id}`);
+  api.delete(`/TeacherAvailability/deleteTeacherAvailability/${id}`);
 
 
 

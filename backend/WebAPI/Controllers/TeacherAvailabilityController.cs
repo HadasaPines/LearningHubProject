@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
                 return Ok(updated);
             }
 
-            [HttpDelete("deleteTeacherAvailability{id}")]
+            [HttpDelete("deleteTeacherAvailability/{id}")]
 
             public async Task<IActionResult> DeleteTeacherAvailability(int id)
             {

@@ -7,6 +7,7 @@ import {
   getAllAvailabilities,
   // וודא שקיים עדכון זמינות
   updateAvailability,
+  deleteAvailability,
 } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 
@@ -75,7 +76,7 @@ const ManageAvailability = () => {
     }));
   };
 
-  // שינוי בשדות עריכה
+
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEditAvailability((prev) => ({
@@ -125,11 +126,26 @@ const formatTimeToTimeOnly = (timeString: any) => {
     }
   };
 
-  // פונקציה לקבלת שם מלא של מורה לפי ID
+ 
   const getTeacherName = (teacherId: number) => {
     const teacher = teachers.find((t) => t.userId === teacherId);
     return teacher ? `${teacher.firstName} ${teacher.lastName}` : "לא נמצא מורה";
   };
+
+  const handleDeleteLesson = async (lessonId: number) => {
+  // const lessons = await getLessonsByAvaiability(id);
+    if (window.confirm("האם אתה בטוח שברצונך למחוק את הזמינות הזה? כל שיעור המורה בזמינות זו ימחקו גם...")) {
+      try {
+        await deleteAvailability(lessonId); 
+        setSuccessMessage(" נמחק בהצלחה");
+        const updateAvailability = await getAllAvailabilities();
+        setAvailabilities(updateAvailability.data);
+      } catch (error) {
+        setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
+      }
+    }
+  }
+  
 
   return (
     <div>
@@ -249,6 +265,16 @@ const formatTimeToTimeOnly = (timeString: any) => {
                   >
                     ✏️
                   </button>
+
+                    <button
+  onClick={() => handleDeleteLesson(a.availabilityId)}
+  style={{
+    border: "none",
+    padding: "5px 10px",
+  }}
+>
+   🗑️
+</button>
                 </td>
               </tr>
             )
