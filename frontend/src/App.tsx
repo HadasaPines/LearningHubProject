@@ -11,6 +11,8 @@ import ManageTeachers from "./components/admin/manageTeachers";
 import TestimonialsSection from "./components/home/testimonialsSection";
 import CallToActionSection from "./components/home/callToActionSection";
 import FAQSection from "./components/home/FAQSection";
+import OurTeachersSection from "./components/home/ourTeachersSection";
+import OurLessonsSection from "./components/home/ourLessonsSection";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
 
       <Route path ="/home/call-to-action" element={<CallToActionSection/>} />
       <Route path ="/home/FAQ" element={<FAQSection/>} />
+      <Route path ="/home/our-teachers" element={<OurTeachersSection/>} />
+      <Route path ="/home/our-lessons" element={<OurLessonsSection/>}/>
 
 
       </Routes>
