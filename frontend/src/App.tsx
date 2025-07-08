@@ -3,11 +3,13 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage"
-import ManageSubjects from "./pages/admin/manageSubjects";
-import ManageAvailability from "./pages/admin/manageAvailability";
-import ManageStudents from "./pages/admin/manageStudents";
-import ManageLessons from "./pages/admin/manageLessons";
-import ManageTeachers from "./pages/admin/manageTeachers";
+import ManageAvailability from "./components/admin/manageAvailability";
+import ManageStudents from "./components/admin/manageStudents";
+import ManageTeachers from "./components/admin/manageTeachers";
+import ManageLessons from "./components/admin/manageLessons";
+import ManageSubjects from "./components/admin/manageSubjects";
+import StudentProfile from "./components/student/studentProfile";
+
 
 function App() {
   return (
@@ -22,8 +24,8 @@ function App() {
         <Route path="/admin/manage-students" element={<ManageStudents />} />
        <Route path="/admin/manage-teachers" element={<ManageTeachers />} />
         <Route path="/admin/manage-lessons" element={<ManageLessons />} />
-
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />
+        <Route path="/student/profile" element={<StudentProfile />} />
       
 
       </Routes>
