@@ -26,17 +26,17 @@ const CalendarView: React.FC<Props> = ({ lessons, teachers, subjects, onRegister
 
   const getTeacherName = (id: number) => {
     const teacher = teachers.find((t) => t.userId === id);
-    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "לא ידוע";
+    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "Unknown";
   };
 
   const getSubjectName = (id: number) => {
     const subject = subjects.find((s) => s.subjectId === id);
-    return subject ? subject.name : "לא ידוע";
+    return subject ? subject.name : "Unknown";
   };
 
   return (
     <div style={{ flex: 1 }}>
-      <h2>לוח שיעורים</h2>
+      <h2>Lesson Calendar</h2>
       <Calendar
         calendarType="hebrew"
         onClickDay={(value) => {
@@ -48,29 +48,41 @@ const CalendarView: React.FC<Props> = ({ lessons, teachers, subjects, onRegister
           const lessonsForDate = lessonsByDate[dateStr];
           if (!lessonsForDate) return null;
           const hasAvailable = lessonsForDate.some((l) => l.status === "Available");
-          return hasAvailable ? <span title="פנוי">📌</span> : <span title="תפוס">❌</span>;
+          return hasAvailable ? <span title="Available">📌</span> : <span title="Booked">❌</span>;
         }}
       />
 
-      {selectedDate && (
-        <div style={{ marginTop: "1em" }}>
-          <h3>שיעורים בתאריך {new Date(selectedDate).toLocaleDateString("he-IL")}</h3>
-          <ul>
-            {lessonsByDate[selectedDate].map((lesson, index) => (
-              <li key={index}>
-                {lesson.startTime} - {lesson.endTime} | מורה: {getTeacherName(lesson.teacherId)} | מקצוע: {getSubjectName(lesson.subjectId)}{" "}
-                {lesson.status === "Available" ? (
-                  <button onClick={() => onRegister(lesson)}>הירשם</button>
-                ) : (
-                  <span style={{ color: "gray", fontWeight: "bold", marginRight: "10px" }}>
-                    תפוס ❌
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+{selectedDate && (
+  <div style={{ marginTop: "1em" }}>
+    <h3>Lessons on {new Date(selectedDate).toLocaleDateString("en-US")}</h3>
+    <ul>
+      {lessonsByDate[selectedDate].map((lesson, index) => (
+        <li
+          key={index}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            direction: "rtl"   
+          }}
+        >
+          <span>
+            {lesson.startTime} - {lesson.endTime} | Teacher: {getTeacherName(lesson.teacherId)} | Subject: {getSubjectName(lesson.subjectId)}
+          </span>
+
+          {lesson.status === "Available" ? (
+            <button onClick={() => onRegister(lesson)}>Register</button>
+          ) : (
+            <span style={{ color: "gray", fontWeight: "bold", marginLeft: "10px" }}>
+              Booked ❌
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
     </div>
   );
 };

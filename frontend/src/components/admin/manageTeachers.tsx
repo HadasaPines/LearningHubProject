@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { User } from "../../models/userModel";
-import { addUser, getAllTeachers, addTeacher, updateUser, deleteUser, getLessonsByTeacherId, updateTeacher,deleteTeacher } from "../../services/api";
+import { addUser, getAllTeachers, addTeacher, updateUser, deleteUser, getLessonsByTeacherId, updateTeacher, deleteTeacher } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageTeachers = () => {
@@ -71,7 +71,7 @@ const ManageTeachers = () => {
         bio: newTeacher.teacher!.bio,
         birthDate: newTeacher.teacher!.birthDate,
       });
-      showMessage("המורה נוסף בהצלחה", "success");
+      showMessage("Teacher added successfully", "success");
       setNewTeacher({
         userId: 0, firstName: "", lastName: "", password: "",
         phone: "", email: "", role: "Teacher",
@@ -103,7 +103,7 @@ const ManageTeachers = () => {
       ];
       await updateUser(editTeacher.userId, userPatch);
       await updateTeacher(editTeacher.userId, teacherPatch);
-      showMessage("המורה עודכן בהצלחה", "success");
+      showMessage("Teacher updated successfully", "success");
       const res = await getAllTeachers();
       setTeachers(res.data);
       setEditingTeacherId(null);
@@ -117,14 +117,14 @@ const ManageTeachers = () => {
     try {
       const lessons = await getLessonsByTeacherId(userId);
       if (lessons.data.length > 0) {
-        showMessage("לא ניתן למחוק – יש שיעורים משוייכים למורה", "error");
+        showMessage("Cannot delete – this teacher has scheduled lessons", "error");
         return;
       }
 
-      if (!window.confirm("האם אתה בטוח שברצונך למחוק את המורה?")) return;
+      if (!window.confirm("Are you sure you want to delete this teacher?")) return;
       await deleteUser(userId);
       await deleteTeacher(userId);
-      showMessage("המורה נמחק בהצלחה", "success");
+      showMessage("Teacher deleted successfully", "success");
       setTeachers(prev => prev.filter(t => t.userId !== userId));
     } catch (err) {
       showMessage(parseApiError(err), "error");
@@ -133,34 +133,34 @@ const ManageTeachers = () => {
 
   return (
     <div>
-      <h2>ניהול מורים</h2>
+      <h2>Manage Teachers</h2>
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
-        <h3>הוספת מורה חדש</h3>
+        <h3>Add New Teacher</h3>
         <input name="userId" type="number" placeholder="ID" value={newTeacher.userId} onChange={handleChange} required />
-        <input name="firstName" placeholder="שם פרטי" value={newTeacher.firstName} onChange={handleChange} required />
-        <input name="lastName" placeholder="שם משפחה" value={newTeacher.lastName} onChange={handleChange} required />
-        <input name="phone" placeholder="טלפון" value={newTeacher.phone} onChange={handleChange} required />
-        <input name="email" placeholder="אימייל" value={newTeacher.email} onChange={handleChange} required />
-        <input name="password" type="password" placeholder="סיסמה" value={newTeacher.password} onChange={handleChange} required />
+        <input name="firstName" placeholder="First Name" value={newTeacher.firstName} onChange={handleChange} required />
+        <input name="lastName" placeholder="Last Name" value={newTeacher.lastName} onChange={handleChange} required />
+        <input name="phone" placeholder="Phone" value={newTeacher.phone} onChange={handleChange} required />
+        <input name="email" placeholder="Email" value={newTeacher.email} onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Password" value={newTeacher.password} onChange={handleChange} required />
         <select name="gender" value={newTeacher.teacher!.gender} onChange={handleChange}>
-          <option value="M">זכר</option>
-          <option value="F">נקבה</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
         </select>
         <input name="birthDate" type="date" value={newTeacher.teacher!.birthDate} onChange={handleChange} />
-        <textarea name="bio" placeholder="ביוגרפיה" value={newTeacher.teacher!.bio} onChange={handleChange} />
-        <button type="submit">הוסף מורה</button>
+        <textarea name="bio" placeholder="Biography" value={newTeacher.teacher!.bio} onChange={handleChange} />
+        <button type="submit">Add Teacher</button>
       </form>
 
       <hr />
 
-      <h3>רשימת מורים</h3>
+      <h3>Teachers List</h3>
       <table>
         <thead>
           <tr>
-            <th>שם</th><th>אימייל</th><th>טלפון</th><th>ביוגרפיה</th><th>פעולות</th>
+            <th>Name</th><th>Email</th><th>Phone</th><th>Biography</th><th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -187,15 +187,15 @@ const ManageTeachers = () => {
                 <td>{t.teacher?.bio}</td>
                 <td>
                   <button onClick={() => handleEditClick(t)}>✏️</button>
-                <button
-  onClick={() => handleDeleteTeacher(t.userId)}
-  style={{
-    border: "none",
-    padding: "5px 10px",
-  }}
->
-   🗑️
-</button>
+                  <button
+                    onClick={() => handleDeleteTeacher(t.userId)}
+                    style={{
+                      border: "none",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    🗑️
+                  </button>
                 </td>
               </tr>
             )

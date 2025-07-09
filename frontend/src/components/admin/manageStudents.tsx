@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   getAllUsers,
@@ -9,13 +8,13 @@ import {
   updateStudent,
   addUser,
 } from "../../services/api";
-import type {User,StudentDetails,Gender} from "../../models/userModel";
+import type { User, StudentDetails, Gender } from "../../models/userModel";
 
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageStudents = () => {
   const [students, setStudents] = useState<(User)[]>([]);
-    const [newStudent, setNewStudent] = useState<Omit<StudentDetails, "studentId">>({
+  const [newStudent, setNewStudent] = useState<Omit<StudentDetails, "studentId">>({
     gender: "M",
     age: 0,
     birthDate: "",
@@ -28,9 +27,9 @@ const ManageStudents = () => {
     phone: "",
     password: "",
     role: "Student",
-    student:newStudent
+    student: newStudent
 
-    
+
   });
 
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
@@ -76,7 +75,7 @@ const ManageStudents = () => {
       });
       setStudents(fullList);
     } catch (error: any) {
-      showMessage(extractErrorMessage(error, "שגיאה בטעינת רשימת התלמידים"), "error");
+      showMessage(extractErrorMessage(error, "Error loading student list"), "error");
     }
   };
 
@@ -87,22 +86,22 @@ const ManageStudents = () => {
       await addStudent({
         studentId: newUser.userId,
         ...newStudent,
-        birthDate:newStudent.birthDate? new Date(newStudent.birthDate).toISOString():"",
+        birthDate: newStudent.birthDate ? new Date(newStudent.birthDate).toISOString() : "",
       });
       resetForm();
       loadStudents();
-      showMessage("תלמיד נוסף בהצלחה", "success");
+      showMessage("Student added successfully", "success");
     } catch (error: any) {
       showMessage(parseApiError(error), "error");
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("האם למחוק את המשתמש?")) return;
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
     try {
       await deleteUser(id);
       loadStudents();
-      showMessage("התלמיד נמחק בהצלחה", "success");
+      showMessage("Student deleted successfully", "success");
     } catch (error: any) {
       showMessage(parseApiError(error), "error");
     }
@@ -150,7 +149,7 @@ const ManageStudents = () => {
       await updateStudent(editingUserId, studentPatch);
       setEditingUserId(null);
       loadStudents();
-      showMessage("העדכון נשמר בהצלחה", "success");
+      showMessage("Student updated successfully", "success");
     } catch (error: any) {
       showMessage(parseApiError(error), "error");
     }
@@ -167,58 +166,59 @@ const ManageStudents = () => {
       role: "Student",
       student: {
         gender: "M",
-      age: 0,
-      birthDate: ""}
+        age: 0,
+        birthDate: ""
+      }
     });
-   
+
   };
 
   return (
     <div>
-      <h2>ניהול תלמידים</h2>
+      <h2>Student Management</h2>
 
       {errorMessage && <div style={{ color: "red", marginBottom: 10 }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green", marginBottom: 10 }}>{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
-        <h3>הוספת תלמיד חדש</h3>
+        <h3>Add New Student</h3>
         <input
           type="number"
           name="userId"
-          placeholder="ת.ז"
+          placeholder="ID"
           value={newUser.userId}
           required
           onChange={(e) => setNewUser({ ...newUser, userId: parseInt(e.target.value) })}
         />
         <input
           name="firstName"
-          placeholder="שם פרטי"
+          placeholder="First Name"
           value={newUser.firstName}
           required
           onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
         />
         <input
           name="lastName"
-          placeholder="שם משפחה"
+          placeholder="Last Name"
           value={newUser.lastName}
           required
           onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
         />
         <input
           name="email"
-          placeholder="אימייל"
+          placeholder="Email"
           value={newUser.email}
           onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
         />
         <input
           name="phone"
-          placeholder="טלפון"
+          placeholder="Phone"
           value={newUser.phone}
           onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
         />
         <input
           name="password"
-          placeholder="סיסמה"
+          placeholder="Password"
           value={newUser.password}
           required
           onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
@@ -234,34 +234,34 @@ const ManageStudents = () => {
           value={newStudent.gender}
           onChange={(e) => setNewStudent({ ...newStudent, gender: e.target.value as Gender })}
         >
-          <option value="M">זכר</option>
-          <option value="F">נקבה</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
         </select>
         <input
           type="number"
           name="age"
-          placeholder="גיל"
+          placeholder="Age"
           value={newStudent.age}
           onChange={(e) => setNewStudent({ ...newStudent, age: parseInt(e.target.value) })}
         />
-        <button type="submit">הוסף</button>
+        <button type="submit">Add</button>
       </form>
 
       <hr />
 
-      <h3>רשימת תלמידים</h3>
+      <h3>Student List</h3>
       <table cellPadding="8">
         <thead>
           <tr>
-            <th>ת.ז</th>
-            <th>שם פרטי</th>
-            <th>שם משפחה</th>
-            <th>טלפון</th>
-            <th>אימייל</th>
-            <th>מין</th>
-            <th>גיל</th>
-            <th>ת. לידה</th>
-            <th>פעולות</th>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Birth Date</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -303,8 +303,8 @@ const ManageStudents = () => {
                     value={editStudent.gender || "M"}
                     onChange={(e) => handleEditChange(e, "student")}
                   >
-                    <option value="M">זכר</option>
-                    <option value="F">נקבה</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
                   </select>
                 </td>
                 <td>
@@ -317,10 +317,10 @@ const ManageStudents = () => {
                 </td>
                 <td>{s.student?.birthDate?.substring(0, 10)}</td>
                 <td>
-                  <button onClick={handleSaveEdit} title="שמור">
+                  <button onClick={handleSaveEdit} title="Save">
                     💾
                   </button>
-                  <button onClick={() => setEditingUserId(null)} title="ביטול">
+                  <button onClick={() => setEditingUserId(null)} title="Cancel">
                     ❌
                   </button>
                 </td>
@@ -336,10 +336,10 @@ const ManageStudents = () => {
                 <td>{s.student?.age}</td>
                 <td>{s.student?.birthDate?.substring(0, 10)}</td>
                 <td>
-                  <button onClick={() => handleEditClick(s)} title="ערוך">
+                  <button onClick={() => handleEditClick(s)} title="Edit">
                     ✏️
                   </button>
-                  <button onClick={() => handleDelete(s.userId)} title="מחק">
+                  <button onClick={() => handleDelete(s.userId)} title="Delete">
                     🗑️
                   </button>
                 </td>

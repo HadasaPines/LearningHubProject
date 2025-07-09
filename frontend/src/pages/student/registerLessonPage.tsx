@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import type { Lesson } from "../../models/lessonModel";
 import type { LessonDetails } from "../../models/lessonDetailsModel";
@@ -25,13 +24,13 @@ const RegisterLessonForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const user = localStorage.getItem("user");
-  if (!user) return <div>משתמש לא מחובר</div>;
+  if (!user) return <div>User not logged in</div>;
   const userData: User = JSON.parse(user);
   if (userData.role !== "Student") {
-    return <div>גישה אסורה. רק תלמידים יכולים להירשם לשיעורים.</div>;
+    return <div>Access denied. Only students can register for lessons.</div>;
   }
   if(userData.student === undefined) {
-    return <div>משתמש לא מוגדר כתלמיד</div>;}
+    return <div>User is not defined as a student</div>;}
   const student: StudentDetails = userData.student ;
 
   const [formData, setFormData] = useState<LessonDetails>({
@@ -104,10 +103,10 @@ const RegisterLessonForm: React.FC = () => {
 
     try {
       await addRegistration(registration);
-      setSuccessMessage("נרשמת בהצלחה לשיעור!");
+      setSuccessMessage("Successfully registered for the lesson!");
       setErrorMessages(null);
     } catch (error) {
-      setErrorMessages("שגיאה בהרשמה: " + parseApiError(error));
+      setErrorMessages("Registration error: " + parseApiError(error));
     } 
   };
 
@@ -122,12 +121,12 @@ const RegisterLessonForm: React.FC = () => {
 
       <div dir="rtl" style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
         <form style={{ width: "320px" }}>
-          <h2>סנן שיעורים</h2>
+          <h2>Filter Lessons</h2>
 
           <div>
-            <label>מורה:</label>
+            <label>Teacher:</label>
             <select name="teacherId" value={formData.teacherId ?? ""} onChange={handleChange}>
-              <option value="">בחר מורה</option>
+              <option value="">Select a teacher</option>
               {teachers.map((teacher) => (
                 <option key={teacher.userId} value={teacher.userId}>
                   {teacher.firstName} {teacher.lastName}
@@ -137,9 +136,9 @@ const RegisterLessonForm: React.FC = () => {
           </div>
 
           <div>
-            <label>מקצוע:</label>
+            <label>Subject:</label>
             <select name="subjectId" value={formData.subjectId ?? ""} onChange={handleChange}>
-              <option value="">בחר מקצוע</option>
+              <option value="">Select a subject</option>
               {subjects.map((subject) => (
                 <option key={subject.subjectId} value={subject.subjectId}>
                   {subject.name}
@@ -148,11 +147,11 @@ const RegisterLessonForm: React.FC = () => {
             </select>
           </div>
 
-          <div><label>שעת התחלה:</label><input type="time" name="startTime" value={formData.startTime} onChange={handleChange} /></div>
-          <div><label>שעת סיום:</label><input type="time" name="endTime" value={formData.endTime} onChange={handleChange} /></div>
-          <div><label>תאריך מסוים:</label><input type="date" name="specificDate" value={formData.specificDate} onChange={handleChange} /></div>
-          <div><label>מתאריך:</label><input type="date" name="dateFrom" value={formData.dateFrom} onChange={handleChange} /></div>
-          <div><label>עד תאריך:</label><input type="date" name="dateTo" value={formData.dateTo} onChange={handleChange} /></div>
+          <div><label>Start Time:</label><input type="time" name="startTime" value={formData.startTime} onChange={handleChange} /></div>
+          <div><label>End Time:</label><input type="time" name="endTime" value={formData.endTime} onChange={handleChange} /></div>
+          <div><label>Specific Date:</label><input type="date" name="specificDate" value={formData.specificDate} onChange={handleChange} /></div>
+          <div><label>Date From:</label><input type="date" name="dateFrom" value={formData.dateFrom} onChange={handleChange} /></div>
+          <div><label>Date To:</label><input type="date" name="dateTo" value={formData.dateTo} onChange={handleChange} /></div>
         </form>
 
         <CalendarView
@@ -170,7 +169,7 @@ const RegisterLessonForm: React.FC = () => {
             setPaymentOpen(false);
             setSelectedLesson(null);
           }}
-          amount={150} // אפשר גם selectedLesson.price אם קיים
+          amount={150} 
           onPaymentSuccess={handlePaymentConfirm}
         />
       )}

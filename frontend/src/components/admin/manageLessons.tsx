@@ -7,7 +7,7 @@ import {
   updateLesson,
   deleteLesson,
   getStudentToLeeson,
-    deleteRegistrationByLessonId,
+  deleteRegistrationByLessonId,
 } from "../../services/api";
 import type { Lesson } from "../../models/lessonModel";
 import type { User } from "../../models/userModel";
@@ -27,7 +27,7 @@ const ManageLessons = () => {
     endTime: "",
     minAge: 0,
     maxAge: 0,
-    gender: "M",  
+    gender: "M",
     status: "Available",
   });
   const [editingLessonId, setEditingLessonId] = useState<number | null>(null);
@@ -66,12 +66,12 @@ const ManageLessons = () => {
     isEdit = false
   ) => {
     const { name, value } = e.target;
-   if(name=="teacherId" ){
+    if (name == "teacherId") {
       const selectedTeacher = teachers.find((teacher) => teacher.userId === Number(value));
-      newLesson.gender= selectedTeacher?.teacher?.gender || "M";
-      editLesson.gender= selectedTeacher?.teacher?.gender || "M";
+      newLesson.gender = selectedTeacher?.teacher?.gender || "M";
+      editLesson.gender = selectedTeacher?.teacher?.gender || "M";
 
-   }
+    }
     const parsedValue = ["teacherId", "subjectId", "minAge", "maxAge"].includes(name)
       ? parseInt(value)
       : value;
@@ -87,7 +87,7 @@ const ManageLessons = () => {
     e.preventDefault();
     try {
       await addLesson(newLesson);
-      showMessage("השיעור נוסף בהצלחה", "success");
+      showMessage("Lesson added successfully", "success");
       setNewLesson({
         teacherId: 0,
         subjectId: 0,
@@ -102,7 +102,7 @@ const ManageLessons = () => {
       const updated = await getAllLessons();
       setLessons(updated.data);
     } catch (error) {
-      showMessage("שגיאה בהוספת שיעור " + parseApiError(error), "error");
+      showMessage("Error adding lesson: " + parseApiError(error), "error");
     }
   };
 
@@ -111,91 +111,91 @@ const ManageLessons = () => {
     setEditLesson({ ...lesson });
   };
 
-const handleDeleteLesson = async (lessonId: number) => {
-
-  if (window.confirm("האם אתה בטוח שברצונך למחוק את השיעור הזה?")) {
-    try {
-      await deleteLesson(lessonId); 
-      setSuccessMessage("השיעור נמחק בהצלחה");
-      const updatedLessons = await getAllLessons();
-      setLessons(updatedLessons.data);
-    } catch (error) {
-      setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
+  const handleDeleteLesson = async (lessonId: number) => {
+    if (window.confirm("Are you sure you want to delete this lesson?")) {
+      try {
+        await deleteLesson(lessonId);
+        setSuccessMessage("Lesson deleted successfully");
+        const updatedLessons = await getAllLessons();
+        setLessons(updatedLessons.data);
+      } catch (error) {
+        setErrorMessage("Error deleting lesson: " + parseApiError(error));
+      }
     }
   }
-}
 
-const handleDeleteLessonWithStudent= async (lessonId: number) => {
-    const response= await getStudentToLeeson(lessonId);
-    const student:User=response.data;
+  const handleDeleteLessonWithStudent = async (lessonId: number) => {
+    const response = await getStudentToLeeson(lessonId);
+    const student: User = response.data;
     if (student) {
-
-      const massage=`${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
-          if (window.confirm("שיפ לב שהרישום לשיעור ימחק ואתה צריך להודיע לתלמיד על ביטול השיעור:  " + massage)) {
-    try {
-                await deleteRegistrationByLessonId(lessonId);
-      await deleteLesson(lessonId); 
-      setSuccessMessage("השיעור נמחק בהצלחה");
-      const updatedLessons = await getAllLessons();
-      setLessons(updatedLessons.data);
-    } catch (error) {
-      setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
-    }}}
-}
-  
-const formatDateToDateOnly = (dateString: any) => {
-  const date = new Date(dateString);
-  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-};
-
-const formatTimeToTimeOnly = (timeString: any) => {
-  const [hours, minutes] = timeString.split(":");
-  return `${hours}:${minutes}`;
-};
-
-
- const handleSaveEdit = async () => {
-  if (!editingLessonId) return;
-
-
-  try {
-    const lessonPatch = [
-      { op: "replace", path: "/teacherId", value: editLesson.teacherId },
-      { op: "replace", path: "/subjectId", value: editLesson.subjectId },
-        { op: "replace", path: "/gender", value: editLesson.gender },
-      { op: "replace", path: "/lessonDate", value: formatDateToDateOnly(editLesson.lessonDate) },
-     { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editLesson.startTime) },
-      { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editLesson.endTime) },
-      { op: "replace", path: "/minAge", value: editLesson.minAge },
-      { op: "replace", path: "/maxAge", value: editLesson.maxAge },
-    ];
-
-    await updateLesson(editingLessonId, lessonPatch); 
-    setSuccessMessage("השיעור עודכן בהצלחה");
-
-    const updated = await getAllLessons(); 
-    setLessons(updated.data);
-
-    setEditingLessonId(null);
-    setEditLesson({});
-  } catch (error) {
-    setErrorMessage("שגיאה בעדכון השיעור: " + parseApiError(error));
+      const massage = `${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
+      if (window.confirm("Note: This lesson has a registered student. Are you sure you want to delete the lesson? " + massage)) {
+        try {
+          await deleteRegistrationByLessonId(lessonId);
+          await deleteLesson(lessonId);
+          setSuccessMessage("Lesson deleted successfully");
+          const updatedLessons = await getAllLessons();
+          setLessons(updatedLessons.data);
+        } catch (error) {
+          setErrorMessage("Error deleting lesson: " + parseApiError(error));
+        }
+      }
+    }
   }
-};
 
- 
+  const formatDateToDateOnly = (dateString: any) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  };
+
+  const formatTimeToTimeOnly = (timeString: any) => {
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  };
+
+
+  const handleSaveEdit = async () => {
+    if (!editingLessonId) return;
+
+
+    try {
+      const lessonPatch = [
+        { op: "replace", path: "/teacherId", value: editLesson.teacherId },
+        { op: "replace", path: "/subjectId", value: editLesson.subjectId },
+        { op: "replace", path: "/gender", value: editLesson.gender },
+        { op: "replace", path: "/lessonDate", value: formatDateToDateOnly(editLesson.lessonDate) },
+        { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editLesson.startTime) },
+        { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editLesson.endTime) },
+        { op: "replace", path: "/minAge", value: editLesson.minAge },
+        { op: "replace", path: "/maxAge", value: editLesson.maxAge },
+      ];
+
+      await updateLesson(editingLessonId, lessonPatch);
+      setSuccessMessage("Lesson updated successfully");
+
+      const updated = await getAllLessons();
+      setLessons(updated.data);
+
+      setEditingLessonId(null);
+      setEditLesson({});
+    } catch (error) {
+      setErrorMessage("Error updating lesson: " + parseApiError(error));
+    }
+  };
+
+
 
   return (
     <div>
-      <h2>ניהול שיעורים</h2>
+      <h2>Manage Lessons</h2>
 
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
-        <h3>הוספת שיעור חדש</h3>
+        <h3>Add New Lesson</h3>
         <select name="teacherId" value={newLesson.teacherId} onChange={handleChange}>
-          <option value="">בחר מורה</option>
+          <option value="">Select Teacher</option>
           {teachers.map((t) => (
             <option key={t.userId} value={t.userId}>
               {t.firstName} {t.lastName}
@@ -203,7 +203,7 @@ const formatTimeToTimeOnly = (timeString: any) => {
           ))}
         </select>
         <select name="subjectId" value={newLesson.subjectId} onChange={handleChange}>
-          <option value="">בחר מקצוע</option>
+          <option value="">Select Subject</option>
           {subjects.map((s) => (
             <option key={s.subjectId} value={s.subjectId}>
               {s.name}
@@ -213,24 +213,24 @@ const formatTimeToTimeOnly = (timeString: any) => {
         <input name="lessonDate" type="date" value={newLesson.lessonDate} onChange={handleChange} />
         <input name="startTime" type="time" value={newLesson.startTime} onChange={handleChange} />
         <input name="endTime" type="time" value={newLesson.endTime} onChange={handleChange} />
-        <input name="minAge" type="number" placeholder="גיל מינ'" value={newLesson.minAge} onChange={handleChange} />
-        <input name="maxAge" type="number" placeholder="גיל מקס'" value={newLesson.maxAge} onChange={handleChange} />
-        <button type="submit">הוסף שיעור</button>
+        <input name="minAge" type="number" placeholder="Min Age" value={newLesson.minAge} onChange={handleChange} />
+        <input name="maxAge" type="number" placeholder="Max Age" value={newLesson.maxAge} onChange={handleChange} />
+        <button type="submit">Add Lesson</button>
       </form>
 
       <hr />
-      <h3>רשימת שיעורים</h3>
+      <h3>Lesson List</h3>
       <table>
         <thead>
           <tr>
-            <th>תאריך</th>
-            <th>שעה</th>
-            <th>מורה</th>
-            <th>מקצוע</th>
-            <th>גילאים</th>
-            <th>מין</th>
-            <th>סטטוס</th>
-            <th>פעולות</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Teacher</th>
+            <th>Subject</th>
+            <th>Age Range</th>
+            <th>Gender</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -269,7 +269,7 @@ const formatTimeToTimeOnly = (timeString: any) => {
                   <input type="number" name="maxAge" value={editLesson.maxAge || 0} onChange={(e) => handleChange(e, true)} />
                 </td>
                 <td>
-               
+
                 </td>
                 <td>{lesson.status}</td>
                 <td>
@@ -288,30 +288,30 @@ const formatTimeToTimeOnly = (timeString: any) => {
                 <td>
                   {lesson.minAge} - {lesson.maxAge}
                 </td>
-                <td>{lesson.gender === "M" ? "זכר" : "נקבה"}</td>
+                <td>{lesson.gender === "M" ? "Male" : "Female"}</td>
                 <td>{lesson.status}</td>
                 <td>
-                 <button
-  onClick={() => handleEditClick(lesson)}
-  disabled={lesson.status !== "Available"}
-  style={{
-    cursor: lesson.status === "Available" ? "pointer" : "not-allowed",
-    border: "none",
-    padding: "5px 10px",
-  }}
->
-  ✏️
-</button>
+                  <button
+                    onClick={() => handleEditClick(lesson)}
+                    disabled={lesson.status !== "Available"}
+                    style={{
+                      cursor: lesson.status === "Available" ? "pointer" : "not-allowed",
+                      border: "none",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    ✏️
+                  </button>
 
-  <button
-  onClick={() =>lesson.status!="booked" ?handleDeleteLesson(lesson.lessonId):handleDeleteLessonWithStudent(lesson.lessonId)}
-  style={{
-    border: "none",
-    padding: "5px 10px",
-  }}
->
-   🗑️
-</button>
+                  <button
+                    onClick={() => lesson.status != "booked" ? handleDeleteLesson(lesson.lessonId) : handleDeleteLessonWithStudent(lesson.lessonId)}
+                    style={{
+                      border: "none",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    🗑️
+                  </button>
 
                 </td>
               </tr>
