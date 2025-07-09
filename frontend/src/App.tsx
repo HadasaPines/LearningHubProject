@@ -11,6 +11,16 @@ import ManageSubjects from "./components/admin/manageSubjects";
 import StudentProfile from "./components/student/studentProfile";
 import StudentLessonHistory from "./components/student/lessonsHistory";
 
+import ManageSubjects from "./components/admin/manageSubjects";
+import ManageAvailability from "./components/admin/manageAvailability";
+import ManageStudents from "./components/admin/manageStudents";
+import ManageLessons from "./components/admin/manageLessons";
+import ManageTeachers from "./components/admin/manageTeachers";
+import TestimonialsSection from "./components/home/testimonialsSection";
+import CallToActionSection from "./components/home/callToActionSection";
+import FAQSection from "./components/home/FAQSection";
+import OurTeachersSection from "./components/home/ourTeachersSection";
+import OurLessonsSection from "./components/home/ourLessonsSection";
 
 function App() {
   return (
@@ -29,6 +39,13 @@ function App() {
         <Route path="/student/profile" element={<StudentProfile />} />
         <Route path="/student/lessons-history" element={<StudentLessonHistory />} />
      
+      <Route path ="/home/testimonials" element={<TestimonialsSection/>} />
+
+      <Route path ="/home/call-to-action" element={<CallToActionSection/>} />
+      <Route path ="/home/FAQ" element={<FAQSection/>} />
+      <Route path ="/home/our-teachers" element={<OurTeachersSection/>} />
+      <Route path ="/home/our-lessons" element={<OurLessonsSection/>}/>
+
 
       </Routes>
     </Router>
