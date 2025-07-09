@@ -25,4 +25,7 @@ public partial class Student
     [ForeignKey("StudentId")]
     [InverseProperty("Student")]
     public virtual User StudentNavigation { get; set; } = null!;
+
+    [InverseProperty("Student")]
+    public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();
 }

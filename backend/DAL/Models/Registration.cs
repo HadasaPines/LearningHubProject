@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models;
 
-[Index("LessonId", Name = "UQ_Registrations_Lesson", IsUnique = true)]
+[Index("LessonId", Name = "UQ_Registrations_LessonId", IsUnique = true)]
 public partial class Registration
 {
     [Key]
@@ -17,7 +17,7 @@ public partial class Registration
     public int StudentId { get; set; }
 
     [Column(TypeName = "datetime")]
-    public DateTime? RegistrationDate { get; set; }
+    public DateTime RegistrationDate { get; set; }
 
     [ForeignKey("LessonId")]
     [InverseProperty("Registration")]

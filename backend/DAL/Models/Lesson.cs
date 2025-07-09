@@ -11,7 +11,7 @@ public partial class Lesson
     [Key]
     public int LessonId { get; set; }
 
-    public int TeacherId { get; set; }
+    public int? TeacherId { get; set; }
 
     public int SubjectId { get; set; }
 
@@ -32,6 +32,9 @@ public partial class Lesson
     [StringLength(20)]
     public string Status { get; set; } = null!;
 
+    [StringLength(20)]
+    public string? TeacherName { get; set; }
+
     [InverseProperty("Lesson")]
     public virtual Registration? Registration { get; set; }
 
@@ -41,5 +44,5 @@ public partial class Lesson
 
     [ForeignKey("TeacherId")]
     [InverseProperty("Lessons")]
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher? Teacher { get; set; }
 }

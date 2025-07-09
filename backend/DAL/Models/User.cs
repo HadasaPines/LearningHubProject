@@ -30,6 +30,9 @@ public partial class User
     [StringLength(10)]
     public string Role { get; set; } = null!;
 
+    [InverseProperty("User")]
+    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+
     [InverseProperty("StudentNavigation")]
     public virtual Student? Student { get; set; }
 

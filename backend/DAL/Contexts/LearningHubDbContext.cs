@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.Models;
+namespace DAL.Contexts;
 
 public partial class LearningHubDbContext : DbContext
 {
@@ -17,11 +18,17 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<Lesson> Lessons { get; set; }
 
+    public virtual DbSet<Payment> Payments { get; set; }
+
     public virtual DbSet<Registration> Registrations { get; set; }
 
     public virtual DbSet<Student> Students { get; set; }
 
+    public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
+
     public virtual DbSet<Subject> Subjects { get; set; }
+
+    public virtual DbSet<Subscription> Subscriptions { get; set; }
 
     public virtual DbSet<Teacher> Teachers { get; set; }
 
@@ -31,33 +38,37 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Lesson>(entity =>
         {
-            entity.HasKey(e => e.LessonId).HasName("PK__Lessons__B084ACD0476C1339");
-
             entity.Property(e => e.Gender)
                 .IsFixedLength()
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Status)
                 .HasDefaultValue("Available")
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.TeacherName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Lessons)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Lessons_Subjects");
 
-            entity.HasOne(d => d.Teacher).WithMany(p => p.Lessons)
+            entity.HasOne(d => d.Teacher).WithMany(p => p.Lessons).HasConstraintName("FK_Lessons_Teachers");
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.Property(e => e.PaymentDate).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Payments)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Lessons_Teachers");
+                .HasConstraintName("FK_Payments_Users");
         });
 
         modelBuilder.Entity<Registration>(entity =>
         {
-            entity.HasKey(e => e.RegistrationId).HasName("PK__Registra__6EF588101EC4BB5C");
-
             entity.Property(e => e.RegistrationDate).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.Lesson).WithOne(p => p.Registration)
@@ -71,8 +82,6 @@ public partial class LearningHubDbContext : DbContext
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.StudentId).HasName("PK__Students__32C52B992EDBEF62");
-
             entity.Property(e => e.StudentId).ValueGeneratedNever();
             entity.Property(e => e.Gender)
                 .IsFixedLength()
@@ -83,6 +92,19 @@ public partial class LearningHubDbContext : DbContext
                 .HasConstraintName("FK_Students_Users");
         });
 
+        modelBuilder.Entity<StudentSubscription>(entity =>
+        {
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Student).WithMany(p => p.StudentSubscriptions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_StudentSubscriptions_Students");
+
+            entity.HasOne(d => d.Subscription).WithMany(p => p.StudentSubscriptions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_StudentSubscriptions_Subscriptions");
+        });
+
         modelBuilder.Entity<Subject>(entity =>
         {
             entity.HasKey(e => e.SubjectId).HasName("PK__Subjects__AC1BA3A8209A45EB");
@@ -90,10 +112,16 @@ public partial class LearningHubDbContext : DbContext
             entity.Property(e => e.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 
+        modelBuilder.Entity<Subscription>(entity =>
+        {
+            entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249D8008F7DA");
+
+            entity.Property(e => e.Description).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        });
+
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.TeacherId).HasName("PK__Teachers__EDF2596463D03245");
-
             entity.Property(e => e.TeacherId).ValueGeneratedNever();
             entity.Property(e => e.Bio).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Gender)
