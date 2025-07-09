@@ -10,7 +10,7 @@ namespace DAL.Api
         Task<Lesson> GetLessonByRegistrationId(int id);
         Task<Registration> GetRegistrationById(int registrationId);
         Task<Registration> GetRegistrationByLessonId(int lessonId);
-        Task<List<Registration>> GetRegistrationsToStudent(Student student);
+        Task<List<Registration>> GetRegistrationsToStudent(int studentId);
         Task<Student> GetStudentByRegistrationId(int id);
         Task UpdateRegistration(Registration registration);
 

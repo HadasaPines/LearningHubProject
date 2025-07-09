@@ -9,6 +9,7 @@ import ManageTeachers from "./components/admin/manageTeachers";
 import ManageLessons from "./components/admin/manageLessons";
 import ManageSubjects from "./components/admin/manageSubjects";
 import StudentProfile from "./components/student/studentProfile";
+import StudentLessonHistory from "./components/student/lessonsHistory";
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
         <Route path="/admin/manage-lessons" element={<ManageLessons />} />
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />
         <Route path="/student/profile" element={<StudentProfile />} />
-      
+        <Route path="/student/lessons-history" element={<StudentLessonHistory />} />
+     
 
       </Routes>
     </Router>

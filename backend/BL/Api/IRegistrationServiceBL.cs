@@ -11,7 +11,7 @@ namespace BL.Api
         Task<List<RegistrationBL>> GetAllRegistrations();
         Task<RegistrationBL> GetRegistrationById(int registrationId);
         Task<RegistrationBL> GetRegistrationByLessonId(int lessonId);
-        Task<List<RegistrationBL>> GetRegistrationsToStudent(StudentBL studentBL);
+        Task<List<RegistrationBL>> GetRegistrationsToStudent(int studentId);
         Task UpdateRegistration(int id, JsonPatchDocument<RegistrationBL> patchDoc);
         Task<LessonBL> GetLessonByRegistrationId(int  registrationId);
         Task<StudentBL> GetStudentByRegistrationId(int  registrationId);

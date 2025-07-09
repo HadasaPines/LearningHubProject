@@ -117,7 +117,12 @@ export const deleteTeacher = (teacherId: number) => {
   return api.delete(`/Teacher/deleteTeacher/${teacherId}`);
 };
 export const getLessonsByTeacherId = async (teacherId: number) => {
-  return api.get<Lesson[]>(`/Lesson/getLessonsByTeacherId/${teacherId}`);}
+  return api.get<Lesson[]>(`/Lesson/getLessonsByTeacherId/${teacherId}`)
+;}
+export const getLessonsByStudentId = async (studentId: number) => {
+  return api.get<Lesson[]>(`/Lesson/getLessonsByStudentId/${studentId}`)
+;}
+
 
 export const getAllAvailabilities = () =>
   api.get("/TeacherAvailability/getAllTeacherAvailability");

@@ -98,5 +98,13 @@ namespace WebAPI.Controllers
             //}
             return Ok(lessons);
         }
+        [HttpGet("getLessonsByStudentId/{studentId}")]
+        public async Task<IActionResult> GetLessonsByStudentId(int studentId)
+        {
+            var lessons = await _lessonServiceBL.GetLessonsByStudentId(studentId);
+    
+            return Ok(lessons);
         }
+
+    }
 }

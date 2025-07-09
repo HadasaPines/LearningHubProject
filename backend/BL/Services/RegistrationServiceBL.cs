@@ -138,10 +138,11 @@ namespace BL.Services
             return _mapper.Map<RegistrationBL>(registration);
 
         }
-        public async Task<List<RegistrationBL>> GetRegistrationsToStudent(StudentBL studentBL)
+        public async Task<List<RegistrationBL>> GetRegistrationsToStudent(int studentId)
         {
-            var student = _mapper.Map<Student>(studentBL);
-            var registrations = await _registrationServiceDAL.GetRegistrationsToStudent(student);
+           
+      
+            var registrations = await _registrationServiceDAL.GetRegistrationsToStudent(studentId);
 
             return _mapper.Map<List<RegistrationBL>>(registrations);
         }
