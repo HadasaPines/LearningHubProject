@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getAllSubjects,
   addSubject,
-} from "../../services/api"; // הורדנו deleteSubject
+} from "../../services/api";
 import type { Subject } from "../../models/subjectModel";
 import { parseApiError } from "../../utils/apiErrorParser";
 
@@ -53,7 +53,7 @@ const ManageSubjects = () => {
       await addSubject(newSubject);
       setNewSubject({ name: "" });
       loadSubjects();
-      showMessage("מקצוע נוסף בהצלחה", "success");
+      showMessage("Subject added successfully", "success");
     } catch (error) {
       showMessage(parseApiError(error), "error");
     }
@@ -61,35 +61,35 @@ const ManageSubjects = () => {
 
   return (
     <div>
-      <h2>ניהול מקצועות</h2>
+      <h2>Subject Management</h2>
 
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
-        <h3>הוספת מקצוע חדש</h3>
+        <h3>Add New Subject</h3>
         <select
           value={newSubject.name}
           onChange={(e) => setNewSubject({ name: e.target.value })}
           required
         >
-          <option value="">בחר מקצוע</option>
+          <option value="">Select Subject</option>
           {SUBJECT_OPTIONS.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
           ))}
         </select>
-        <button type="submit">הוסף</button>
+        <button type="submit">Add</button>
       </form>
 
       <hr />
 
-      <h3>רשימת מקצועות</h3>
+      <h3>Subjects List</h3>
       <table cellPadding={8}>
         <thead>
           <tr>
-            <th>שם</th>
+            <th>Name</th>
           </tr>
         </thead>
         <tbody>

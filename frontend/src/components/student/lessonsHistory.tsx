@@ -44,12 +44,12 @@ const StudentLessonHistory = () => {
 
   const getTeacherName = (id: number) => {
     const teacher = teachers.find((t) => t.userId === id);
-    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "לא ידוע";
+    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "Unknown";
   };
 
   const getSubjectName = (id: number) => {
     const subject = subjects.find((s) => s.subjectId === id);
-    return subject ? subject.name : "לא ידוע";
+    return subject ? subject.name : "Unknown";
   };
 
   const now = new Date();
@@ -77,9 +77,9 @@ const handleCancelClick = async (lesson: Lesson) => {
   const diffMs = lessonDateTime.getTime() - now.getTime();
   const diffHours = diffMs / (1000 * 60 * 60);
 
-  let message = "האם את/ה בטוח/ה שברצונך לבטל את ההשתתפות בשיעור?";
+  let message = "Are you sure you want to cancel your participation in the lesson?";
   if (diffHours < 24) {
-    message += "\nשימו לב: ביטול פחות מ-24 שעות לפני השיעור יחייב בתשלום מלא.";
+    message += "\nNote: Cancelling less than 24 hours before the lesson will incur a full charge.";
   }
 
   const confirmed = window.confirm(message);
@@ -91,12 +91,12 @@ const handleCancelClick = async (lesson: Lesson) => {
 
     await deleteRegistrationByLessonId(lesson.lessonId);
 
-    // מסירים את השיעור מהרשימה לגמרי
+    // Remove the lesson from the list entirely
     setLessons((prev) => prev.filter((l) => l.lessonId !== lesson.lessonId));
 
   } catch (err) {
     console.error("Error cancelling registration:", err);
-    setAlert("אירעה שגיאה בעת ביטול השיעור.");
+    setAlert("An error occurred while canceling the lesson.");
   } finally {
     setLoadingLessonId(null);
   }
@@ -105,19 +105,19 @@ const handleCancelClick = async (lesson: Lesson) => {
 
   const renderLesson = (l: Lesson, withCancel = false) => (
     <li key={l.lessonId}>
-      <strong>תאריך:</strong> {l.lessonDate} |
-      <strong> שעה:</strong> {l.startTime} - {l.endTime} |
-      <strong> מורה:</strong> {getTeacherName(l.teacherId)} |
-      <strong> מקצוע:</strong> {getSubjectName(l.subjectId)} |
-      <strong> גילאים:</strong> {l.minAge}-{l.maxAge} |
-      <strong> מגדר:</strong> {l.gender === "M" ? "זכר" : "נקבה"}{" "}
+      <strong>Date:</strong> {l.lessonDate} |
+      <strong> Time:</strong> {l.startTime} - {l.endTime} |
+      <strong> Teacher:</strong> {getTeacherName(l.teacherId)} |
+      <strong> Subject:</strong> {getSubjectName(l.subjectId)} |
+      <strong> Ages:</strong> {l.minAge}-{l.maxAge} |
+      <strong> Gender:</strong> {l.gender === "M" ? "Male" : "Female"}{" "}
       {withCancel && (
         <button
           onClick={() => handleCancelClick(l)}
           disabled={loadingLessonId === l.lessonId}
           style={{ marginRight: "10px" }}
         >
-          {loadingLessonId === l.lessonId ? "מבטל..." : "בטל השתתפות"}
+          {loadingLessonId === l.lessonId ? "Cancelling..." : "Cancel Participation"}
         </button>
       )}
     </li>
@@ -125,13 +125,13 @@ const handleCancelClick = async (lesson: Lesson) => {
 
   return (
     <div>
-      <h2>שיעורים עתידיים</h2>
+      <h2>Upcoming Lessons</h2>
       <ul>{upcomingLessons.map((l) => renderLesson(l, true))}</ul>
 
-      <h2>שיעורים שעברו</h2>
+      <h2>Past Lessons</h2>
       <ul>{pastLessons.map((l) => renderLesson(l))}</ul>
 
-      <h2>שיעורים שבוטלו</h2>
+      <h2>Canceled Lessons</h2>
       <ul>{canceledLessons.map((l) => renderLesson(l))}</ul>
 
       {alert && <p style={{ color: "red" }}>{alert}</p>}

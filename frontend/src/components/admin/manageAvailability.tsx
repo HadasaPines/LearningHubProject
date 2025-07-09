@@ -5,27 +5,26 @@ import {
   getAllTeachers,
   addAvailability,
   getAllAvailabilities,
-  // וודא שקיים עדכון זמינות
   updateAvailability,
   deleteAvailability,
 } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const weekDays = [
-  { value: 1, label: "ראשון" },
-  { value: 2, label: "שני" },
-  { value: 3, label: "שלישי" },
-  { value: 4, label: "רביעי" },
-  { value: 5, label: "חמישי" },
-  { value: 6, label: "שישי" },
-  { value: 7, label: "שבת" },
+  { value: 1, label: "Sunday" },
+  { value: 2, label: "Monday" },
+  { value: 3, label: "Tuesday" },
+  { value: 4, label: "Wednesday" },
+  { value: 5, label: "Thursday" },
+  { value: 6, label: "Friday" },
+  { value: 7, label: "Saturday" },
 ];
 
 const ManageAvailability = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [availabilities, setAvailabilities] = useState<TeacherAvailability[]>([]);
 
-  // מצב להוספה חדשה
+  // State for new availability
   const [newAvailability, setNewAvailability] = useState<Omit<TeacherAvailability, "availabilityId">>({
     teacherId: 0,
     weekDay: 1,
@@ -33,7 +32,6 @@ const ManageAvailability = () => {
     endTime: "",
   });
 
-  // מצב לעריכה
   const [editingAvailabilityId, setEditingAvailabilityId] = useState<number | null>(null);
   const [editAvailability, setEditAvailability] = useState<Omit<TeacherAvailability, "availabilityId">>({
     teacherId: 0,
@@ -67,7 +65,6 @@ const ManageAvailability = () => {
     })();
   }, []);
 
-  // שינוי בשדות הוספה
   const handleNewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewAvailability((prev) => ({
@@ -75,7 +72,6 @@ const ManageAvailability = () => {
       [name]: name === "teacherId" || name === "weekDay" ? +value : value,
     }));
   };
-
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -89,7 +85,7 @@ const ManageAvailability = () => {
     e.preventDefault();
     try {
       await addAvailability(newAvailability);
-      showMessage("זמינות נוספה בהצלחה", "success");
+      showMessage("Availability added successfully", "success");
       setNewAvailability({ teacherId: 0, weekDay: 1, startTime: "", endTime: "" });
       const updated = await getAllAvailabilities();
       setAvailabilities(updated.data);
@@ -98,65 +94,61 @@ const ManageAvailability = () => {
     }
   };
 
-
-const formatTimeToTimeOnly = (timeString: any) => {
-  const [hours, minutes] = timeString.split(":");
-  return `${hours}:${minutes}`;
-};
+  const formatTimeToTimeOnly = (timeString: any) => {
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  };
 
   const handleSaveEditAvailability = async () => {
-    console.log("Saving edited availability:", formatTimeToTimeOnly( editAvailability.endTime));
+    console.log("Saving edited availability:", formatTimeToTimeOnly(editAvailability.endTime));
     if (!editingAvailabilityId) return;
     try {
       const patch = [
         { op: "replace", path: "/teacherId", value: editAvailability.teacherId },
         { op: "replace", path: "/weekDay", value: editAvailability.weekDay },
-        { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editAvailability.startTime )},
-        { op: "replace", path: "/endTime", value:formatTimeToTimeOnly( editAvailability.endTime) },
+        { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editAvailability.startTime) },
+        { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editAvailability.endTime) },
       ];
 
       await updateAvailability(editingAvailabilityId, patch);
-      showMessage("הזמינות עודכנה בהצלחה", "success");
+      showMessage("Availability updated successfully", "success");
       setEditingAvailabilityId(null);
       setEditAvailability({ teacherId: 0, weekDay: 1, startTime: "", endTime: "" });
       const updated = await getAllAvailabilities();
       setAvailabilities(updated.data);
     } catch (err) {
-      showMessage("שגיאה בעדכון זמינות: " + parseApiError(err), "error");
+      showMessage("Error updating availability: " + parseApiError(err), "error");
     }
   };
 
- 
   const getTeacherName = (teacherId: number) => {
     const teacher = teachers.find((t) => t.userId === teacherId);
-    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "לא נמצא מורה";
+    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "Teacher not found";
   };
 
-  const handleDeleteLesson = async (lessonId: number) => {
-  // const lessons = await getLessonsByAvaiability(id);
-    if (window.confirm("האם אתה בטוח שברצונך למחוק את הזמינות הזה? כל שיעור המורה בזמינות זו ימחקו גם...")) {
+  const handleDeleteLesson = async (availabilityId: number) => {
+    if (window.confirm("Are you sure you want to delete this availability? All lessons for this availability will also be deleted...")) {
       try {
-        await deleteAvailability(lessonId); 
-        setSuccessMessage(" נמחק בהצלחה");
-        const updateAvailability = await getAllAvailabilities();
-        setAvailabilities(updateAvailability.data);
+        await deleteAvailability(availabilityId);
+        setSuccessMessage("Deleted successfully");
+        const updated = await getAllAvailabilities();
+        setAvailabilities(updated.data);
       } catch (error) {
-        setErrorMessage("שגיאה במחיקת שיעור: " + parseApiError(error));
+        setErrorMessage("Error deleting availability: " + parseApiError(error));
       }
     }
-  }
-  
+  };
 
   return (
     <div>
-      <h2>ניהול זמינות מורים</h2>
+      <h2>Manage Teacher Availability</h2>
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
-        <h3>הוספת זמינות חדשה</h3>
+        <h3>Add New Availability</h3>
         <select name="teacherId" value={newAvailability.teacherId} onChange={handleNewChange} required>
-          <option value={0}>בחר מורה</option>
+          <option value={0}>Select Teacher</option>
           {teachers.map((t) => (
             <option key={t.userId} value={t.userId}>
               {t.firstName} {t.lastName}
@@ -186,20 +178,20 @@ const formatTimeToTimeOnly = (timeString: any) => {
           onChange={handleNewChange}
           required
         />
-        <button type="submit">הוסף זמינות</button>
+        <button type="submit">Add Availability</button>
       </form>
 
       <hr />
 
-      <h3>רשימת זמינויות</h3>
+      <h3>Availability List</h3>
       <table>
         <thead>
           <tr>
-            <th>מורה</th>
-            <th>יום</th>
-            <th>משעה</th>
-            <th>עד שעה</th>
-            <th>פעולות</th>
+            <th>Teacher</th>
+            <th>Day</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -266,15 +258,15 @@ const formatTimeToTimeOnly = (timeString: any) => {
                     ✏️
                   </button>
 
-                    <button
-  onClick={() => handleDeleteLesson(a.availabilityId)}
-  style={{
-    border: "none",
-    padding: "5px 10px",
-  }}
->
-   🗑️
-</button>
+                  <button
+                    onClick={() => handleDeleteLesson(a.availabilityId)}
+                    style={{
+                      border: "none",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    🗑️
+                  </button>
                 </td>
               </tr>
             )
