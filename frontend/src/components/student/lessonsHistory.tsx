@@ -17,15 +17,29 @@ const StudentLessonHistory = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
-  useEffect(() => {
+useEffect(() => {
+  const fetchData = async () => {
     if (!studentId) return;
 
-    getLessonsByStudentId(studentId).then((res) => setLessons(res.data));
-    console.log("lessons", lessons);    
+    try {
+      const lessonsRes = await getLessonsByStudentId(studentId);
+      const lessonsData = lessonsRes.data as Lesson[];
+      console.log("lessons from API", lessonsData);
+      setLessons(lessonsData);
 
-    getAllTeachers().then((res) => setTeachers(res.data));
-    getAllSubjects().then((res) => setSubjects(res.data));
-  }, [studentId]);
+      const teachersRes = await getAllTeachers();
+      setTeachers(teachersRes.data);
+
+      const subjectsRes = await getAllSubjects();
+      setSubjects(subjectsRes.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  fetchData();
+}, [studentId]);
+
 
   const getTeacherName = (id: number) => {
     const teacher = teachers.find((t) => t.userId === id);
@@ -55,7 +69,6 @@ const upcomingLessons = validLessons.filter(
     l.status === "booked" &&
     new Date(`${l.lessonDate}T${l.endTime}`) >= now
 );
-
   
 
   const renderLesson = (l: Lesson) => (

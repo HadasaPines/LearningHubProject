@@ -100,6 +100,7 @@ namespace WebAPI.Controllers
         }
         [HttpGet("getLessonsByStudentId/{studentId}")]
         public async Task<IActionResult> GetLessonsByStudentId(int studentId)
+        
         {
             var lessons = await _lessonServiceBL.GetLessonsByStudentId(studentId);
     
