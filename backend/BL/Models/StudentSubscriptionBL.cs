@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    internal class StudentSubscriptionBL
+   public class StudentSubscriptionBL
     {
+        public int StudentSubscriptionId { get; set; }
+
+        public int StudentId { get; set; }
+
+        public int SubscriptionId { get; set; }
+
+        public int LessonsUsed { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

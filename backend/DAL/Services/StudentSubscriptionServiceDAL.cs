@@ -1,4 +1,5 @@
-﻿using DAL.Contexts;
+﻿using DAL.Api;
+using DAL.Contexts;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -47,8 +48,15 @@ namespace DAL.Services
             _context.Entry(existingSubscription).CurrentValues.SetValues(studentSubscription);
             await _context.SaveChangesAsync();
         }
+        public async Task<List<StudentSubscription>> GetStudentSubscriptionsByStudentId(int studentId)
+        {
+            return await _context.StudentSubscriptions
+                .Where(ss => ss.StudentId == studentId)
+                .Include(ss => ss.Student)
+                .ToListAsync();
 
 
+        }
     }
 }
 

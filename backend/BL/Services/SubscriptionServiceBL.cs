@@ -25,19 +25,30 @@ namespace BL.Services
             _mapper = mapper;
         }
 
-        public async Task AddSubscription(Subscription subscription)
+        public async Task AddSubscription(SubscriptionBL subscriptionBL)
         {
+            if (subscriptionBL == null)
+                throw new ArgumentNullException(nameof(subscriptionBL), "Subscription cannot be null");
+            var subscription = _mapper.Map<Subscription>(subscriptionBL);
             await _subscriptionServiceDAL.AddSubscription(subscription);
         }
 
-        public async Task<List<Subscription>> GetAllSubscriptions()
+        public async Task<List<SubscriptionBL>> GetAllSubscriptions()
         {
-            return await _subscriptionServiceDAL.GetAllSubscriptions();
+            var subscriptions = await _subscriptionServiceDAL.GetAllSubscriptions();
+            if (subscriptions == null || !subscriptions.Any())
+                throw new SubscriptionNotFoundException("No subscriptions found");
+            return _mapper.Map<List<SubscriptionBL>>(subscriptions);
+            
         }
 
-        public async Task<Subscription> GetSubscriptionById(int id)
+        public async Task<SubscriptionBL> GetSubscriptionById(int id)
         {
-            return await _subscriptionServiceDAL.GetSubscriptionById(id);
+            var subscription = await _subscriptionServiceDAL.GetSubscriptionById(id);
+            if (subscription == null)
+                throw new SubscriptionNotFoundException($"Subscription with ID '{id}' not found");
+            return _mapper.Map<SubscriptionBL>(subscription);
+            
         }
 
         public async Task UpdateSubscriptionAsync(int id, JsonPatchDocument<SubscriptionBL> patchDoc)

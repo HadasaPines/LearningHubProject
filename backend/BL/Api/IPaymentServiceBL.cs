@@ -9,5 +9,7 @@ namespace BL.Api
         Task<List<PaymentBL>> GetAllPayments();
         Task<PaymentBL> GetPaymentById(int paymentId);
         Task<List<PaymentBL>> GetPaymentsByStudentId(int studentId);
+
+
     }
 }

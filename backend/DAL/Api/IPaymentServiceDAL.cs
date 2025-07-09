@@ -9,6 +9,6 @@ namespace DAL.Api
         Task<List<Payment>> GetAllPayments();
         Task<Payment> GetPaymentById(int paymentId);
         Task<List<Payment>> GetPaymentsByStudentId(int studentId);
-        Task UpdatePayment(Payment payment);
+ 
     }
 }

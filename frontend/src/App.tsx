@@ -10,12 +10,6 @@ import ManageLessons from "./components/admin/manageLessons";
 import ManageSubjects from "./components/admin/manageSubjects";
 import StudentProfile from "./components/student/studentProfile";
 import StudentLessonHistory from "./components/student/lessonsHistory";
-
-import ManageSubjects from "./components/admin/manageSubjects";
-import ManageAvailability from "./components/admin/manageAvailability";
-import ManageStudents from "./components/admin/manageStudents";
-import ManageLessons from "./components/admin/manageLessons";
-import ManageTeachers from "./components/admin/manageTeachers";
 import TestimonialsSection from "./components/home/testimonialsSection";
 import CallToActionSection from "./components/home/callToActionSection";
 import FAQSection from "./components/home/FAQSection";

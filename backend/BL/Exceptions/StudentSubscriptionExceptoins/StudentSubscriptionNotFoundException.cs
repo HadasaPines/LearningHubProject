@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.StudentSubscriptionExceptoins
 {
-    internal class StudentSubscriptionNotFoundException
+    public class StudentSubscriptionNotFoundException:Exception
     {
+        public StudentSubscriptionNotFoundException(string message) : base(message) { }
+
+        public int? StatusCode { get; } = 404;
+
+   
     }
 }

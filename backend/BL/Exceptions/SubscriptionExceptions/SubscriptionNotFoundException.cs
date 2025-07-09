@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.SubscriptionExceptions
 {
-    internal class SubscriptionNotFoundException
+   public class SubscriptionNotFoundException:Exception
     {
+  
+        public SubscriptionNotFoundException(string message):base(message) { }
+        public int? StatusCode { get; } = 404;
     }
 }

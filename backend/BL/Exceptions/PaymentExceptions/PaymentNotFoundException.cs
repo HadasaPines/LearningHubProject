@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BL.Exceptions.PaymentExceptions
 {
-    internal class PaymentNotFoundException
+   public class PaymentNotFoundException: Exception
     {
+     
+        public PaymentNotFoundException(string message) :base(message){ }
+        public int? StatusCode { get; } = 404;
     }
 }

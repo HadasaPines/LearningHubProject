@@ -9,5 +9,7 @@ namespace DAL.Api
         Task<List<StudentSubscription>> GetAllStudentSubscriptions();
         Task<List<StudentSubscription>> GetStudentSubscriptionById(int id);
         Task UpdateLessonsUsed(StudentSubscription studentSubscription);
+
+        Task<List<StudentSubscription>> GetStudentSubscriptionsByStudentId(int studentId);
     }
 }
