@@ -3,6 +3,14 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage"
+import ManageAvailability from "./components/admin/manageAvailability";
+import ManageStudents from "./components/admin/manageStudents";
+import ManageTeachers from "./components/admin/manageTeachers";
+import ManageLessons from "./components/admin/manageLessons";
+import ManageSubjects from "./components/admin/manageSubjects";
+import StudentProfile from "./components/student/studentProfile";
+import StudentLessonHistory from "./components/student/lessonsHistory";
+
 import ManageSubjects from "./components/admin/manageSubjects";
 import ManageAvailability from "./components/admin/manageAvailability";
 import ManageStudents from "./components/admin/manageStudents";
@@ -28,6 +36,9 @@ function App() {
        <Route path="/admin/manage-teachers" element={<ManageTeachers />} />
         <Route path="/admin/manage-lessons" element={<ManageLessons />} />
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />
+        <Route path="/student/profile" element={<StudentProfile />} />
+        <Route path="/student/lessons-history" element={<StudentLessonHistory />} />
+     
       <Route path ="/home/testimonials" element={<TestimonialsSection/>} />
 
       <Route path ="/home/call-to-action" element={<CallToActionSection/>} />

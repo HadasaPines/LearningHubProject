@@ -87,7 +87,8 @@ namespace BL.Services
                     }
                 }
                 else if (operation.path.Contains("endTime") && operation.value != null)
-                {                   if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedEndTime))
+                {
+                    if (TimeOnly.TryParseExact(operation.value.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedEndTime))
                     {
                         operation.value = parsedEndTime;
                     }
@@ -249,6 +250,16 @@ namespace BL.Services
             return _mapper.Map<List<LessonBL>>(lessons);
         }
 
+        public async Task<List<LessonBL>> GetLessonsByStudentId(int studentId)
+        {
+            var registrations = await _registrationServiceDAL.GetRegistrationsToStudent(studentId);
+            if (registrations == null || !registrations.Any())
+            {
+                throw new RegistrationNotFoundException($"No registrations found for student with ID {studentId}");
+            }
 
+            var lessons = registrations.Select(r => r.Lesson).ToList();
+            return _mapper.Map<List<LessonBL>>(lessons);
         }
+    }
 }

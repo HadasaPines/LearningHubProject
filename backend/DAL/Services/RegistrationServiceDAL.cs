@@ -60,11 +60,12 @@ namespace DAL.Services
 
             return registration.Student;
         }
-        public async Task<List<Registration>> GetRegistrationsToStudent(Student student)
+        public async Task<List<Registration>> GetRegistrationsToStudent(int studentId)
         {
             var registrations = await dbContext.Registrations
                 .Include(r => r.Student)
-                .Where(r => r.Student.StudentId == student.StudentId).ToListAsync();
+                .Include(r=>r.Lesson)
+                .Where(r => r.Student.StudentId == studentId).ToListAsync();
             return registrations;
         }
         public async Task AddRegistration(Registration registration, Lesson lesson)

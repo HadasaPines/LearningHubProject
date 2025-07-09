@@ -15,7 +15,7 @@ namespace BL.Api
         Task GenerateLessonsAsync(DateOnly startDate, DateOnly endDate);
         Task UpdatePastLessonsAsync();
         Task<UserBL> GetStudentToLesson(int lessonId);
-
+        Task<List<LessonBL>> GetLessonsByStudentId(int studentId);
         Task<List<LessonBL>> GetLessonsByTeacherId(int teacherId);
     }
 }

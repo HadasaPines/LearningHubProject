@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
         [HttpGet("getRegistrationsToStudent")]
         public async Task<IActionResult> GetRegistrationsToStudent([FromBody] StudentBL studentBL)
         {
-            var registrations = await _registrationServiceBL.GetRegistrationsToStudent(studentBL);
+            var registrations = await _registrationServiceBL.GetRegistrationsToStudent(studentBL.StudentId);
             if (registrations == null || !registrations.Any())
             {
                 return NotFound("No registrations found for the specified student.");
