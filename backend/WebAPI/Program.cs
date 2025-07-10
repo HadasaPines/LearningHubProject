@@ -45,6 +45,7 @@ builder.Services.AddScoped<ITeacherAvailabilityServiceDAL, TeacherAvailabilitySe
 builder.Services.AddScoped<ILessonServiceDAL, LessonServiceDAL>();
 builder.Services.AddScoped<ITeachersToSubjectServiceDAL, TeachersToSubjectServiceDAL>();
 builder.Services.AddScoped<IRegistrationServiceDAL, RegistrationServiceDAL>();
+builder.Services.AddScoped<ISubscriptionServiceDAL, SubscriptionServiceDAL>();
 
 builder.Services.AddScoped<IUserServiceBL, UserServiceBL>();
 builder.Services.AddScoped<IStudentServiceBL, StudentServiceBL>();
@@ -53,6 +54,7 @@ builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilitySer
 builder.Services.AddScoped<ILessonServiceBL, LessonServiceBL>();
 builder.Services.AddScoped<ISubjectServiceBL, SubjectServiceBL>();
 builder.Services.AddScoped<IRegistrationServiceBL, RegistrationServiceBL>();
+builder.Services.AddScoped<ISubscriptionServiceBL, SubscriptionServiceBL>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

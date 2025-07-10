@@ -22,10 +22,13 @@ namespace BL.Services
     {
         private readonly IMapper _mapper;
         private readonly ITecherServiceDAL _teacherService;
-        public TeacherServiceBL(IMapper mapper, ITecherServiceDAL techerServiceDAL)
+        private readonly ILessonServiceDAL _lessonServiceDAL;
+        public TeacherServiceBL(IMapper mapper, ITecherServiceDAL teacherServiceDAL,ILessonServiceDAL lessonServiceDAL)
+
         {
             _mapper = mapper;
-            _teacherService = techerServiceDAL;
+            _teacherService = teacherServiceDAL;
+            _lessonServiceDAL = lessonServiceDAL;
         }
 
         public async Task AddTeacher(TeacherBL TeacherBL)
@@ -39,8 +42,24 @@ namespace BL.Services
         }
         public async Task DeleteTeacher(int teacherId)
         {
+            var lessons = await _lessonServiceDAL.GetLessonsByTeacherId(teacherId);
+            foreach (var lesson in lessons)
+            {
+                if (lesson.Status == "Passed") {
+                    lesson.TeacherId = null;
+                }
+                if (lesson.Status == "Available") {
+                    await _lessonServiceDAL.DeleteLessonById(lesson.LessonId);
+                }
+                if (lesson.Status == "Booked") {
+                    lesson.Status = "Cancelled";
+                    lesson.TeacherId = null;
 
-            await _teacherService.DeleteTeacher(teacherId);
+                }
+                await _lessonServiceDAL.UpdateLesson(lesson);
+            }
+
+                await _teacherService.DeleteTeacher(teacherId);
         }
         public async Task<List<TeacherBL>> GetAllTeachers()
         {

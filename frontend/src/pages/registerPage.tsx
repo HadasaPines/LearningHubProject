@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import type { User } from "../models/userModel";
+import type {User } from "../models/userModel";
+import type { StudentDetails } from "../models/userModel";
 import { addUser, addStudent } from "../services/api";
 import { parseApiError } from "../utils/apiErrorParser";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +9,12 @@ import { useNavigate } from "react-router-dom";
 const RegisterForm: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string | null>(null);
    const navigate = useNavigate();
-  const [formData, setFormData] = useState<User>({
+   const[studentData, setStudentData] = useState<Omit<StudentDetails, "studentId">>({
+    age: 0,
+    birthDate: "",
+    gender: "M"
+   });
+  const [UserData, setUserData] = useState<User>({
     userId: 0,
     firstName: "",
     lastName: "",
@@ -16,11 +22,7 @@ const RegisterForm: React.FC = () => {
     phone: "",
     email: "",
     role: "Student",
-      student: {
-    gender: "M", 
-    age: 0,
-    birthDate: ""
-  }
+      student: studentData,
   
   });
 
@@ -29,7 +31,8 @@ const RegisterForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+  
+    setUserData((prev) => ({
       ...prev,
       [name]: name === "userId" ? Number(value) : value,
     }));
@@ -37,40 +40,34 @@ const RegisterForm: React.FC = () => {
 
   const handleNestedChange = (
      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-     section: "student"
    ) => {
      const { name, value } = e.target;
-
-     setFormData((prev) => ({
+if(name=="birthDate"){
+     const birthDate = new Date(value);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    studentData.age = age;}
+     setStudentData((prev) => ({
        ...prev,
-       [section]: {
-         ...prev[section],
-         [name]: value,
-       },
+     [name]:value
      }));
    };
 
   const handleSubmitUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addUser(formData);
-    await addStudent({
-          studentId: formData.userId,
-          gender:formData.student?.gender?formData.student?.gender: "M",
-          age: formData.student?.age?formData.student?.age: 0,
-          birthDate: formData.student?.birthDate? formData.student?.birthDate: "",
-        });
+      await addUser(UserData);
+    await addStudent(studentData);
          navigate("/");
       setErrorMessages(null);
     } catch (error: any) {
       setErrorMessages(parseApiError(error));
     }
   };
-
-  // const convertGender = (gender: "M" | "F" =>
-  //   gender === "Male" ? "M" : "F";
-
-
   
   return (
     <>
@@ -86,49 +83,48 @@ const RegisterForm: React.FC = () => {
             <input
               name="userId"
               placeholder="ID Number"
-              value={formData.userId}
+              value={UserData.userId}
               onChange={handleChange}
             />
             <input
               name="firstName"
               placeholder="First Name"
-              value={formData.firstName}
+              value={UserData.firstName}
               onChange={handleChange}
             />
             <input
               name="lastName"
               placeholder="Last Name"
-              value={formData.lastName}
+              value={UserData.lastName}
               onChange={handleChange}
             />
             <input
               name="phone"
               placeholder="Phone"
-              value={formData.phone}
+              value={UserData.phone}
               onChange={handleChange}
             />
             <input
               type="email"
               name="email"
               placeholder="Email"
-              value={formData.email}
+              value={UserData.email}
               onChange={handleChange}
             />
             <input
               type="password"
               name="password"
               placeholder="Password"
-              value={formData.password}
+              value={UserData.password}
               onChange={handleChange}
             />
-            <select name="role" value={formData.role} disabled>
-              <option value="Student">Student</option>
-            </select>
+          
           </>
           <>
             <select
               name="gender"
-              onChange={(e) => handleNestedChange(e, "student")}
+              value={studentData.gender}
+              onChange={(e) => handleNestedChange(e)}
               required
              
             >
@@ -137,16 +133,18 @@ const RegisterForm: React.FC = () => {
               <option value="F">Female</option>
             </select>
             <input
-              type="number"
+              type="text"
               name="age"
               placeholder="Age"
-              onChange={(e) => handleNestedChange(e, "student")}
+              value={studentData.age}
+              onChange={(e) => handleNestedChange(e)}
               required
             />
             <input
               type="date"
               name="birthDate"
-              onChange={(e) => handleNestedChange(e, "student")}
+              value={studentData.birthDate}
+              onChange={(e) => handleNestedChange(e)}
               required
             />
           </>

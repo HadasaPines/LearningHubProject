@@ -20,7 +20,9 @@ const ManageLessons = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [newLesson, setNewLesson] = useState<Omit<Lesson, "lessonId">>({
+
     teacherId: 0,
+    teacherName: "",
     subjectId: 0,
     lessonDate: "",
     startTime: "",
@@ -68,6 +70,8 @@ const ManageLessons = () => {
     const { name, value } = e.target;
     if (name == "teacherId") {
       const selectedTeacher = teachers.find((teacher) => teacher.userId === Number(value));
+      newLesson.teacherName = selectedTeacher?.firstName + " " + selectedTeacher?.lastName || "";
+      editLesson.teacherName = selectedTeacher?.firstName + " " + selectedTeacher?.lastName || "";
       newLesson.gender = selectedTeacher?.teacher?.gender || "M";
       editLesson.gender = selectedTeacher?.teacher?.gender || "M";
 
@@ -90,6 +94,7 @@ const ManageLessons = () => {
       showMessage("Lesson added successfully", "success");
       setNewLesson({
         teacherId: 0,
+        teacherName: "",
         subjectId: 0,
         lessonDate: "",
         startTime: "",
@@ -244,7 +249,9 @@ const ManageLessons = () => {
                   <input type="time" name="startTime" value={editLesson.startTime || ""} onChange={(e) => handleChange(e, true)} />
                   -
                   <input type="time" name="endTime" value={editLesson.endTime || ""} onChange={(e) => handleChange(e, true)} />
+                
                 </td>
+               
                 <td>
                   <select name="teacherId" value={editLesson.teacherId || 0} onChange={(e) => handleChange(e, true)}>
                     {teachers.map((t) => (

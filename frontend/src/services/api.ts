@@ -9,6 +9,7 @@ import type { TeacherAvailability } from '../models/availabilityModel';
 
 
 import type { NewSubject } from '../models/subjectModel';
+import type { Subscription } from '../models/subscriptionModel';
 
 
 const api = axios.create({
@@ -29,8 +30,7 @@ export const deleteUser = (userId: number) => api.delete(`/User/deleteUser/${use
 export const getAllUsers = () => api.get("/User/getAllUsers");
 
 
-export const addStudent = (studentData: Omit<StudentDetails, 'studentId'> & { studentId: number
-}) => {
+export const addStudent = (studentData:StudentDetails) => {
   return api.post('/Student/addStudent', studentData);
 };
 export const updateStudent = (studentId: number, patch: any) =>
@@ -136,7 +136,11 @@ export const updateAvailability = (id: number, patch:any) =>
 export const deleteAvailability = (id: number) =>
   api.delete(`/TeacherAvailability/deleteTeacherAvailability/${id}`);
 
+export const addSubscription = (subscription: Omit<Subscription, "subSubscriptionId">) =>
+  api.post("/Subscription/AddSubscription", subscription);
 
-
+export const getAllSubscriptions = () =>{
+  return api.get<Subscription[]>("/Subscription/getAllSubscriptions");
+};
 export default api;
 
