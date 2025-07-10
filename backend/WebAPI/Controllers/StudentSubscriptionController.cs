@@ -26,8 +26,15 @@ namespace WebAPI.Controllers
         [HttpGet("getStudentSubscriptionById/{id}")]
         public async Task<IActionResult> GetStudentSubscriptionById(int id)
         {
-            var studentSubscription = await _studentSubscriptionServiceBL.GetStudentSubscriptionById(id);
-            return Ok(studentSubscription);
+            var studentSubscriptions = await _studentSubscriptionServiceBL.GetStudentSubscriptionById(id);
+            return Ok(studentSubscriptions);
+        }
+
+        [HttpGet("getStudentSubscriptionsByStudentId/{id}")]
+        public async Task<IActionResult> GetStudentSubscriptionsByStudentId(int id)
+        {
+            var studentSubscriptions = await _studentSubscriptionServiceBL.GetStudentSubscriptionsByStudentId(id);
+            return Ok(studentSubscriptions);
         }
 
         [HttpPost("addStudentSubscription")]

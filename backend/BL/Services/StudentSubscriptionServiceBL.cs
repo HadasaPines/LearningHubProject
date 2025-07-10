@@ -71,9 +71,7 @@ namespace BL.Services
         public async Task<List<StudentSubscriptionBL>> GetStudentSubscriptionsByStudentId(int studentId)
         {
             var studentSubscriptions = await _studentSubscriptionServiceDAL.GetStudentSubscriptionsByStudentId(studentId);
-            if (studentSubscriptions == null || !studentSubscriptions.Any())
-                throw new StudentSubscriptionNotFoundException($"No student subscriptions found for student ID '{studentId}'");
-
+          
             return _mapper.Map<List<StudentSubscriptionBL>>(studentSubscriptions);
         }
 
