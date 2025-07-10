@@ -3,6 +3,7 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage"
+import StudentSubscriptions from "./components/student/StudentSubscriptions";
 import ManageAvailability from "./components/admin/manageAvailability";
 import ManageSubjects from "./components/admin/manageSubjects";
 import ManageStudents from "./components/admin/manageStudents";
@@ -33,8 +34,11 @@ function App() {
         <Route path="/admin/manage-lessons" element={<ManageLessons />} />
         <Route path="/admin/manage-subjects" element={<ManageSubjects />} />
         <Route path="/admin/manage-subscription" element={<ManageSubscriptions />} />
+
+
         <Route path="/student/profile" element={<StudentProfile />} />
         <Route path="/student/lessons-history" element={<StudentLessonHistory />} />
+        <Route path="/student/subscriptions" element={<StudentSubscriptions/>} />
      
       <Route path ="/home/testimonials" element={<TestimonialsSection/>} />
        

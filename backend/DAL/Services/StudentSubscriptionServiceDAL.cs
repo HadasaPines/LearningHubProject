@@ -21,10 +21,10 @@ namespace DAL.Services
         {
             return await _context.StudentSubscriptions.ToListAsync();
         }
-        public async Task<List<StudentSubscription>> GetStudentSubscriptionById(int id)
+        public async Task<StudentSubscription> GetStudentSubscriptionById(int id)
         {
             return await _context.StudentSubscriptions
-                .Where(ss => ss.StudentSubscriptionId == id).ToListAsync();
+                .FirstOrDefaultAsync(ss => ss.StudentSubscriptionId == id);
         }
         public async Task AddStudentSubscription(StudentSubscription studentSubscription)
         {

@@ -10,6 +10,7 @@ import type { TeacherAvailability } from '../models/availabilityModel';
 
 import type { NewSubject } from '../models/subjectModel';
 import type { Subscription } from '../models/subscriptionModel';
+import type { StudentSubscription } from '../models/studentSubscriptionModel';
 
 
 const api = axios.create({
@@ -142,5 +143,16 @@ export const addSubscription = (subscription: Omit<Subscription, "subSubscriptio
 export const getAllSubscriptions = () =>{
   return api.get<Subscription[]>("/Subscription/getAllSubscriptions");
 };
+
+export const addStudentSubscription = (
+  subscription: Omit<StudentSubscription, "studentSubscriptionId">
+) => {
+  return api.post("/StudentSubscription/addStudentSubscription", subscription);
+};
+
+export const getStudentSubscriptionById = (studentId: number) => {
+  return api.get<StudentSubscription[]>(`/StudentSubscription/getStudentSubscriptionsByStudentId/${studentId}`);
+}
+
 export default api;
 
