@@ -6,6 +6,7 @@ import type { Registration } from '../models/registerationModel';
 
 import type { Lesson } from '../models/lessonModel';
 import type { TeacherAvailability } from '../models/availabilityModel';
+import type {Payment} from "../models/paymentModel";
 
 
 import type { NewSubject } from '../models/subjectModel';
@@ -19,7 +20,6 @@ const api = axios.create({
     'Content-Type': "application/json-patch+json",
   },
 });
-
 
 export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
@@ -152,6 +152,10 @@ export const addStudentSubscription = (
 
 export const getStudentSubscriptionById = (studentId: number) => {
   return api.get<StudentSubscription[]>(`/StudentSubscription/getStudentSubscriptionsByStudentId/${studentId}`);
+};
+
+export const addPayment = (paymentDate:Omit<Payment,"paymentId">) => {
+  return api.post(`/Payment/addPayment`,paymentDate);
 }
 
 export default api;

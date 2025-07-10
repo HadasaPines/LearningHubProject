@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { Subscription } from "../../models/subscriptionModel";
-import type {StudentSubscription} from "../../models/studentSubscriptionModel";
+import type { StudentSubscription } from "../../models/studentSubscriptionModel";
 import type { User } from "../../models/userModel";
 import {
   getAllSubscriptions,
@@ -10,13 +10,10 @@ import {
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
 
-
-
 const StudentSubscriptions: React.FC = () => {
-
- const user = localStorage.getItem("user");
-    if (!user) return <div>User not logged in</div>;
-    const parsedUser: User = JSON.parse(user);
+  const user = localStorage.getItem("user");
+  if (!user) return <div>User not logged in</div>;
+  const parsedUser: User = JSON.parse(user);
 
   const [availableSubscriptions, setAvailableSubscriptions] = useState<Subscription[]>([]);
   const [studentSubscriptions, setStudentSubscriptions] = useState<StudentSubscription[]>([]);
@@ -24,15 +21,13 @@ const StudentSubscriptions: React.FC = () => {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-    const [newStudentSub, setnewStudentSub] = useState<Omit<StudentSubscription, "studentSubscriptionId">>({
-     studentId: parsedUser.userId,
-      lessonsUsed: 0,
-      isActive: true,
-        subscriptionId:0
-    });
+  const [newStudentSub, setNewStudentSub] = useState<Omit<StudentSubscription, "studentSubscriptionId">>({
+    studentId: parsedUser.userId,
+    lessonsUsed: 0,
+    isActive: true,
+    subscriptionId: 0,
+  });
 
-
-   
   useEffect(() => {
     loadSubscriptions();
   }, []);
@@ -51,20 +46,23 @@ const StudentSubscriptions: React.FC = () => {
   };
 
   const handleBuy = (subscription: Subscription) => {
-
     setSelectedSubscription(subscription);
-     setnewStudentSub((prev) => ({
-    ...prev,
-    subscriptionId: subscription.subscriptionId?subscription.subscriptionId:0,
-  }));
-    setPaymentOpen(true);
+    setNewStudentSub((prev) => ({
+      ...prev,
+      subscriptionId: subscription.subscriptionId ?? 0,
+    }));
   };
+
+  useEffect(() => {
+    if (selectedSubscription) {
+      setPaymentOpen(true);
+    }
+  }, [selectedSubscription]);
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
     if (!selectedSubscription) return;
 
-console.log("New Student Subscription: ", newStudentSub);
     try {
       await addStudentSubscription(newStudentSub);
       setSuccess("Subscription purchased successfully");
@@ -118,6 +116,7 @@ console.log("New Student Subscription: ", newStudentSub);
       </div>
 
       <PaymentOverlay
+        userId={parsedUser.userId}
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
         amount={selectedSubscription?.price || 0}

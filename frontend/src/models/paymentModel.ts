@@ -1,6 +1,6 @@
-export interface PaymentDetails {
-  amount: number;
-  method: "CreditCard" | "PayPal" | "Bit";
-  lessonId: number;
-  studentId: number;
+export interface Payment {
+  paymentId: number;
+  userId: number;
+  amount: number; 
+  paymentDate: string; 
 }
