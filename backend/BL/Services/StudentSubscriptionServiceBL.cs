@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BL.Api;
-using BL.Exceptions.StudentSubscriptionExceptoins;
+using BL.Exceptions.StudentSubscriptionExceptions;
 using BL.Models;
 using DAL.Api;
 using DAL.Models;
@@ -27,7 +27,9 @@ namespace BL.Services
         {
             if (studentSubscriptionBL == null)
                 throw new ArgumentNullException(nameof(studentSubscriptionBL), "Student subscription cannot be null");
-
+            var studentSubscriptions=await _studentSubscriptionServiceDAL.GetStudentSubscriptionsByStudentId(studentSubscriptionBL.StudentId);
+            if(studentSubscriptions.Any(sub => sub.IsActive))
+            throw new ActiveSubscriptionAlreadyExistException("Student already has an active subscription");
             var studentSubscription = _mapper.Map<StudentSubscription>(studentSubscriptionBL);
             await _studentSubscriptionServiceDAL.AddStudentSubscription(studentSubscription);
         }
@@ -52,19 +54,15 @@ namespace BL.Services
 
             await _studentSubscriptionServiceDAL.DeleteStudentSubscription(id);
         }
-        public async Task UpdateLessonsUsed(int id)
+        public async Task UpdateLessonsUsedForActiveStudentSubscription(int studentId)
         {
-            var studentSubscription = await _studentSubscriptionServiceDAL.GetStudentSubscriptionById(id);
+            var studentSubscription = await _studentSubscriptionServiceDAL.GetActiveStudentSubscriptionsByStudentId(studentId);
             if (studentSubscription == null)
-                throw new StudentSubscriptionNotFoundException($"Student subscription with ID '{id}' not found");
-            var studentSubscriptionBL = _mapper.Map<StudentSubscriptionBL>(studentSubscription);
-            if (!studentSubscriptionBL.IsActive)
-                throw new UnActiveStudentSubscriptionException("Student subscription is not active, cannot update lessons used");
-
-            studentSubscriptionBL.LessonsUsed++;
-            var updatedStudentSubscription = _mapper.Map<StudentSubscription>(studentSubscriptionBL);
-
-            await _studentSubscriptionServiceDAL.UpdateLessonsUsed(updatedStudentSubscription);
+                throw new StudentSubscriptionNotFoundException($"No active student subscription for student with id '{studentId}' not found");
+            //var studentSubscriptionBL = _mapper.Map<StudentSubscriptionBL>(studentSubscription);
+            //studentSubscriptionBL.LessonsUsed++;
+            //var updatedStudentSubscription = _mapper.Map<StudentSubscription>(studentSubscriptionBL);
+            await _studentSubscriptionServiceDAL.UpdateLessonsUsedForActiveStudentSubscription(studentSubscription);
 
         }
 
@@ -76,7 +74,14 @@ namespace BL.Services
         }
 
 
+        public async Task<StudentSubscriptionBL> GetActiveStudentSubscriptionsByStudentId(int studentId)
+        {
+            var studentSubscription = _studentSubscriptionServiceDAL.GetStudentSubscriptionsByStudentId(studentId);
+            if(studentSubscription==null)
+            throw new StudentSubscriptionNotFoundException($"No active student subscription for student with id '{studentId}' not found");
+            return _mapper.Map<StudentSubscriptionBL>(studentSubscription);
 
+        }
 
     }
 }

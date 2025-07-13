@@ -22,7 +22,7 @@ public partial class Subscription
 
     public int? LessonCount { get; set; }
 
-    public int? ValidityDays { get; set; }
+    public bool IsActive { get; set; }
 
     [InverseProperty("Subscription")]
     public virtual ICollection<StudentSubscription> StudentSubscriptions { get; set; } = new List<StudentSubscription>();

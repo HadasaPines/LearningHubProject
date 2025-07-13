@@ -9,6 +9,7 @@ namespace BL.Api
         Task<List<StudentSubscriptionBL>> GetAllStudentSubscriptions();
         Task<StudentSubscriptionBL> GetStudentSubscriptionById(int id);
         Task<List<StudentSubscriptionBL>> GetStudentSubscriptionsByStudentId(int studentId);
-        Task UpdateLessonsUsed(int id);
+        Task UpdateLessonsUsedForActiveStudentSubscription(int studentId);
+        Task<StudentSubscriptionBL> GetActiveStudentSubscriptionsByStudentId(int studentId);
     }
 }

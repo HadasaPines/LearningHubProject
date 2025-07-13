@@ -38,7 +38,7 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
- 
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Lesson>(entity =>
@@ -117,6 +117,7 @@ public partial class LearningHubDbContext : DbContext
             entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249D8008F7DA");
 
             entity.Property(e => e.Description).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 

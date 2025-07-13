@@ -158,5 +158,9 @@ export const addPayment = (paymentDate:Omit<Payment,"paymentId">) => {
   return api.post(`/Payment/addPayment`,paymentDate);
 }
 
+export const updateLessonsUsedForActiveStudentSubscription=(userId:number) => {
+  return api.put(`/StudentSubscription/updateLessonsUsedForActiveStudentSubscription/${userId}`);
+}
+
 export default api;
 
