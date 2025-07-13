@@ -4,5 +4,6 @@ export interface Subscription {
   description?: string;
   price: number;
   lessonCount?: number | null;
-  validityDays?: number | null;
+  isActive: boolean;
+
 }

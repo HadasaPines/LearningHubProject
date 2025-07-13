@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { addSubscription, getAllSubscriptions } from "../../services/api";
+import {
+  addSubscription,
+  getAllSubscriptions,
+  updateSubscriptionActive,
+} from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 import type { Subscription } from "../../models/subscriptionModel";
 
 const ManageSubscriptions = () => {
-  const [newSubscription, setNewSubscription] = useState<Omit<Subscription, "subscriptionId">>({
+  const [newSubscription, setNewSubscription] = useState<
+    Omit<Subscription, "subscriptionId">
+  >({
     name: "",
     description: "",
     price: 0,
     lessonCount: null,
-    validityDays: null,
+    isActive: true,
   });
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -24,23 +30,29 @@ const ManageSubscriptions = () => {
     }, 3000);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const { name, value, type } = e.target;
 
-    if (["price", "lessonCount", "validityDays"].includes(name)) {
-      const val = value === "" ? null : Number(value);
-      setNewSubscription((prev) => ({ ...prev, [name]: val }));
-    } else {
-      setNewSubscription((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+  if (type === "checkbox") {
+    const checked = (e.target as HTMLInputElement).checked;
+    setNewSubscription((prev) => ({ ...prev, [name]: checked }));
+  } else if (["price", "lessonCount"].includes(name)) {
+    const val = value === "" ? null : Number(value);
+    setNewSubscription((prev) => ({ ...prev, [name]: val }));
+  } else {
+    setNewSubscription((prev) => ({ ...prev, [name]: value }));
+  }
+};
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newSubscription.name || newSubscription.price <= 0) {
-      showMessage("Name and Price are required, and Price must be positive", "error");
+      showMessage(
+        "Name and Price are required, and Price must be positive",
+        "error"
+      );
       return;
     }
 
@@ -52,14 +64,34 @@ const ManageSubscriptions = () => {
         description: "",
         price: 0,
         lessonCount: null,
-        validityDays: null,
+        isActive: true,
       });
 
-      // עדכון הרשימה אחרי ההוספה
       const updated = await getAllSubscriptions();
       setSubscriptions(updated.data);
     } catch (error) {
       showMessage("Error adding subscription: " + parseApiError(error), "error");
+    }
+  };
+
+  const handleToggleActive = async (subscription: Subscription) => {
+    try {
+      const updatedSubscription = {
+        ...subscription,
+        isActive: !subscription.isActive,
+      };
+      await updateSubscriptionActive(subscription.subscriptionId!);
+      showMessage(
+        `Subscription "${subscription.name}" is now ${
+          updatedSubscription.isActive ? "active" : "inactive"
+        }`,
+        "success"
+      );
+
+      const refreshed = await getAllSubscriptions();
+      setSubscriptions(refreshed.data);
+    } catch (error) {
+      showMessage("Error updating subscription: " + parseApiError(error), "error");
     }
   };
 
@@ -69,7 +101,10 @@ const ManageSubscriptions = () => {
         const response = await getAllSubscriptions();
         setSubscriptions(response.data);
       } catch (error) {
-        showMessage("Error loading subscriptions: " + parseApiError(error), "error");
+        showMessage(
+          "Error loading subscriptions: " + parseApiError(error),
+          "error"
+        );
       }
     };
 
@@ -124,14 +159,15 @@ const ManageSubscriptions = () => {
           />
         </div>
         <div>
-          <label>Validity (days)</label>
-          <input
-            type="number"
-            name="validityDays"
-            value={newSubscription.validityDays ?? ""}
-            onChange={handleChange}
-            min={0}
-          />
+          <label>
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={newSubscription.isActive}
+              onChange={handleChange}
+            />
+            Active
+          </label>
         </div>
 
         <button type="submit">Add Subscription</button>
@@ -149,7 +185,8 @@ const ManageSubscriptions = () => {
               <th>Description</th>
               <th>Price</th>
               <th>Lessons</th>
-              <th>Validity (days)</th>
+              <th>Active</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +196,12 @@ const ManageSubscriptions = () => {
                 <td>{sub.description}</td>
                 <td>{sub.price.toFixed(2)}</td>
                 <td>{sub.lessonCount ?? "-"}</td>
-                <td>{sub.validityDays ?? "-"}</td>
+                <td>{sub.isActive ? "Yes" : "No"}</td>
+                <td>
+                  <button onClick={() => handleToggleActive(sub)}>
+                    {sub.isActive ? "Deactivate✏️" : "Activate✏️"}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

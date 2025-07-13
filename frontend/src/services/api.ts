@@ -143,6 +143,9 @@ export const addSubscription = (subscription: Omit<Subscription, "subSubscriptio
 export const getAllSubscriptions = () =>{
   return api.get<Subscription[]>("/Subscription/getAllSubscriptions");
 };
+export const updateSubscriptionActive = (id: number) =>{
+ return api.put(`/Subscription/updateSubscriptionActive/${id}`)
+};
 
 export const addStudentSubscription = (
   subscription: Omit<StudentSubscription, "studentSubscriptionId">
@@ -153,6 +156,7 @@ export const addStudentSubscription = (
 export const getStudentSubscriptionById = (studentId: number) => {
   return api.get<StudentSubscription[]>(`/StudentSubscription/getStudentSubscriptionsByStudentId/${studentId}`);
 };
+
 
 export const addPayment = (paymentDate:Omit<Payment,"paymentId">) => {
   return api.post(`/Payment/addPayment`,paymentDate);

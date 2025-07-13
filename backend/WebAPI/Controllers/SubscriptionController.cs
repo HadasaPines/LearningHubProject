@@ -1,4 +1,5 @@
-﻿using BL.Models;
+﻿using BL.Api;
+using BL.Models;
 using BL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -17,12 +18,13 @@ namespace WebAPI.Controllers
             _subscriptionServiceBL = subscriptionServiceBL;
         }
         [HttpGet("getAllSubscriptions")]
-        public async Task<IActionResult> GetAllSubscriptions() {
+        public async Task<IActionResult> GetAllSubscriptions()
+        {
 
-        var subscriptions = await _subscriptionServiceBL.GetAllSubscriptions();
-      return Ok(subscriptions);
-            
- 
+            var subscriptions = await _subscriptionServiceBL.GetAllSubscriptions();
+            return Ok(subscriptions);
+
+
         }
         [HttpGet("getSubscriptionById/{id}")]
         public async Task<IActionResult> GetSubscriptionById(int id)
@@ -35,7 +37,7 @@ namespace WebAPI.Controllers
         [HttpPost("addSubscription")]
         public async Task<IActionResult> AddSubscription([FromBody] SubscriptionBL subscriptionBL)
         {
-          
+
             await _subscriptionServiceBL.AddSubscription(subscriptionBL);
             return Ok("subscription added successfully.");
         }
@@ -43,9 +45,9 @@ namespace WebAPI.Controllers
         [HttpPut("updateSubscription/{id}")]
         public async Task<IActionResult> UpdateSubscription(int id, [FromBody] JsonPatchDocument<SubscriptionBL> patchDoc)
         {
-                await _subscriptionServiceBL.UpdateSubscriptionAsync(id, patchDoc);
-                return Ok("Subscription updated successfully.");
-           
+            await _subscriptionServiceBL.UpdateSubscriptionAsync(id, patchDoc);
+            return Ok("Subscription updated successfully.");
+
         }
         [HttpDelete("deleteSubscription/{id}")]
         public async Task<IActionResult> DeleteSubscription(int id)
@@ -53,6 +55,19 @@ namespace WebAPI.Controllers
             await _subscriptionServiceBL.DeleteSubscriptionAsync(id);
             return Ok("Subscription deleted successfully.");
         }
+        [HttpPut("updateSubscriptionActive/{id}")]
+        public async Task<IActionResult> updateSubscriptionActive(int id)
+        {
+            await _subscriptionServiceBL.updateSubscriptionActive(id);
+
+            return Ok("Subscription updated successfully.");
+
+
+        }
+      
+
+
+        }
 
     }
-}
+

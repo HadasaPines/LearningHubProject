@@ -103,7 +103,6 @@ const StudentSubscriptions: React.FC = () => {
               <p>{sub.description}</p>
               <p><strong>Price:</strong> {sub.price} ₪</p>
               {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
-              {sub.validityDays && <p><strong>Validity:</strong> {sub.validityDays} days</p>}
             </div>
             <button
               onClick={() => handleBuy(sub)}
