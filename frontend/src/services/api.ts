@@ -161,6 +161,10 @@ export const addPayment = (paymentDate:Omit<Payment,"paymentId">) => {
 export const updateLessonsUsedForActiveStudentSubscription=(userId:number) => {
   return api.put(`/StudentSubscription/updateLessonsUsedForActiveStudentSubscription/${userId}`);
 }
+export const getPaymentsByUserId = async (userId: number): Promise<Payment[]> => {
+  const response = await api.get(`/Payment/getPaymentsByStudentId/${userId}`);
+  return response.data;
+};
 
 export default api;
 
