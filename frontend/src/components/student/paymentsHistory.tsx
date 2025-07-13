@@ -21,22 +21,20 @@ const StudentPayments = () => {
   if (loading) return <p>Loading payments...</p>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Payment History</h2>
-      <table className="table-auto w-full border">
-        <thead className="bg-gray-100">
+    <div>
+      <h2>Payment History</h2>
+      <table>
+        <thead>
           <tr>
-            <th className="border px-4 py-2">Amount</th>
-            <th className="border px-4 py-2">Payment Date</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
           </tr>
         </thead>
         <tbody>
           {payments.map((payment, index) => (
             <tr key={index}>
-              <td className="border px-4 py-2">{payment.amount.toFixed(2)} ₪</td>
-              <td className="border px-4 py-2">
-                {new Date(payment.paymentDate).toLocaleDateString()}
-              </td>
+              <td>{payment.amount.toFixed(2)} ₪</td>
+              <td>{new Date(payment.paymentDate).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
