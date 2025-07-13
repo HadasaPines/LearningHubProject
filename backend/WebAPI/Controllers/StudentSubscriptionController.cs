@@ -46,6 +46,13 @@ namespace WebAPI.Controllers
             await _studentSubscriptionServiceBL.AddStudentSubscription(studentSubscriptionBL);
             return Ok("Student subscription added successfully.");
         }
+        [HttpPost("CheckAddStudentSubscription")]
+        public async Task<IActionResult> CheckAddStudentSubscription([FromBody]StudentSubscriptionBL studentSubscriptionBL)
+        {
+            var studentSubscription = await _studentSubscriptionServiceBL.CheckAddStudentSubscription(studentSubscriptionBL); 
+            return Ok(studentSubscription);
+
+        }
         [HttpDelete("deleteStudentSubscription/{id}")]
         public async Task<IActionResult> DeleteStudentSubscription(int id)
         {

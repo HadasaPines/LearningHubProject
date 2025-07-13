@@ -11,5 +11,6 @@ namespace BL.Api
         Task<List<StudentSubscriptionBL>> GetStudentSubscriptionsByStudentId(int studentId);
         Task UpdateLessonsUsedForActiveStudentSubscription(int studentId);
         Task<StudentSubscriptionBL> GetActiveStudentSubscriptionsByStudentId(int studentId);
+        Task<bool> CheckAddStudentSubscription(StudentSubscriptionBL studentSubscriptionBL);
     }
 }

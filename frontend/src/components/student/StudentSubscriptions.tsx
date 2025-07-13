@@ -6,6 +6,7 @@ import {
   getAllSubscriptions,
   getStudentSubscriptionById,
   addStudentSubscription,
+  checkAddStudentSubscription, 
 } from "../../services/api";
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
@@ -45,19 +46,33 @@ const StudentSubscriptions: React.FC = () => {
     }
   };
 
-  const handleBuy = (subscription: Subscription) => {
-    setSelectedSubscription(subscription);
-    setNewStudentSub((prev) => ({
-      ...prev,
-      subscriptionId: subscription.subscriptionId ?? 0,
-    }));
-  };
-
-  useEffect(() => {
-    if (selectedSubscription) {
-      setPaymentOpen(true);
+  const handleBuy = async (subscription: Subscription) => {
+    if (!subscription.subscriptionId) {
+      setError("Invalid subscription selected");
+      return;
     }
-  }, [selectedSubscription]);
+
+    const tempSub: Omit<StudentSubscription, "studentSubscriptionId"> = {
+      studentId: parsedUser.userId,
+      lessonsUsed: 0,
+      isActive: true,
+      subscriptionId: subscription.subscriptionId,
+    };
+
+    try {
+      const res = await checkAddStudentSubscription(tempSub);
+      if (res.data === true) {
+        setNewStudentSub(tempSub);
+        setSelectedSubscription(subscription);
+        setPaymentOpen(true);
+        setError(null);
+      } else {
+        setError("You already have an active subscription or the selected one is invalid.");
+      }
+    } catch (err) {
+      setError("Error checking subscription: " + parseApiError(err));
+    }
+  };
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
@@ -74,18 +89,18 @@ const StudentSubscriptions: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Your Subscriptions</h2>
+    <div>
+      <h2>Your Subscriptions</h2>
 
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      {success && <div className="text-green-600 mb-2">{success}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      {success && <div style={{ color: "green" }}>{success}</div>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div>
         {studentSubscriptions.length === 0 ? (
           <p>No subscriptions found.</p>
         ) : (
           studentSubscriptions.map((sub) => (
-            <div key={sub.studentSubscriptionId} className="border p-4 rounded shadow">
+            <div key={sub.studentSubscriptionId}>
               <p><strong>Subscription ID:</strong> {sub.subscriptionId}</p>
               <p><strong>Lessons Used:</strong> {sub.lessonsUsed}</p>
               <p><strong>Status:</strong> {sub.isActive ? "Active" : "Inactive"}</p>
@@ -94,22 +109,17 @@ const StudentSubscriptions: React.FC = () => {
         )}
       </div>
 
-      <h3 className="text-xl font-semibold mb-2">Buy New Subscription</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <h3>Buy New Subscription</h3>
+      <div>
         {availableSubscriptions.map((sub) => (
-          <div key={sub.subscriptionId} className="border p-4 rounded shadow flex flex-col justify-between">
+          <div key={sub.subscriptionId}>
             <div>
-              <h4 className="font-bold text-lg">{sub.name}</h4>
+              <h4>{sub.name}</h4>
               <p>{sub.description}</p>
               <p><strong>Price:</strong> {sub.price} ₪</p>
               {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
             </div>
-            <button
-              onClick={() => handleBuy(sub)}
-              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-            >
-              Buy
-            </button>
+            <button onClick={() => handleBuy(sub)}>Buy</button>
           </div>
         ))}
       </div>

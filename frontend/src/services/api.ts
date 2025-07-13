@@ -152,6 +152,9 @@ export const addStudentSubscription = (
 ) => {
   return api.post("/StudentSubscription/addStudentSubscription", subscription);
 };
+export const checkAddStudentSubscription = (data: Omit<StudentSubscription, "studentSubscriptionId">) => {
+  return api.post("/StudentSubscription/CheckAddStudentSubscription", data);
+ };
 
 export const getStudentSubscriptionById = (studentId: number) => {
   return api.get<StudentSubscription[]>(`/StudentSubscription/getStudentSubscriptionsByStudentId/${studentId}`);
