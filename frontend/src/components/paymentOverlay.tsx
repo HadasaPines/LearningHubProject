@@ -1,26 +1,35 @@
 import React, { useState } from "react";
 import jsPDF from "jspdf";
+import { addPayment } from "../services/api";
+import type { Payment } from "../models/paymentModel";
 
 interface Props {
+  userId: number;
   open: boolean;
   onClose: () => void;
   amount: number;
   onPaymentSuccess: () => void;
 }
 
-const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSuccess }) => {
-  const [method, setMethod] = useState("CreditCard");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvv, setCvv] = useState("");
+const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSuccess, userId }) => {
   const [paymentDone, setPaymentDone] = useState(false);
   const [transactionId] = useState(() => Math.floor(Math.random() * 1000000).toString());
 
+    console.log(amount)
   if (!open) return null;
 
-  const handlePay = () => {
-    setPaymentDone(true);
-    onPaymentSuccess();
+  const handlePay = async () => {
+    try {
+      const paymentData: Omit<Payment, "paymentId"> = {
+    userId,
+    amount, 
+    paymentDate: new Date().toISOString()}
+      await addPayment(paymentData);
+      setPaymentDone(true);
+      onPaymentSuccess();
+    } catch (error) {
+      console.error("שגיאה ברשת:", error);
+    }
   };
 
   const downloadReceiptPdf = () => {
@@ -30,24 +39,10 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSucce
 
     pdf.setFontSize(12);
     pdf.text(`Amount: ${amount} ₪`, 20, 40);
-    pdf.text(`Payment Method: ${getMethodLabel(method)}`, 20, 50);
-    pdf.text(`Transaction ID: ${transactionId}`, 20, 60);
-    pdf.text(`Date: ${new Date().toLocaleDateString("he-IL")}`, 20, 70);
+    pdf.text(`Transaction ID: ${transactionId}`, 20, 50);
+    pdf.text(`Date: ${new Date().toLocaleDateString("he-IL")}`, 20, 60);
 
     pdf.save(`lesson_receipt_${transactionId}.pdf`);
-  };
-
-  const getMethodLabel = (method: string) => {
-    switch (method) {
-      case "CreditCard":
-        return "Credit Card";
-      case "PayPal":
-        return "PayPal";
-      case "Bit":
-        return "Bit";
-      default:
-        return "Unknown";
-    }
   };
 
   return (
@@ -57,27 +52,8 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSucce
 
         {!paymentDone ? (
           <>
-            <h2 className="text-xl font-bold mb-2">Payment for Lesson</h2>
+            <h2 className="text-xl font-bold mb-4">Payment for Lesson</h2>
             <p className="mb-4">Amount to Pay: <strong>{amount} ₪</strong></p>
-
-            <label>Select Payment Method:</label>
-            <select value={method} onChange={(e) => setMethod(e.target.value)} className="w-full border p-2 rounded mb-4">
-              <option value="CreditCard">Credit Card</option>
-              <option value="PayPal">PayPal</option>
-              <option value="Bit">Bit</option>
-            </select>
-
-            {method === "CreditCard" && (
-              <>
-                <label>Card Number:</label>
-                <input className="border p-2 w-full mb-2" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
-
-                <div className="flex gap-2">
-                  <input className="border p-2 w-1/2" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(e.target.value)} />
-                  <input className="border p-2 w-1/2" placeholder="CVV" value={cvv} onChange={(e) => setCvv(e.target.value)} />
-                </div>
-              </>
-            )}
 
             <button
               onClick={handlePay}
@@ -92,7 +68,6 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSucce
             <div className="bg-gray-100 p-4 rounded text-sm leading-relaxed">
               <p><strong>Receipt Details:</strong></p>
               <p>• Amount: {amount} ₪</p>
-              <p>• Payment Method: {getMethodLabel(method)}</p>
               <p>• Transaction ID: {transactionId}</p>
               <p>• Date: {new Date().toLocaleDateString("he-IL")}</p>
             </div>

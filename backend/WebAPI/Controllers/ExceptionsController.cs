@@ -11,6 +11,8 @@ using BL.Exceptions.LessonExceptions;
 using BL.Exceptions.RegistrationExceptions;
 using BL.Exceptions.TeacherExceptions;
 using BL.Exceptions.SubjectExceptions;
+using BL.Exceptions.StudentSubscriptionExceptions;
+using BL.Exceptions.SubscriptionExceptions;
 
 namespace WebAPI.Controllers
 {
@@ -56,6 +58,9 @@ namespace WebAPI.Controllers
                 [typeof(MismatchTeacherAndSubjectException)] = HandleCustomException,
                 [typeof(MismatchTeacherAndLessonException)] = HandleCustomException,
                 [typeof(MismatchTeacherAndAvailabilityException)] = HandleCustomException,
+                [typeof(ActiveSubscriptionAlreadyExistException)] = HandleCustomException,
+                [typeof(StudentSubscriptionNotFoundException)] = HandleCustomException,
+                [typeof(SubscriptionNotActiveException)] = HandleCustomException,
                 [typeof(NullReferenceException)] = ex => Problem(
                     detail: "Please contact the owner of the website 0548535515",
                     title: "An error occurred",

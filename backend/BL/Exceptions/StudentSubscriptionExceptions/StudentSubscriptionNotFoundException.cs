@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL.Exceptions.StudentSubscriptionExceptoins
+namespace BL.Exceptions.StudentSubscriptionExceptions
 {
     public class StudentSubscriptionNotFoundException:Exception
     {

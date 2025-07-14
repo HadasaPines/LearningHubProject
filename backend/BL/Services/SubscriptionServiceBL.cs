@@ -39,7 +39,7 @@ namespace BL.Services
             if (subscriptions == null || !subscriptions.Any())
                 throw new SubscriptionNotFoundException("No subscriptions found");
             return _mapper.Map<List<SubscriptionBL>>(subscriptions);
-            
+
         }
 
         public async Task<SubscriptionBL> GetSubscriptionById(int id)
@@ -48,7 +48,7 @@ namespace BL.Services
             if (subscription == null)
                 throw new SubscriptionNotFoundException($"Subscription with ID '{id}' not found");
             return _mapper.Map<SubscriptionBL>(subscription);
-            
+
         }
 
         public async Task UpdateSubscriptionAsync(int id, JsonPatchDocument<SubscriptionBL> patchDoc)
@@ -68,5 +68,15 @@ namespace BL.Services
         {
             await _subscriptionServiceDAL.DeleteSubscription(id);
         }
+        public async Task updateSubscriptionActive(int id)
+        {
+            var subscription = await _subscriptionServiceDAL.GetSubscriptionById(id);
+            if (subscription == null)
+                throw new SubscriptionNotFoundException($"Subscription with ID '{id}' not found");
+
+            subscription.IsActive = !subscription.IsActive;
+            await _subscriptionServiceDAL.UpdateSubscription(subscription);
+        }
+
     }
 }

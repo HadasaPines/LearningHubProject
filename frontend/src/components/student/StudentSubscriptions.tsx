@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import type { Subscription } from "../../models/subscriptionModel";
-import type {StudentSubscription} from "../../models/studentSubscriptionModel";
+import type { StudentSubscription } from "../../models/studentSubscriptionModel";
 import type { User } from "../../models/userModel";
 import {
   getAllSubscriptions,
   getStudentSubscriptionById,
   addStudentSubscription,
+  checkAddStudentSubscription, 
 } from "../../services/api";
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
 
-
-
 const StudentSubscriptions: React.FC = () => {
-
- const user = localStorage.getItem("user");
-    if (!user) return <div>User not logged in</div>;
-    const parsedUser: User = JSON.parse(user);
+  const user = localStorage.getItem("user");
+  if (!user) return <div>User not logged in</div>;
+  const parsedUser: User = JSON.parse(user);
 
   const [availableSubscriptions, setAvailableSubscriptions] = useState<Subscription[]>([]);
   const [studentSubscriptions, setStudentSubscriptions] = useState<StudentSubscription[]>([]);
@@ -24,15 +22,13 @@ const StudentSubscriptions: React.FC = () => {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-    const [newStudentSub, setnewStudentSub] = useState<Omit<StudentSubscription, "studentSubscriptionId">>({
-     studentId: parsedUser.userId,
-      lessonsUsed: 0,
-      isActive: true,
-        subscriptionId:0
-    });
+  const [newStudentSub, setNewStudentSub] = useState<Omit<StudentSubscription, "studentSubscriptionId">>({
+    studentId: parsedUser.userId,
+    lessonsUsed: 0,
+    isActive: true,
+    subscriptionId: 0,
+  });
 
-
-   
   useEffect(() => {
     loadSubscriptions();
   }, []);
@@ -50,21 +46,38 @@ const StudentSubscriptions: React.FC = () => {
     }
   };
 
-  const handleBuy = (subscription: Subscription) => {
+  const handleBuy = async (subscription: Subscription) => {
+    if (!subscription.subscriptionId) {
+      setError("Invalid subscription selected");
+      return;
+    }
 
-    setSelectedSubscription(subscription);
-     setnewStudentSub((prev) => ({
-    ...prev,
-    subscriptionId: subscription.subscriptionId?subscription.subscriptionId:0,
-  }));
-    setPaymentOpen(true);
+    const tempSub: Omit<StudentSubscription, "studentSubscriptionId"> = {
+      studentId: parsedUser.userId,
+      lessonsUsed: 0,
+      isActive: true,
+      subscriptionId: subscription.subscriptionId,
+    };
+
+    try {
+      const res = await checkAddStudentSubscription(tempSub);
+      if (res.data === true) {
+        setNewStudentSub(tempSub);
+        setSelectedSubscription(subscription);
+        setPaymentOpen(true);
+        setError(null);
+      } else {
+        setError("You already have an active subscription or the selected one is invalid.");
+      }
+    } catch (err) {
+      setError("Error checking subscription: " + parseApiError(err));
+    }
   };
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
     if (!selectedSubscription) return;
 
-console.log("New Student Subscription: ", newStudentSub);
     try {
       await addStudentSubscription(newStudentSub);
       setSuccess("Subscription purchased successfully");
@@ -76,18 +89,18 @@ console.log("New Student Subscription: ", newStudentSub);
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Your Subscriptions</h2>
+    <div>
+      <h2>Your Subscriptions</h2>
 
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      {success && <div className="text-green-600 mb-2">{success}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      {success && <div style={{ color: "green" }}>{success}</div>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div>
         {studentSubscriptions.length === 0 ? (
           <p>No subscriptions found.</p>
         ) : (
           studentSubscriptions.map((sub) => (
-            <div key={sub.studentSubscriptionId} className="border p-4 rounded shadow">
+            <div key={sub.studentSubscriptionId}>
               <p><strong>Subscription ID:</strong> {sub.subscriptionId}</p>
               <p><strong>Lessons Used:</strong> {sub.lessonsUsed}</p>
               <p><strong>Status:</strong> {sub.isActive ? "Active" : "Inactive"}</p>
@@ -96,28 +109,23 @@ console.log("New Student Subscription: ", newStudentSub);
         )}
       </div>
 
-      <h3 className="text-xl font-semibold mb-2">Buy New Subscription</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <h3>Buy New Subscription</h3>
+      <div>
         {availableSubscriptions.map((sub) => (
-          <div key={sub.subscriptionId} className="border p-4 rounded shadow flex flex-col justify-between">
+          <div key={sub.subscriptionId}>
             <div>
-              <h4 className="font-bold text-lg">{sub.name}</h4>
+              <h4>{sub.name}</h4>
               <p>{sub.description}</p>
               <p><strong>Price:</strong> {sub.price} ₪</p>
               {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
-              {sub.validityDays && <p><strong>Validity:</strong> {sub.validityDays} days</p>}
             </div>
-            <button
-              onClick={() => handleBuy(sub)}
-              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-            >
-              Buy
-            </button>
+            <button onClick={() => handleBuy(sub)}>Buy</button>
           </div>
         ))}
       </div>
 
       <PaymentOverlay
+        userId={parsedUser.userId}
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
         amount={selectedSubscription?.price || 0}

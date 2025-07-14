@@ -24,6 +24,6 @@ namespace BL.Models
 
         public int? LessonCount { get; set; }
 
-        public int? ValidityDays { get; set; }
+        public bool IsActive { get; set; }
     }
 }

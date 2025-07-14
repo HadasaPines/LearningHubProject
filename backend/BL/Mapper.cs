@@ -26,6 +26,7 @@ public class Mapper : Profile
         CreateMap<DAL.Models.StudentSubscription, BL.Models.StudentSubscriptionBL>().ReverseMap();
 
         CreateMap<DAL.Models.Registration, BL.Models.RegistrationBL>().ReverseMap();
+        CreateMap<DAL.Models.Payment, BL.Models.PaymentBL>().ReverseMap();
 
         CreateMap<User, UserIncludeRoleBL>()
             .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.Student))

@@ -6,6 +6,7 @@ import type { Registration } from '../models/registerationModel';
 
 import type { Lesson } from '../models/lessonModel';
 import type { TeacherAvailability } from '../models/availabilityModel';
+import type {Payment} from "../models/paymentModel";
 
 
 import type { NewSubject } from '../models/subjectModel';
@@ -19,7 +20,6 @@ const api = axios.create({
     'Content-Type': "application/json-patch+json",
   },
 });
-
 
 export const addUser =async (userData:User) => {
   return api.post('/User/addUser', userData);
@@ -143,16 +143,35 @@ export const addSubscription = (subscription: Omit<Subscription, "subSubscriptio
 export const getAllSubscriptions = () =>{
   return api.get<Subscription[]>("/Subscription/getAllSubscriptions");
 };
+export const updateSubscriptionActive = (id: number) =>{
+ return api.put(`/Subscription/updateSubscriptionActive/${id}`)
+};
 
 export const addStudentSubscription = (
   subscription: Omit<StudentSubscription, "studentSubscriptionId">
 ) => {
   return api.post("/StudentSubscription/addStudentSubscription", subscription);
 };
+export const checkAddStudentSubscription = (data: Omit<StudentSubscription, "studentSubscriptionId">) => {
+  return api.post("/StudentSubscription/CheckAddStudentSubscription", data);
+ };
 
 export const getStudentSubscriptionById = (studentId: number) => {
   return api.get<StudentSubscription[]>(`/StudentSubscription/getStudentSubscriptionsByStudentId/${studentId}`);
+};
+
+
+export const addPayment = (paymentDate:Omit<Payment,"paymentId">) => {
+  return api.post(`/Payment/addPayment`,paymentDate);
 }
+
+export const updateLessonsUsedForActiveStudentSubscription=(userId:number) => {
+  return api.put(`/StudentSubscription/updateLessonsUsedForActiveStudentSubscription/${userId}`);
+}
+export const getPaymentsByUserId = async (userId: number): Promise<Payment[]> => {
+  const response = await api.get(`/Payment/getPaymentsByStudentId/${userId}`);
+  return response.data;
+};
 
 export default api;
 

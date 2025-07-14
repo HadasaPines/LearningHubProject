@@ -41,10 +41,16 @@ namespace DAL.Services
 
         }
 
-        public async Task UpdateLessonsUsed(StudentSubscription studentSubscription)
+        public async Task UpdateLessonsUsedForActiveStudentSubscription(StudentSubscription studentSubscription)
         {
             var existingSubscription = await _context.StudentSubscriptions
-                .FirstOrDefaultAsync(ss => ss.StudentSubscriptionId == studentSubscription.StudentSubscriptionId);
+                .FirstOrDefaultAsync(ss => ss.StudentSubscriptionId == studentSubscription.StudentSubscriptionId)
+                ;
+            studentSubscription.LessonsUsed++;
+            if (studentSubscription.LessonsUsed == studentSubscription.Subscription.LessonCount)
+            {
+                studentSubscription.IsActive = false;
+            }
             _context.Entry(existingSubscription).CurrentValues.SetValues(studentSubscription);
             await _context.SaveChangesAsync();
         }
@@ -57,6 +63,16 @@ namespace DAL.Services
 
 
         }
+        public async Task<StudentSubscription> GetActiveStudentSubscriptionsByStudentId(int studentId)
+        {
+            return await _context.StudentSubscriptions
+                .Include(ss => ss.Subscription)
+                .FirstOrDefaultAsync(ss => ss.StudentId == studentId && ss.IsActive);
+                
+
+
+        }
+
     }
 }
 

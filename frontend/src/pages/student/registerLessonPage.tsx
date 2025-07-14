@@ -3,7 +3,8 @@ import type { Lesson } from "../../models/lessonModel";
 import type { LessonDetails } from "../../models/lessonDetailsModel";
 import type { Subject } from "../../models/subjectModel";
 import type { StudentDetails, User } from "../../models/userModel";
-import type { Registration } from "../../models/registerationModel";
+
+import {updateLessonsUsedForActiveStudentSubscription} from "../../services/api"
 
 import { parseApiError } from "../../utils/apiErrorParser";
 import {
@@ -14,7 +15,7 @@ import {
 } from "../../services/api";
 
 import CalendarView from "../../components/calendarView";
-import PaymentOverlay from "../../components/paymentOverlay"; 
+
 
 const RegisterLessonForm: React.FC = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -46,8 +47,7 @@ const RegisterLessonForm: React.FC = () => {
     gender: student.gender,
   });
 
-  const [paymentOpen, setPaymentOpen] = useState(false);
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,27 +88,36 @@ const RegisterLessonForm: React.FC = () => {
     }));
   };
 
-  const handleOpenPayment = (lesson: Lesson) => {
-    setSelectedLesson(lesson);
-    setPaymentOpen(true);
+const handleSubmit = async (lesson: Lesson) => {
+  const registration = {
+    studentId: userData.userId,
+    lessonId: lesson.lessonId,
   };
 
-  const handlePaymentConfirm = async () => {
-    if (!selectedLesson) return;
+  try {
+   
+    await updateLessonsUsedForActiveStudentSubscription(userData.userId);
+ await addRegistration(registration);
+    setSuccessMessage("Successfully registered! Subscription usage updated.");
+    setErrorMessages(null);
+  } catch (error: any) {
+    const err = parseApiError(error);
 
-    const registration: Registration = {
-      studentId: userData.userId,
-      lessonId: selectedLesson.lessonId,
-    };
+    if (
+      error?.response?.status === 404
+     
+    ) {
+      setErrorMessages("No active subscription found – please purchase one before registering for a lesson.");
+    } else {
+      setErrorMessages("Error registering for lesson: " + err);
+    }
 
-    try {
-      await addRegistration(registration);
-      setSuccessMessage("Successfully registered for the lesson!");
-      setErrorMessages(null);
-    } catch (error) {
-      setErrorMessages("Registration error: " + parseApiError(error));
-    } 
-  };
+    setSuccessMessage(null);
+  }
+};
+
+
+
 
   return (
     <>
@@ -158,21 +167,11 @@ const RegisterLessonForm: React.FC = () => {
           lessons={lessons}
           teachers={teachers}
           subjects={subjects}
-          onRegister={handleOpenPayment}
+          onRegister={handleSubmit}
         />
       </div>
 
-      {selectedLesson && (
-        <PaymentOverlay
-          open={paymentOpen}
-          onClose={() => {
-            setPaymentOpen(false);
-            setSelectedLesson(null);
-          }}
-          amount={150} 
-          onPaymentSuccess={handlePaymentConfirm}
-        />
-      )}
+ 
     </>
   );
 };

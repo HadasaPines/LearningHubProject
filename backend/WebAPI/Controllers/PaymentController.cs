@@ -7,11 +7,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatmentController : ControllerBase
+    public class PaymentController : ControllerBase
     {
         private readonly IPaymentServiceBL _paymentServiceBL;
 
-        public PatmentController(IPaymentServiceBL paymentServiceBL)
+        public PaymentController(IPaymentServiceBL paymentServiceBL)
         {
             _paymentServiceBL = paymentServiceBL;
         }
@@ -55,6 +55,7 @@ namespace WebAPI.Controllers
 
 
         }
+
 
 
     }

@@ -8,8 +8,8 @@ namespace DAL.Api
         Task DeleteStudentSubscription(int id);
         Task<List<StudentSubscription>> GetAllStudentSubscriptions();
         Task<StudentSubscription> GetStudentSubscriptionById(int id);
-        Task UpdateLessonsUsed(StudentSubscription studentSubscription);
-
+        Task UpdateLessonsUsedForActiveStudentSubscription(StudentSubscription studentSubscription);
+        Task<StudentSubscription> GetActiveStudentSubscriptionsByStudentId(int studentId);
         Task<List<StudentSubscription>> GetStudentSubscriptionsByStudentId(int studentId);
     }
 }

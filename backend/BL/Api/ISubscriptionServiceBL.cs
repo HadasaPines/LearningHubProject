@@ -11,5 +11,6 @@ namespace BL.Services
         Task<List<SubscriptionBL>> GetAllSubscriptions();
         Task<SubscriptionBL> GetSubscriptionById(int id);
         Task UpdateSubscriptionAsync(int id, JsonPatchDocument<SubscriptionBL> patchDoc);
+        Task updateSubscriptionActive(int id);
     }
 }
