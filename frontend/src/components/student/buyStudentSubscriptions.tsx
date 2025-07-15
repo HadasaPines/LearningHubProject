@@ -2,22 +2,26 @@ import React, { useEffect, useState } from "react";
 import type { Subscription } from "../../models/subscriptionModel";
 import type { StudentSubscription } from "../../models/studentSubscriptionModel";
 import type { User } from "../../models/userModel";
+import styles from './buyStudentSubscriptions.module.scss';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+
+
 import {
   getAllSubscriptions,
-  getStudentSubscriptionById,
   addStudentSubscription,
-  checkAddStudentSubscription, 
+  checkAddStudentSubscription,
 } from "../../services/api";
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
 
-const StudentSubscriptions: React.FC = () => {
+import { FaHeart, FaFileAlt, FaGlobe } from 'react-icons/fa';
+
+const BuyStudentSubscriptions: React.FC = () => {
   const user = localStorage.getItem("user");
   if (!user) return <div>User not logged in</div>;
   const parsedUser: User = JSON.parse(user);
 
   const [availableSubscriptions, setAvailableSubscriptions] = useState<Subscription[]>([]);
-  const [studentSubscriptions, setStudentSubscriptions] = useState<StudentSubscription[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,14 +37,25 @@ const StudentSubscriptions: React.FC = () => {
     loadSubscriptions();
   }, []);
 
+  useEffect(() => {
+  if (error || success) {
+    const timeout = setTimeout(() => {
+      setError(null);
+      setSuccess(null);
+    }, 4000);
+    return () => clearTimeout(timeout);
+  }
+}, [error, success]);
+
+
   const loadSubscriptions = async () => {
     try {
-      const [subs, studentSubs] = await Promise.all([
+      const [subs] = await Promise.all([
         getAllSubscriptions(),
-        getStudentSubscriptionById(parsedUser.userId),
+
       ]);
       setAvailableSubscriptions(subs.data);
-      setStudentSubscriptions(studentSubs.data);
+    
     } catch (err) {
       setError("Failed to load subscriptions: " + parseApiError(err));
     }
@@ -89,37 +104,60 @@ const StudentSubscriptions: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Your Subscriptions</h2>
+    <div className={styles.container}>
+  {/* <div className={styles.circle1}></div> */}
+  <div className={styles.circle2}></div>
+  <div className={styles.circle3}></div>
 
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {success && <div style={{ color: "green" }}>{success}</div>}
+      {error && (
+  <div className={`${styles.toast} ${styles.error}`}>
+    <FaTimesCircle />
+    <span>{error}</span>
+  </div>
+)}
 
-      <div>
-        {studentSubscriptions.length === 0 ? (
-          <p>No subscriptions found.</p>
-        ) : (
-          studentSubscriptions.map((sub) => (
-            <div key={sub.studentSubscriptionId}>
-              <p><strong>Subscription ID:</strong> {sub.subscriptionId}</p>
-              <p><strong>Lessons Used:</strong> {sub.lessonsUsed}</p>
-              <p><strong>Status:</strong> {sub.isActive ? "Active" : "Inactive"}</p>
-            </div>
-          ))
-        )}
-      </div>
+{success && (
+  <div className={`${styles.toast} ${styles.success}`}>
+    <FaCheckCircle />
+    <span>{success}</span>
+  </div>
+)}
 
-      <h3>Buy New Subscription</h3>
-      <div>
+
+   
+
+      <h3 className={styles.title}>Available Subscriptions</h3>
+      <div className={styles.subscriptionsList}>
         {availableSubscriptions.map((sub) => (
-          <div key={sub.subscriptionId}>
-            <div>
-              <h4>{sub.name}</h4>
-              <p>{sub.description}</p>
-              <p><strong>Price:</strong> {sub.price} ₪</p>
+          <div key={sub.subscriptionId} className={styles.card}>
+            {sub.name.toLowerCase().includes("premium") && (
+              <div className={styles.icon}>
+                <FaGlobe />
+              </div>
+            )}
+            {sub.name.toLowerCase().includes("focus") && (
+              <div className={styles.icon}>
+                <FaFileAlt />
+              </div>
+            )}
+            {sub.name.toLowerCase().includes("smart") && (
+              <div className={styles.icon}>
+                <FaHeart />
+              </div>
+            )}
+
+            <h4>{sub.name}</h4>
+            <div className={styles.price}>₪ {sub.price}</div>
+            <div className={styles.description}>{sub.description}</div>
+
+            <div className={styles.features}>
               {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
+               
             </div>
-            <button onClick={() => handleBuy(sub)}>Buy</button>
+
+            <button className={styles.buyBtn} onClick={() => handleBuy(sub)}>
+              Select Plan
+            </button>
           </div>
         ))}
       </div>
@@ -135,4 +173,4 @@ const StudentSubscriptions: React.FC = () => {
   );
 };
 
-export default StudentSubscriptions;
+export default BuyStudentSubscriptions;

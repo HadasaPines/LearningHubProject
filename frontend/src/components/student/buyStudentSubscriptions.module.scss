@@ -1,0 +1,250 @@
+
+.container {
+  position: relative;
+  padding: 40px 20px;
+  direction: rtl;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  background: #fdfcfb; // רקע בז׳ בהיר מאוד
+  overflow: hidden;
+
+  // עיגול ירוק כהה למעלה-שמאל
+  &::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: #5b7c6c;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  // עיגול ירוק בהיר למטה-ימין
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: #a8bfa7;
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  // עיגולים קטנים נוספים (חדשים) בתוך ה-container
+  .circle1,
+  .circle2,
+  .circle3 {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .circle1 {
+    top: 50%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: #a8bfa7;
+    opacity: 0.12;
+    filter: blur(6px);
+  }
+
+  .circle2 {
+    top: 80%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background: #93a89a;
+    opacity: 0.18;
+    filter: blur(4px);
+  }
+
+  // .circle3 {
+  //   top: 10%;
+  //   right: 20%;
+  //   width: 150px;
+  //   height: 150px;
+  //   background: #7f9989;
+  //   opacity: 0.25;
+  //   filter: blur(1px);
+  // }
+
+ 
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #3C564A;
+}
+
+.subscriptionsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card {
+  background: linear-gradient(to bottom,#ffffff);
+  border-radius: 25px;
+  width: 230px;
+  height: 440px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: transform 0.3s ease;
+  padding-bottom: 0;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  h4 {
+    margin: 20px 0 10px;
+    font-size: 22px;
+    color: #3C564A;
+  }
+
+  .price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3C564A;
+  }
+
+  .description {
+    font-size: 14px;
+    margin: 10px 20px;
+    color: #4A6A5A;
+  }
+
+  .features {
+    margin: 10px 0 20px;
+
+    p {
+      margin: 4px;
+      font-size: 14px;
+      color: #3C564A;
+    }
+  }
+
+  .buyBtn {
+    background: linear-gradient(to bottom, #4A6A5A, #3C564A);
+    border: none;
+    color: white;
+    padding: 25px 0;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 0 0 25px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #5b8570;
+    }
+  }
+}
+
+.icon {
+  font-size: 36px;
+  padding: 35px;
+  background: linear-gradient(to bottom, #4A6A5A, #3C564A);
+  color: #fff;
+}
+
+.subList {
+  margin-bottom: 40px;
+
+  .studentSubCard {
+    border: 1px solid #fefefe;
+    background: #f4e7cd;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: right;
+    color: #3C564A;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+}
+
+.statusMessage {
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  width: fit-content;
+  margin: 0 auto 20px;
+
+  &.error {
+    background-color: #ffcccc;
+    color: #990000;
+  }
+
+  &.success {
+    background-color: #ccffcc;
+    color: #006600;
+  }
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 16px 24px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-out;
+  background-color: #fff;
+  border-left: 6px solid;
+}
+
+.toast svg {
+  font-size: 20px;
+}
+
+.toast.success {
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.toast.error {
+  color: #c62828;
+  border-color: #c62828;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
