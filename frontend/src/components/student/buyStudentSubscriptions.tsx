@@ -5,7 +5,6 @@ import type { User } from "../../models/userModel";
 import styles from './buyStudentSubscriptions.module.scss';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-
 import {
   getAllSubscriptions,
   addStudentSubscription,
@@ -38,24 +37,19 @@ const BuyStudentSubscriptions: React.FC = () => {
   }, []);
 
   useEffect(() => {
-  if (error || success) {
-    const timeout = setTimeout(() => {
-      setError(null);
-      setSuccess(null);
-    }, 4000);
-    return () => clearTimeout(timeout);
-  }
-}, [error, success]);
-
+    if (error || success) {
+      const timeout = setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 4000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error, success]);
 
   const loadSubscriptions = async () => {
     try {
-      const [subs] = await Promise.all([
-        getAllSubscriptions(),
-
-      ]);
+      const [subs] = await Promise.all([getAllSubscriptions()]);
       setAvailableSubscriptions(subs.data);
-    
     } catch (err) {
       setError("Failed to load subscriptions: " + parseApiError(err));
     }
@@ -95,7 +89,6 @@ const BuyStudentSubscriptions: React.FC = () => {
 
     try {
       await addStudentSubscription(newStudentSub);
-      setSuccess("Subscription purchased successfully");
       setSelectedSubscription(null);
       loadSubscriptions();
     } catch (err) {
@@ -105,54 +98,43 @@ const BuyStudentSubscriptions: React.FC = () => {
 
   return (
     <div className={styles.container}>
-  {/* <div className={styles.circle1}></div> */}
-  <div className={styles.circle2}></div>
-  <div className={styles.circle3}></div>
+  
+      <div className={styles.circle2}></div>
+      <div className={styles.circle3}></div>
 
       {error && (
-  <div className={`${styles.toast} ${styles.error}`}>
-    <FaTimesCircle />
-    <span>{error}</span>
-  </div>
-)}
+        <div className={`${styles.toast} ${styles.error}`}>
+          <FaTimesCircle />
+          <span>{error}</span>
+        </div>
+      )}
 
-{success && (
-  <div className={`${styles.toast} ${styles.success}`}>
-    <FaCheckCircle />
-    <span>{success}</span>
-  </div>
-)}
-
-
-   
+      {success && (
+        <div className={`${styles.toast} ${styles.success}`}>
+          <FaCheckCircle />
+          <span>{success}</span>
+        </div>
+      )}
 
       <h3 className={styles.title}>Available Subscriptions</h3>
       <div className={styles.subscriptionsList}>
         {availableSubscriptions.map((sub) => (
           <div key={sub.subscriptionId} className={styles.card}>
             {sub.name.toLowerCase().includes("premium") && (
-              <div className={styles.icon}>
-                <FaGlobe />
-              </div>
+              <div className={styles.icon}><FaGlobe /></div>
             )}
             {sub.name.toLowerCase().includes("focus") && (
-              <div className={styles.icon}>
-                <FaFileAlt />
-              </div>
+              <div className={styles.icon}><FaFileAlt /></div>
             )}
             {sub.name.toLowerCase().includes("smart") && (
-              <div className={styles.icon}>
-                <FaHeart />
-              </div>
+              <div className={styles.icon}><FaHeart /></div>
             )}
 
             <h4>{sub.name}</h4>
             <div className={styles.price}>₪ {sub.price}</div>
             <div className={styles.description}>{sub.description}</div>
-
             <div className={styles.features}>
               {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
-               
             </div>
 
             <button className={styles.buyBtn} onClick={() => handleBuy(sub)}>
