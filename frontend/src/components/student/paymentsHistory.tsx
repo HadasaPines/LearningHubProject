@@ -1,29 +1,104 @@
+// import { useEffect, useState } from "react";
+// import { getPaymentsByUserId } from "../../services/api";
+// import type { Payment } from "../../models/paymentModel";
+
+// const StudentPayments = () => {
+//   const [payments, setPayments] = useState<Payment[]>([]);
+//   const [loading, setLoading] = useState(true);
+//   const user = JSON.parse(localStorage.getItem("user") || "{}");
+//   const userId = user?.userId;
+
+//   useEffect(() => {
+//     console.log("Fetching payments for userId:", userId);
+//     setLoading(true);
+//     if (userId) {
+//       getPaymentsByUserId(Number(userId))
+//         .then(setPayments)
+//         .finally(() => setLoading(false));
+//     }
+//   }, [userId]);
+
+//   if (loading) return <p>Loading payments...</p>;
+
+//   return (
+//     <div>
+//       <h2>Payment History</h2>
+//       <table>
+//         <thead>
+//           <tr>
+//             <th>Amount</th>
+//             <th>Payment Date</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {payments.map((payment, index) => (
+//             <tr key={index}>
+//               <td>{payment.amount.toFixed(2)} ₪</td>
+//               <td>{new Date(payment.paymentDate).toLocaleDateString()}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// export default StudentPayments;
+
+
+
 import { useEffect, useState } from "react";
 import { getPaymentsByUserId } from "../../services/api";
 import type { Payment } from "../../models/paymentModel";
+import Toast from "../../components/toast";
+import styles from "../../components/student/paymentsHistory.module.scss";
 
 const StudentPayments = () => {
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  const [errorMessages, setErrorMessages] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userId = user?.userId;
 
   useEffect(() => {
-    console.log("Fetching payments for userId:", userId);
-    setLoading(true);
-    if (userId) {
-      getPaymentsByUserId(Number(userId))
-        .then(setPayments)
-        .finally(() => setLoading(false));
+    if (!userId) {
+      setErrorMessages("User not found");
+      return;
     }
+      const fetchData = async () => {
+        try {
+    const res=await getPaymentsByUserId(userId);
+    setPayments(res);
+  }
+    catch(error){
+ setErrorMessages("Failed to fetch payments");
+    }
+      };
+      fetchData();
   }, [userId]);
 
-  if (loading) return <p>Loading payments...</p>;
+  
+  useEffect(() => {
+    if (errorMessages || successMessage) {
+      const timeout = setTimeout(() => {
+        setErrorMessages(null);
+        setSuccessMessage(null);
+      }, 4000);
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMessages, successMessage]);
+
+
 
   return (
-    <div>
+    <div className={styles.container}>
+      {errorMessages && <Toast type="error" message={errorMessages} />}
+      {successMessage && <Toast type="success" message={successMessage} />}
+
       <h2>Payment History</h2>
-      <table>
+      <table className={styles.paymentTable}>
         <thead>
           <tr>
             <th>Amount</th>
@@ -39,6 +114,10 @@ const StudentPayments = () => {
           ))}
         </tbody>
       </table>
+
+      <div className={styles.exportButtons}>
+        <button onClick={() => window.print()}>Print Page</button>
+      </div>
     </div>
   );
 };

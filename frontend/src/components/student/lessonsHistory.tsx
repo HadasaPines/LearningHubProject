@@ -41,7 +41,6 @@ const StudentLessonHistory = () => {
         const subjectsRes = await getAllSubjects();
         setSubjects(subjectsRes.data);
       } catch (error) {
-        // console.error("Error fetching data:", error);
         setErrorMessages("Error fetching data");
       }
     };
