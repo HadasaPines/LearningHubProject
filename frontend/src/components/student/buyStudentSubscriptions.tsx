@@ -3,7 +3,7 @@ import type { Subscription } from "../../models/subscriptionModel";
 import type { StudentSubscription } from "../../models/studentSubscriptionModel";
 import type { User } from "../../models/userModel";
 import styles from './buyStudentSubscriptions.module.scss';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaHeart, FaFileAlt, FaGlobe } from 'react-icons/fa';
 
 import {
   getAllSubscriptions,
@@ -13,7 +13,7 @@ import {
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
 
-import { FaHeart, FaFileAlt, FaGlobe } from 'react-icons/fa';
+import Toast from "../../components/toast"; 
 
 const BuyStudentSubscriptions: React.FC = () => {
   const user = localStorage.getItem("user");
@@ -91,30 +91,22 @@ const BuyStudentSubscriptions: React.FC = () => {
       await addStudentSubscription(newStudentSub);
       setSelectedSubscription(null);
       loadSubscriptions();
+      setSuccess("Subscription purchased successfully!");
     } catch (err) {
       setError("Error purchasing subscription: " + parseApiError(err));
     }
   };
 
   return (
+    <> 
+     {error && <Toast type="error" message={error} />}
+      {success && <Toast type="success" message={success} />}
     <div className={styles.container}>
-  
       <div className={styles.circle2}></div>
       <div className={styles.circle3}></div>
 
-      {error && (
-        <div className={`${styles.toast} ${styles.error}`}>
-          <FaTimesCircle />
-          <span>{error}</span>
-        </div>
-      )}
 
-      {success && (
-        <div className={`${styles.toast} ${styles.success}`}>
-          <FaCheckCircle />
-          <span>{success}</span>
-        </div>
-      )}
+    
 
       <h3 className={styles.title}>Available Subscriptions</h3>
       <div className={styles.subscriptionsList}>
@@ -152,6 +144,7 @@ const BuyStudentSubscriptions: React.FC = () => {
         onPaymentSuccess={handlePaymentSuccess}
       />
     </div>
+    </>
   );
 };
 

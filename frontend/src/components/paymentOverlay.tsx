@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import { addPayment } from "../services/api";
 import type { Payment } from "../models/paymentModel";
-import "./PaymentOverlay.scss";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import "./paymentOverlay.scss";
+import Toast from "../components/toast"
 
 interface Props {
   userId: number;
@@ -13,9 +13,7 @@ interface Props {
   onPaymentSuccess: () => void;
 }
 
-const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, 
-   onPaymentSuccess, 
-  userId }) => {
+const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount, onPaymentSuccess, userId }) => {
   const [paymentDone, setPaymentDone] = useState(false);
   const [transactionId] = useState(() => Math.floor(Math.random() * 1000000).toString());
 
@@ -75,11 +73,11 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount,
   };
 
   const handleCloseAfterSuccess = () => {
-    if(paymentDone===true){
-    onPaymentSuccess();
-    onClose();
-    resetForm();}
-    else{
+    if(paymentDone){
+      onPaymentSuccess();
+      onClose();
+      resetForm();
+    } else {
       onClose();
     }
   };
@@ -99,19 +97,8 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount,
       <div className="payment-card">
         <button onClick={handleCloseAfterSuccess} className="close-button">✕</button>
 
-        {/* Toasts */}
-        {error && (
-          <div className="toast error">
-            <FaTimesCircle />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div className="toast success">
-            <FaCheckCircle />
-            <span>{success}</span>
-          </div>
-        )}
+        {error && <Toast type="error" message={error} />}
+        {success && <Toast type="success" message={success} />}
 
         {!paymentDone ? (
           <>
@@ -187,10 +174,6 @@ const PaymentOverlay: React.FC<Props> = ({ open, onClose, amount,
             <button onClick={downloadReceiptPdf} className="confirm-button">
               Download PDF
             </button>
-
-            {/* <button onClick={handleCloseAfterSuccess} className="cancel-button">
-              Close
-            </button> */}
           </>
         )}
       </div>

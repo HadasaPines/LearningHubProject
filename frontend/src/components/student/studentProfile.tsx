@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FiUser, FiEdit2 } from "react-icons/fi"; // ייבוא אייקונים
+import { FiUser, FiEdit2 } from "react-icons/fi"; 
 import type { User } from "../../models/userModel";
 import { updateUser, updateStudent } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import Toast from "../../components/toast"
 
 import styles from "./StudentProfile.module.scss";
 
@@ -17,36 +17,38 @@ const StudentProfile: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (errorMessage || successMessage) {
-      const timeout = setTimeout(() => {
-        setErrorMessage(null);
-        setSuccessMessage(null);
-      }, 4000);
-      return () => clearTimeout(timeout);
-    }
-  }, [errorMessage, successMessage]);
+ useEffect(() => {
+  if (errorMessage || successMessage) {
+
+    const timeout = setTimeout(() => {
+      setErrorMessage(null);
+      setSuccessMessage(null);
+    }, 4000);
+
+    return () => clearTimeout(timeout);
+  }
+}, [errorMessage, successMessage]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const studentField = ["age"];
     if (studentField.includes(name)) {
-      setUserData({
-        ...userData,
-        student: { ...userData.student!, [name]: value },
-      });
+      setUserData((prev) => ({
+        ...prev,
+        student: { ...prev.student!, [name]: value },
+      }));
     } else {
-      setUserData({
-        ...userData,
+      setUserData((prev) => ({
+        ...prev,
         [name]: value,
-      });
+      }));
     }
   };
 
   const handleSave = async () => {
     try {
       localStorage.setItem("user", JSON.stringify(userData));
-
       try {
         const userPatch = [
           { op: "replace", path: "/firstName", value: userData.firstName },
@@ -54,45 +56,35 @@ const StudentProfile: React.FC = () => {
           { op: "replace", path: "/email", value: userData.email },
           { op: "replace", path: "/phone", value: userData.phone },
         ];
-
         const studentPatch = [
           { op: "replace", path: "/age", value: userData.student?.age },
         ];
-
         await updateUser(parsedUser.userId, userPatch);
         await updateStudent(parsedUser.userId, studentPatch);
         setSuccessMessage("Update saved successfully");
       } catch (error: any) {
         setErrorMessage(parseApiError(error));
       }
-
       setIsEditing(false);
-    } catch (err) {
+    } catch {
       setErrorMessage("Error saving data");
     }
   };
 
   return (
+    <>
+       {errorMessage && <Toast type="error" message={errorMessage} />}
+      {successMessage && <Toast type="success" message={successMessage} />}
     <div className={styles.container}>
       <div className={styles.circle1}></div>
       <div className={styles.circle2}></div>
       <div className={styles.circle3}></div>
       <div className={styles.circle4}></div>
+
+
+
+
       <div className={styles.card}>
-        {errorMessage && (
-          <div className={`${styles.toast} ${styles.error}`}>
-            <FaTimesCircle />
-            <span>{errorMessage}</span>
-          </div>
-        )}
-
-        {successMessage && (
-          <div className={`${styles.toast} ${styles.success}`}>
-            <FaCheckCircle />
-            <span>{successMessage}</span>
-          </div>
-        )}
-
         <div className={styles.profileSection}>
           <div className={styles.profileImage}>
             <FiUser className={styles.userIcon} />
@@ -191,7 +183,9 @@ const StudentProfile: React.FC = () => {
           </div>
         </div>
       </div>
+    
     </div>
+     </>
   );
 };
 

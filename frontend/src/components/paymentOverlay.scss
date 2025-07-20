@@ -105,12 +105,7 @@
   }
 }
 
-.success-message {
-  color: $color-success-text;
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
+
 
 .receipt-box {
  background-color: $color-background-main;  
@@ -156,39 +151,9 @@
   }
 }
 
-.toast {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 16px 24px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  animation: fadeIn 0.3s ease-out;
-  background-color: $color-background-main;  
-  border-left: 6px solid;
-  color: $color-text-main;
-}
 
-.toast svg {
-  font-size: 20px;
-}
 
-.toast.success {
-  color: $color-success-text;
-  border-color: $color-success-text;
-}
 
-.toast.error {
-  color: $color-error-text;
-  border-color: $color-error-text;
-}
 
 @keyframes fadeIn {
   from {
