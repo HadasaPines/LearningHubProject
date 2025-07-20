@@ -1,0 +1,142 @@
+@use '../../styles/abstracts/variables' as *;
+
+.container {
+  padding: 2rem;
+  font-family: $font-main;
+  background-color: $page-bg;
+  color: $page-text;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filters {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  button {
+    background: $color-background-main;
+    border: 1px solid $color-border;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color:$page-text;
+
+    &:hover {
+      background-color: $color-button-hover;
+      color: $color-background-main;
+      border-color: $color-button-hover;
+    }
+
+    &.active,
+    &.active:hover {
+      background-color: $color-button-primary;
+      color:$color-background-main;
+      border-color: $color-button-primary;
+    }
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.lessonTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-background-main;
+  color: $page-text;
+
+  th,
+  td {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid $color-border;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  th {
+    background-color: $color-background-accent;
+    color: $header-text;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  tbody tr:hover {
+    background-color: lighten( $color-border,20%);
+    color: $highlight-text;
+  }
+
+  .status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+    font-size: 0.85rem;
+    user-select: none;
+  }
+
+  .passed {
+    background-color: $color-success-bg;
+    color: $color-button-hover;
+  }
+
+  .upcoming {
+    background-color: $color-text-main;
+    color: $color-background-main;
+  }
+
+  .canceled {
+    background-color: $color-error-bg;
+    color: $color-border;
+  }
+}
+
+.actionBtn {
+  background-color: $page-button-primary;
+  border: none;
+  color: $color-background-main;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: background-color 0.2s ease;
+
+  &:disabled {
+    background-color: $color-border;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $color-button-hover;
+  }
+}
+
+.exportButtons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+
+  button {
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: $color-text-main;
+    border: none;
+    color: $color-background-main;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $color-button-hover;
+    }
+  }
+}
