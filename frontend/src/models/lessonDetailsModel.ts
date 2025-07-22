@@ -1,7 +1,7 @@
-
+import type { Gender } from "./userModel";
 
 export interface LessonDetails {
-    gender?: "M" | "F";
+    gender?: Gender;
     age?:number;
     specificDate: string;
     dateFrom: string;
