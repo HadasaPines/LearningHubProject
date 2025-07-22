@@ -1,16 +1,16 @@
 export type Role = "Teacher" | "Student" | "Admin";
-export type Gender = "M" | "F";
+export type Gender = "M" | "F"|"";
 
 export interface StudentDetails {
   studentId?: number; 
-  gender?: "M" | "F" ;
+  gender?: Gender; 
   age? :number;
   birthDate?: string;
 }
 
 export interface TeacherDetails {
 teacherId?: number;
-  gender?: "M" | "F";
+  gender?: Gender;
   bio?: string;
   birthDate?: string;
 }

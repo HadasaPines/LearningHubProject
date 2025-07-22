@@ -1,0 +1,285 @@
+@use '../styles/abstracts/variables' as *;
+
+.auth-container {
+  width: 100%;
+  height: 100vh;
+  background: $page-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-main;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: $highlight-button;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: $color-border;
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .circle1,
+  .circle2 {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .circle1 {
+    top: 70%;
+    left: 15%;
+    width: 200px;
+    height: 200px;
+    background: $color-border;
+    opacity: 0.12;
+  }
+
+  .circle2 {
+    top: -8%;
+    right: 17%;
+    width: 150px;
+    height: 150px;
+    background: lighten($color-border, 5%);
+    opacity: 0.18;
+  }
+
+  .form-wrapper {
+    width: 900px;
+    height: 600px;
+    position: relative;
+    display: flex;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    background: $page-bg;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .form-panel {
+    width: 50%;
+    padding: 25px;
+    z-index: 1;
+    background: $page-bg;
+    transition: opacity 0.5s ease;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 12%;
+    padding-left: 10%;
+
+    .form-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+
+      h2 {
+        font-size:30px;
+        color: $highlight-text;
+      }
+
+      p {
+        margin-bottom: 20px;
+        color: $color-text-main;
+      }
+
+      button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        color: $highlight-text;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+
+      input,
+      select {
+        padding: 10px;
+        border: 0.5px solid black;
+        border-radius: 5px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #000;
+        min-width: 250px;
+      }
+
+      input::placeholder,
+      select:invalid {
+        color: #000;
+      }
+
+      button {
+        padding: 8px 20px;
+        width: fit-content;
+        align-self: center;
+        background-color: $page-button-primary;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 14%;
+
+        &:hover {
+          background-color: $page-button-secondary;
+        }
+      }
+
+      .password-input-wrapper {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        input {
+          padding-right: 35px;
+          height: 36px;
+          line-height: 36px;
+        }
+
+        .eye-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          font-size: 16px;
+
+        }
+      }
+    }
+  }
+
+  .register-panel {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    left: 40%;
+    bottom: -2%;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .form-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 15px;
+      max-width: 320px;
+      text-align: left;
+
+      input[name="userId"] {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: 50%;
+      }
+
+      input,
+      select {
+        padding: 10px;
+        border: 0.5px solid black;
+        border-radius: 5px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #000;
+        min-width: 150px;
+      }
+
+      h2 {
+        grid-column: 1 / -1;
+        text-align: center;
+      }
+
+      button {
+        grid-column: 1 / -1;
+        justify-self: center;
+      }
+    }
+  }
+
+  .login-panel {
+    opacity: 1;
+  }
+
+  &.register-active {
+    .login-panel {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .register-panel {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .cover-panel {
+      transform: translateX(-100%);
+    }
+  }
+
+  .cover-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    z-index: 2;
+    background: url("../images/loginImage.jpg") center center / cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.8s ease;
+  }
+}

@@ -1,29 +1,35 @@
+$color-background-main: #fdfcfb;
+$color-background-accent: #4A6A5A;
+$color-text-main: #3C564A;
+$color-heading-highlight: #3C564A;
 
-$color-background-main:      #F9F9F9;
-$color-background-accent:    #4A6A5A;
-$color-text-main:            #3C564A;
-$color-heading-highlight:    #E3C392;
-$color-button-primary:       #D6A76E;
-$color-button-hover:         #B58259;
-$color-button-secondary:     #F0E0C0;
-$color-border:               #8C6E4E;
 
-$header-bg:                  $color-background-accent;
-$header-text:                $color-background-main;
-$header-button:              $color-button-primary;
 
-$page-bg:                    $color-background-main;
-$page-text:                  $color-text-main;
-$page-button-primary:        $color-button-primary;
-$page-button-secondary:      $color-button-secondary;
+$color-button-primary: #3C564A;
+$color-button-hover: #5b8570;
+$color-button-secondary: #5b8570;
+$color-border: #a8bfa7;
 
-$highlight-bg:               $color-background-accent;
-$highlight-text:             $color-heading-highlight;
-$highlight-button:           $color-button-hover;
+$color-success-bg: #ccffcc;
+$color-success-text: #2e7d32;
+$color-error-bg: #ffcccc;
+$color-error-text: #c62828;
 
-$footer-bg:                  $color-text-main;
-$footer-text:                $color-background-main;
-$footer-icon:                $color-border;
+$header-bg: $color-background-accent;
+$header-text: $color-background-main;
+$header-button: $color-button-primary;
 
+$page-bg: $color-background-main;
+$page-text: $color-text-main;
+$page-button-primary: $color-button-primary;
+$page-button-secondary: $color-button-secondary;
+
+$highlight-bg: $color-background-accent;
+$highlight-text: $color-heading-highlight;
+$highlight-button: $color-button-hover;
+
+$footer-bg: $color-text-main;
+$footer-text: $color-background-main;
+$footer-icon: $color-border;
 
 $font-main: 'Segoe UI', sans-serif;
