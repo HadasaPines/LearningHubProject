@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LoginForm from "./loginPage";
-import RegisterForm from "./registerPage";
+import LoginForm from "../components/student/login";
+import RegisterForm from "../components/student/register";
 import styles from "./authPage.module.scss";
 import Toast from "../components/toast";
 

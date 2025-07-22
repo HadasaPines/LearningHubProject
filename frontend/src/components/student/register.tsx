@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { User, StudentDetails } from "../models/userModel";
-import { addUser, addStudent } from "../services/api";
-import { parseApiError } from "../utils/apiErrorParser";
+import type { User, StudentDetails } from "../../models/userModel";
+import { addUser, addStudent } from "../../services/api";
+import { parseApiError } from "../../utils/apiErrorParser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import styles from "./authPage.module.scss"
-
+import styles from "../../pages/authPage.module.scss";
 interface Props {
   onToast: (type: "error" | "success", message: string) => void;
 }

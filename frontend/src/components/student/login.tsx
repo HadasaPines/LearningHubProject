@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { LoginFormData, User } from "../models/userModel";
-import { loginUser } from "../services/api";
-import { parseApiError } from "../utils/apiErrorParser";
+import type { LoginFormData, User } from "../../models/userModel";
+import { loginUser } from "../../services/api";
+import { parseApiError } from "../../utils/apiErrorParser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface Props {
