@@ -9,10 +9,14 @@ interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ type, message, children }) => {
+}
+
+
   return (
     <div className={`${styles.toast} ${styles[type]}`}>
       {type === "success" ? <FaCheckCircle /> : <FaTimesCircle />}
       <span>{message}</span>
+
       {children && (
         <div >
           {React.Children.map(children, (child, index) => (
@@ -22,6 +26,7 @@ const Toast: React.FC<ToastProps> = ({ type, message, children }) => {
           ))}
         </div>
       )}
+
     </div>
   );
 };
