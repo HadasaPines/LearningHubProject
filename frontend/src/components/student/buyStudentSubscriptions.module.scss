@@ -1,0 +1,191 @@
+@use '../../styles/abstracts/variables' as *;
+
+.container {
+  position: relative;
+  direction: ltr;
+  text-align: center;
+  font-family: $font-main;
+  background: $color-background-main;
+  overflow: hidden;
+  height: 100vh;
+  
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: $highlight-button;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: $color-border;
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .circle1,
+  .circle2,
+  .circle3 {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .circle1 {
+    top: 50%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: $color-border;
+    opacity: 0.12;
+    filter: blur(6px);
+  }
+
+  .circle2 {
+    top: 80%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background: lighten($color-border, 5%);
+    opacity: 0.18;
+    filter: blur(4px);
+  }
+
+  > * {
+    z-index: 2;
+  }
+
+
+.title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: $color-text-main;
+}
+
+.subscriptionsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card {
+ background: linear-gradient(to bottom,#ffffff);
+  border-radius: 25px;
+  width: 230px;
+  height: 440px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: transform 0.3s ease;
+  padding-bottom: 0;
+  z-index: 1;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  h4 {
+    margin: 20px 0 10px;
+    font-size: 22px;
+    color: $color-text-main;
+  }
+
+  .price {
+    font-size: 32px;
+    font-weight: bold;
+    color: $color-text-main;
+  }
+
+  .description {
+    font-size: 14px;
+    margin: 10px 20px;
+    color: $color-background-accent;
+  }
+
+  .features {
+    margin: 10px 0 20px;
+
+    p {
+      margin: 4px;
+      font-size: 14px;
+      color: $color-text-main;
+    }
+  }
+
+  .buyBtn {
+    background: linear-gradient(to bottom, $color-background-accent, $color-text-main);
+    border: none;
+    color: white;
+    padding: 25px 0;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 0 0 25px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $highlight-button;
+    }
+  }
+}
+
+.icon {
+  font-size: 36px;
+  padding: 35px;
+  background: linear-gradient(to bottom, $color-background-accent, $color-text-main);
+  color: #fff;
+}
+
+.subList {
+  margin-bottom: 40px;
+
+  .studentSubCard {
+    border: 1px solid lighten($color-border, 30%);
+    background: $color-button-secondary;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: right;
+    color: $color-text-main;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+}
+
+

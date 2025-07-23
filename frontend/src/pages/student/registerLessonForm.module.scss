@@ -1,0 +1,121 @@
+@use '../../styles/abstracts/variables' as *;
+
+.container {
+  display: flex;
+  gap: 1rem;             
+  padding: 1rem;         
+   flex-wrap: nowrap;
+  
+}
+
+.sidebar {
+  width: 17%; 
+  height: 90%;         
+  background: $color-background-accent;
+  color: $color-background-main;
+  padding: 1rem 1.5rem;   
+  border-radius: 1rem;
+  overflow: hidden;       
+
+  h2 {
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $color-background-main;
+  }
+
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.9rem;
+    }
+    select{
+      width: 106.4%;
+      padding: 0.4rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: $font-main;
+      color: $color-text-main;
+      background-color: $color-background-main;
+    }
+
+    
+    input {
+      width: 100%;
+      padding: 0.4rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: $font-main;
+      color: $color-text-main;
+      background-color: $color-background-main;
+
+      &:focus {
+        outline: 2px solid $color-button-primary;
+      }
+    }
+  }
+}
+
+.calendarSection {
+  flex-grow: 1;
+  background: $color-background-main;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;      
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;          
+  box-sizing: border-box; 
+}
+
+
+.navigatePayment{
+    background: none;         
+  border: none;            
+  padding: 0;               
+  color: $color-error-text; 
+  text-decoration: underline; 
+  cursor: pointer;          
+  
+}
+.navigateSubscripation{
+
+  background: none;         
+  border: none;            
+  padding-left: 15px;               
+  color: $color-error-text; 
+  text-decoration: underline; 
+  cursor: pointer;          
+    
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;      
+    padding: 1rem 0.5rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+    max-height: none;
+  }
+
+  .calendarSection {
+    max-height: 100vh;
+    padding: 1rem;
+   
+  }
+}

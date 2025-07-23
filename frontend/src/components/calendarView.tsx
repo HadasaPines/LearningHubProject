@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import Calendar from "react-calendar";
 import type { Lesson } from "../models/lessonModel";
 import type { User } from "../models/userModel";
 import type { Subject } from "../models/subjectModel";
+import styles from "./calendarView.module.scss";
+import dayjs from "dayjs";
+import clsx from "clsx";
+import { BsPinAngleFill } from "react-icons/bs";
+import { FaAngleDoubleLeft,FaAngleDoubleRight} from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface Props {
   lessons: Lesson[];
@@ -11,18 +16,36 @@ interface Props {
   onRegister: (lesson: Lesson) => void;
 }
 
-const CalendarView: React.FC<Props> = ({ lessons, teachers, subjects, onRegister }) => {
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+const CalendarView: React.FC<Props> = ({
+  lessons,
+  teachers,
+  subjects,
+  onRegister,
+}) => {
+  const today = dayjs();
+  const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
+  const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
+  const [popupOpen, setPopupOpen] = useState(true); 
 
   const lessonsByDate = lessons.reduce((acc, lesson) => {
-    const date = lesson.lessonDate;
+    const date = dayjs(lesson.lessonDate).format("YYYY-MM-DD");
     if (!acc[date]) acc[date] = [];
     acc[date].push(lesson);
     return acc;
   }, {} as Record<string, Lesson[]>);
 
-  const formatDate = (date: Date) =>
-  date.toLocaleDateString("sv-SE"); 
+  const startOfMonth = currentMonth.startOf("month");
+  const endOfMonth = currentMonth.endOf("month");
+  const startDay = startOfMonth.startOf("week");
+  const endDay = endOfMonth.endOf("week");
+
+  const calendarDays = [];
+  let date = startDay;
+
+  while (date.isBefore(endDay, "day") || date.isSame(endDay, "day")) {
+    calendarDays.push(date);
+    date = date.add(1, "day");
+  }
 
   const getTeacherName = (id: number) => {
     const teacher = teachers.find((t) => t.userId === id);
@@ -34,55 +57,137 @@ const CalendarView: React.FC<Props> = ({ lessons, teachers, subjects, onRegister
     return subject ? subject.name : "Unknown";
   };
 
+  const handlePrevMonth = () => {
+    setCurrentMonth(currentMonth.subtract(1, "month"));
+    setSelectedDate(null);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(currentMonth.add(1, "month"));
+    setSelectedDate(null);
+  };
+
+  const handlePrevYear = () => {
+    setCurrentMonth(currentMonth.subtract(1, "year"));
+    setSelectedDate(null);
+  };
+
+  const handleNextYear = () => {
+    setCurrentMonth(currentMonth.add(1, "year"));
+    setSelectedDate(null);
+  };
+
+  const isToday = (date: dayjs.Dayjs) => date.isSame(today, "day");
+  const isSelected = (date: dayjs.Dayjs) => selectedDate?.isSame(date, "day");
+  const hasLessons = (date: dayjs.Dayjs) => {
+    const dateStr = date.format("YYYY-MM-DD");
+    return lessonsByDate[dateStr]?.length > 0;
+  };
+
   return (
-    <div style={{ flex: 1 }}>
-      <h2>Lesson Calendar</h2>
-      <Calendar
-        calendarType="hebrew"
-        onClickDay={(value) => {
-          const dateStr = formatDate(value);
-          setSelectedDate(lessonsByDate[dateStr] ? dateStr : null);
-        }}
-        tileContent={({ date }) => {
-          const dateStr = formatDate(date);
-          const lessonsForDate = lessonsByDate[dateStr];
-          if (!lessonsForDate) return null;
-          const hasAvailable = lessonsForDate.some((l) => l.status === "Available");
-          return hasAvailable ? <span title="Available">📌</span> : <span title="Booked">❌</span>;
-        }}
-      />
-
-{selectedDate && (
-  <div style={{ marginTop: "1em" }}>
-    <h3>Lessons on {new Date(selectedDate).toLocaleDateString("en-US")}</h3>
-    <ul>
-      {lessonsByDate[selectedDate].map((lesson, index) => (
-        <li
-          key={index}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            direction: "rtl"   
-          }}
+    <div className={styles.calendar}>
+      <div className={styles.monthNavigation}>
+        <button
+          className={styles["action-button"]}
+          onClick={handlePrevYear}
+          aria-label="Previous Year"
+          title="Previous Year"
         >
-          <span>
-            {lesson.startTime} - {lesson.endTime} | Teacher: {getTeacherName(lesson.teacherId)} | Subject: {getSubjectName(lesson.subjectId)}
-          </span>
+           <FaAngleDoubleLeft />
+        </button>
+        <button
+          className={styles["action-button"]}
+          onClick={handlePrevMonth}
+          aria-label="Previous Month"
+          title="Previous Month"
+        >
+         <FaChevronLeft />
+        </button>
 
-          {lesson.status === "Available" ? (
-            <button onClick={() => onRegister(lesson)}>Register</button>
-          ) : (
-            <span style={{ color: "gray", fontWeight: "bold", marginLeft: "10px" }}>
-              Booked ❌
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+        <div className={styles.monthYearLabel}>
+          {currentMonth.format("MMMM YYYY")}
+        </div>
 
+        <button
+          className={styles["action-button"]}
+          onClick={handleNextMonth}
+          aria-label="Next Month"
+          title="Next Month"
+        >
+          <FaChevronRight />
+        </button>
+        <button
+          className={styles["action-button"]}
+          onClick={handleNextYear}
+          aria-label="Next Year"
+          title="Next Year"
+        >
+          <FaAngleDoubleRight/>
+        </button>
+      </div>
+
+      <div className={styles.header}>
+  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+    <div key={day} className={styles.headerCell}>
+      {day}
+    </div>
+  ))}
+</div>
+
+
+      <div className={styles.days}>
+        {calendarDays.map((day) => {
+          const dateStr = day.format( "YYYY-MM-DD");
+          const has = hasLessons(day);
+          const isSel = isSelected(day);
+
+          return (
+            <div
+              key={dateStr}
+              className={clsx(styles.day, {
+                [styles.today]: isToday(day),
+                [styles.selected]: isSel,
+                [styles.clickable]: has,
+              })}
+              onClick={() => {
+                if (has) {
+                  if (selectedDate?.isSame(day, "day")) {
+                    setSelectedDate(null);
+                    setPopupOpen(false);
+                  } else {
+                    setSelectedDate(day);
+                    setPopupOpen(true);
+                  }
+                }
+              }}
+            >
+              <div className={styles.dayNumber}>{day.date()}</div>
+
+           {has && <BsPinAngleFill  className={styles["task-pin"]} />}
+
+              {isSel && has && popupOpen && (
+                <div className={styles.lessonPopup}>
+                  {lessonsByDate[dateStr].map((lesson, idx) => (
+                    <div key={idx} className={styles.lessonItem}>
+                      <span>
+                        {lesson.startTime}–{lesson.endTime} |{" "}
+                        {getSubjectName(lesson.subjectId)} |{" "}
+                        {getTeacherName(lesson.teacherId)}
+                      </span>
+
+                      {lesson.status === "Available" ? (
+                        <button onClick={() => onRegister(lesson)}>Register</button>
+                      ) : (
+                        <span className={styles.booked}>Booked ❌</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -10,6 +10,9 @@ import type { Lesson } from "../../models/lessonModel";
 import type { User } from "../../models/userModel";
 import type { Subject } from "../../models/subjectModel";
 
+import Toast from "../../components/toast";
+import styles from "../../components/student/lessonsHistory.module.scss";
+
 const StudentLessonHistory = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const studentId = user?.userId;
@@ -18,7 +21,11 @@ const StudentLessonHistory = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loadingLessonId, setLoadingLessonId] = useState<number | null>(null);
-  const [alert, setAlert] = useState<string>("");
+
+  const [errorMessages, setErrorMessages] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const [filter, setFilter] = useState<"all" | "passed" | "upcoming" | "canceled">("all");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +33,7 @@ const StudentLessonHistory = () => {
 
       try {
         const lessonsRes = await getLessonsByStudentId(studentId);
-        const lessonsData = lessonsRes.data as Lesson[];
-        setLessons(lessonsData);
+        setLessons(lessonsRes.data);
 
         const teachersRes = await getAllTeachers();
         setTeachers(teachersRes.data);
@@ -35,12 +41,23 @@ const StudentLessonHistory = () => {
         const subjectsRes = await getAllSubjects();
         setSubjects(subjectsRes.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setErrorMessages("Error fetching data");
       }
     };
 
     fetchData();
   }, [studentId]);
+
+
+  useEffect(() => {
+    if (errorMessages || successMessage) {
+      const timeout = setTimeout(() => {
+        setErrorMessages(null);
+        setSuccessMessage(null);
+      }, 4000);
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMessages, successMessage]);
 
   const getTeacherName = (id: number) => {
     const teacher = teachers.find((t) => t.userId === id);
@@ -53,88 +70,148 @@ const StudentLessonHistory = () => {
   };
 
   const now = new Date();
-  const validLessons = lessons.filter((l): l is Lesson => !!l);
 
-  const pastLessons = validLessons.filter(
-    (l) =>
-      l.status === "passed" &&
-      new Date(`${l.lessonDate}T${l.endTime}`) < now
-  );
+  const filteredLessons = lessons.filter((l) => {
+    const lessonEnd = new Date(`${l.lessonDate}T${l.endTime}`);
+    switch (filter) {
+      case "passed":
+        return l.status === "passed" && lessonEnd < now;
+      case "upcoming":
+        return l.status === "booked" && lessonEnd >= now;
+      case "canceled":
+        return l.status === "canceled";
+      case "all":
+      default:
+        return true;
+    }
+  });
 
-  const canceledLessons = validLessons.filter(
-    (l) => l.status === "canceled"
-  );
+  const handleCancelClick = async (lesson: Lesson) => {
+    const lessonDateTime = new Date(`${lesson.lessonDate}T${lesson.startTime}`);
+    const now = new Date();
+    const diffMs = lessonDateTime.getTime() - now.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
 
-  const upcomingLessons = validLessons.filter(
-    (l) =>
-      l.status === "booked" &&
-      new Date(`${l.lessonDate}T${l.endTime}`) >= now
-  );
+    let message = "Are you sure you want to cancel your participation in the lesson?";
+    if (diffHours < 24) {
+      message += "\nNote: Cancelling less than 24 hours before the lesson will incur a full charge.";
+    }
 
-const handleCancelClick = async (lesson: Lesson) => {
-  const lessonDateTime = new Date(`${lesson.lessonDate}T${lesson.startTime}`);
-  const now = new Date();
-  const diffMs = lessonDateTime.getTime() - now.getTime();
-  const diffHours = diffMs / (1000 * 60 * 60);
+    const confirmed = window.confirm(message);
+    if (!confirmed) return;
 
-  let message = "Are you sure you want to cancel your participation in the lesson?";
-  if (diffHours < 24) {
-    message += "\nNote: Cancelling less than 24 hours before the lesson will incur a full charge.";
-  }
+    try {
+      setErrorMessages(null);
+      setSuccessMessage(null);
+      setLoadingLessonId(lesson.lessonId);
+      await deleteRegistrationByLessonId(lesson.lessonId);
+      setLessons((prev) => prev.filter((l) => l.lessonId !== lesson.lessonId));
+      setSuccessMessage("Lesson cancelled successfully");
+    } catch (err) {
+      console.error("Error cancelling registration:", err);
+      setErrorMessages("An error occurred while canceling the lesson.");
+    } finally {
+      setLoadingLessonId(null);
+    }
+  };
 
-  const confirmed = window.confirm(message);
-  if (!confirmed) return;
+  const getStatusLabel = (lesson: Lesson) => {
+    const lessonEnd = new Date(`${lesson.lessonDate}T${lesson.endTime}`);
+    if (lesson.status === "canceled") return "Canceled";
+    if (lesson.status === "passed" && lessonEnd < now) return "Passed";
+    if (lesson.status === "booked" && lessonEnd >= now) return "Upcoming";
+    return lesson.status;
+  };
 
-  try {
-    setAlert("");
-    setLoadingLessonId(lesson.lessonId);
+  const getStatusClass = (lesson: Lesson) => {
+    const label = getStatusLabel(lesson);
+    return `${styles.status} ${styles[label.toLowerCase()]}`;
+  };
 
-    await deleteRegistrationByLessonId(lesson.lessonId);
+  
 
-    // Remove the lesson from the list entirely
-    setLessons((prev) => prev.filter((l) => l.lessonId !== lesson.lessonId));
-
-  } catch (err) {
-    console.error("Error cancelling registration:", err);
-    setAlert("An error occurred while canceling the lesson.");
-  } finally {
-    setLoadingLessonId(null);
-  }
-};
-
-
-  const renderLesson = (l: Lesson, withCancel = false) => (
-    <li key={l.lessonId}>
-      <strong>Date:</strong> {l.lessonDate} |
-      <strong> Time:</strong> {l.startTime} - {l.endTime} |
-      <strong> Teacher:</strong> {getTeacherName(l.teacherId)} |
-      <strong> Subject:</strong> {getSubjectName(l.subjectId)} |
-      <strong> Ages:</strong> {l.minAge}-{l.maxAge} |
-      <strong> Gender:</strong> {l.gender === "M" ? "Male" : "Female"}{" "}
-      {withCancel && (
+  const renderLessonRow = (l: Lesson) => (
+    <tr key={l.lessonId}>
+      <td>{l.lessonDate}</td>
+      <td>
+        {l.startTime} - {l.endTime}
+      </td>
+      <td>{getTeacherName(l.teacherId)}</td>
+      <td>{getSubjectName(l.subjectId)}</td>
+      <td>
+        {l.minAge}-{l.maxAge}
+      </td>
+      <td>{l.gender === "M" ? "Male" : "Female"}</td>
+      <td>
+        <span className={getStatusClass(l)}>{getStatusLabel(l)}</span>
+      </td>
+      <td>
+        {l.status === "booked" && (
+          <button
+            className={styles.actionBtn}
+            onClick={() => handleCancelClick(l)}
+            disabled={loadingLessonId === l.lessonId}
+          >
+            {loadingLessonId === l.lessonId ? "Cancelling..." : "Cancel"}
+          </button>
+        )}
         <button
-          onClick={() => handleCancelClick(l)}
-          disabled={loadingLessonId === l.lessonId}
-          style={{ marginRight: "10px" }}
+          className={styles.actionBtn}
+          onClick={() => window.print()}
+          title="Print this lesson"
         >
-          {loadingLessonId === l.lessonId ? "Cancelling..." : "Cancel Participation"}
+          Print
         </button>
-      )}
-    </li>
+      </td>
+    </tr>
   );
 
   return (
-    <div>
-      <h2>Upcoming Lessons</h2>
-      <ul>{upcomingLessons.map((l) => renderLesson(l, true))}</ul>
+    <div className={styles.container}>
+      {errorMessages && <Toast type="error" message={errorMessages} />}
+      {successMessage && <Toast type="success" message={successMessage} />}
 
-      <h2>Past Lessons</h2>
-      <ul>{pastLessons.map((l) => renderLesson(l))}</ul>
+      <h2>My lessons:</h2>
 
-      <h2>Canceled Lessons</h2>
-      <ul>{canceledLessons.map((l) => renderLesson(l))}</ul>
+      <div className={styles.filters}>
+        {["all", "passed", "upcoming", "canceled"].map((key) => (
+          <button
+            key={key}
+            className={filter === key ? styles.active : ""}
+            onClick={() => setFilter(key as typeof filter)}
+          >
+            {key === "all"
+              ? "All"
+              : key === "passed"
+              ? "Past"
+              : key === "upcoming"
+              ? "Upcoming"
+              : "Canceled"}
+          </button>
+        ))}
+      </div>
 
-      {alert && <p style={{ color: "red" }}>{alert}</p>}
+      <div className={styles.tableWrapper}>
+        <table className={styles.lessonTable}>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Teacher</th>
+              <th>Subject</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>{filteredLessons.map(renderLessonRow)}</tbody>
+        </table>
+      </div>
+
+      <div className={styles.exportButtons}>
+        <button onClick={() => window.print()}>Print Page</button>
+      </div>
     </div>
   );
 };

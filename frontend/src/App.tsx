@@ -25,7 +25,7 @@ function App() {
   return (
     <Router>
       <Routes>
-      
+
         <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<AuthPage />} />
 

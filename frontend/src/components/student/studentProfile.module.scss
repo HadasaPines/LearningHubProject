@@ -1,0 +1,225 @@
+@use '../../styles/abstracts/variables' as *;
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  z-index: 0;
+  background: $color-background-main;
+  overflow: visible;
+  position: relative;
+  direction: ltr;
+  text-align: center;
+
+ 
+  &::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: $highlight-button;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: $color-border;
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .circle1,
+  .circle2 {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    
+  }
+
+  .circle1 {
+    top: 16%;
+    right: 16%;
+    width: 150px;
+    height: 150px;
+    background: $color-border;
+    opacity: 0.12;
+  }
+
+  .circle2 {
+    top: 56%;
+    left: 17%;
+    width: 100px;
+    height: 100px;
+    background: lighten($color-border, 10%);
+    opacity: 0.18;
+  }
+
+
+ 
+ 
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.card {
+  //  border: 1px solid $highlight-button;
+  background-color: white;
+  width: 650px;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  color: $color-text-main;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.profileSection {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+.profileImage {
+  flex: 1 1 150px;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative; 
+
+  .userIcon {
+    font-size: 6rem;
+    color: $color-background-accent;
+    background-color: lighten($color-background-accent, 70%);
+    border-radius: 50%;
+    padding: 1rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .editIconButton {
+    position: absolute;
+    bottom: 95px;
+    right: 32px;
+     background-color: lighten($color-background-accent, 70%);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+
+    svg {
+      width: 16px;
+      height: 16px;
+      stroke: $color-background-accent;
+      stroke-width: 2;
+    }
+
+    &:hover {
+      background-color: lighten(#d7e5e0, 10%);
+    }
+  }
+
+  .userName {
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: $color-text-main;
+  }
+}
+
+.detailsSection {
+  flex: 2 1 auto;
+  text-align: left;
+
+  .title {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: $color-background-accent;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 0.3rem 0;
+    color: $color-text-main;
+  }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: $color-text-main;
+
+  input {
+    margin-top: 0.3rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid $color-border;
+    font-size: 1rem;
+  }
+}
+
+.buttonRow {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  
+
+  button {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.confirmButton {
+  background-color: $highlight-button;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ddd;
+  color: #444;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
