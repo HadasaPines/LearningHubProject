@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { LoginFormData } from "../models/userModel";
-import type { User } from "../models/userModel";
-import { loginUser } from "../services/api";
-import { parseApiError } from "../utils/apiErrorParser";
+import type { LoginFormData } from "../../models/userModel";
+import type { User } from "../../models/userModel";
+import { loginUser } from "../../services/api";
+import { parseApiError } from "../../utils/apiErrorParser";
 
 const LoginForm: React.FC = () => {
 const [errorMessages, setErrorMessages] = useState<string | null>(null);

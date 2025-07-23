@@ -126,7 +126,7 @@ const BuyStudentSubscriptions: React.FC = () => {
             <div className={styles.price}>₪ {sub.price}</div>
             <div className={styles.description}>{sub.description}</div>
             <div className={styles.features}>
-              {sub.lessonCount && <p><strong>Lessons:</strong> {sub.lessonCount}</p>}
+              {sub.lessonCount && <p><strong> Total Lessons:</strong> {sub.lessonCount}</p>}
             </div>
 
             <button className={styles.buyBtn} onClick={() => handleBuy(sub)}>

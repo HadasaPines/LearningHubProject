@@ -17,18 +17,18 @@ import {
 } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 import CalendarView from "../../components/calendarView";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import PaymentOverlay from "../../components/paymentOverlay";
 
 const RegisterLessonForm: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [errorMessages, setErrorMessages] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [subscriptionError, setSubscriptionError] = useState(false); 
+  const [subscriptionError, setSubscriptionError] = useState(false);
 
   const user = localStorage.getItem("user");
   if (!user) return <div>User not logged in</div>;
@@ -40,7 +40,7 @@ const RegisterLessonForm: React.FC = () => {
     return <div>User is not defined as a student</div>;
   }
   const student: StudentDetails = userData.student;
- const [paymentOpen, setPaymentOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
   const [formData, setFormData] = useState<LessonDetails>({
     teacherId: undefined,
     subjectId: undefined,
@@ -73,7 +73,7 @@ const RegisterLessonForm: React.FC = () => {
       const timeout = setTimeout(() => {
         setErrorMessages(null);
         setSuccessMessage(null);
-        setSubscriptionError(false); 
+        setSubscriptionError(false);
       }, 4000);
       return () => clearTimeout(timeout);
     }
@@ -92,15 +92,15 @@ const RegisterLessonForm: React.FC = () => {
     fetchLessons();
   }, [formData]);
 
-    const handlePaymentSuccess = async () => {
-      setPaymentOpen(false);
-  
-      try {
-        setSuccessMessage(" successfully!");
-      } catch (err) {
-        setErrorMessages("Error" + parseApiError(err));
-      }
-    };
+  const handlePaymentSuccess = async () => {
+    setPaymentOpen(false);
+
+    try {
+      setSuccessMessage(" successfully!");
+    } catch (err) {
+      setErrorMessages("Error" + parseApiError(err));
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -154,32 +154,32 @@ const RegisterLessonForm: React.FC = () => {
     <>
       {errorMessages && (
         <Toast type="error" message={errorMessages}>
-       {subscriptionError && (
-  <>
-    <button className={styles.navigateSubscripation}
-      onClick={() => navigate("/student/buySubscriptions")}
-    >
-      Buy Subscription
-    </button>
-    <button  className={styles.navigatePayment}
-      onClick={() => setPaymentOpen(true) }
-    >
-      Payment for single lesson
-    </button>
-  </>
-)}
+          {subscriptionError && (
+            <>
+              <button className={styles.navigateSubscripation}
+                onClick={() => navigate("/student/buySubscriptions")}
+              >
+                Buy Subscription
+              </button>
+              <button className={styles.navigatePayment}
+                onClick={() => setPaymentOpen(true)}
+              >
+                Payment for single lesson
+              </button>
+            </>
+          )}
 
         </Toast>
       )}
       {paymentOpen && (
-  <PaymentOverlay
-    userId={student.studentId ? student.studentId : 0}
-    open={paymentOpen}
-    onClose={() => setPaymentOpen(false)}
-    amount={90}
-    onPaymentSuccess={handlePaymentSuccess}
-  />
-)}
+        <PaymentOverlay
+          userId={student.studentId ? student.studentId : 0}
+          open={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          amount={90}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
 
       {successMessage && <Toast type="success" message={successMessage} />}
 

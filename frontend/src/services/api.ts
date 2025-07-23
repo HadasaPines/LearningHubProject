@@ -147,6 +147,12 @@ export const updateSubscriptionActive = (id: number) =>{
  return api.put(`/Subscription/updateSubscriptionActive/${id}`)
 };
 
+export const getSubscriptionById =async (id: number) =>{
+ return api.get<Subscription>(`/Subscription/getSubscriptionById/${id}`)
+};
+
+
+
 export const addStudentSubscription = (
   subscription: Omit<StudentSubscription, "studentSubscriptionId">
 ) => {

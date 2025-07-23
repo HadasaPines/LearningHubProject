@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import type {User } from "../models/userModel";
-import type { StudentDetails } from "../models/userModel";
-import { addUser, addStudent } from "../services/api";
-import { parseApiError } from "../utils/apiErrorParser";
+import type {User } from "../../models/userModel";
+import type { StudentDetails } from "../../models/userModel";
+import { addUser, addStudent } from "../../services/api";
+import { parseApiError } from "../../utils/apiErrorParser";
 import { useNavigate } from "react-router-dom";
 
 

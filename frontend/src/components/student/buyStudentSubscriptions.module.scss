@@ -2,12 +2,13 @@
 
 .container {
   position: relative;
-  padding: 40px 20px;
-  direction: rtl;
+  direction: ltr;
   text-align: center;
   font-family: $font-main;
   background: $color-background-main;
   overflow: hidden;
+  height: 100vh;
+  
 
   &::before {
     content: "";
@@ -66,10 +67,9 @@
   }
 
   > * {
-    position: relative;
-    z-index: 1;
+    z-index: 2;
   }
-}
+
 
 .title {
   font-size: 28px;
@@ -85,7 +85,7 @@
 }
 
 .card {
-  background: linear-gradient(to bottom, white, white);
+ background: linear-gradient(to bottom,#ffffff);
   border-radius: 25px;
   width: 230px;
   height: 440px;
@@ -97,6 +97,7 @@
   text-align: center;
   transition: transform 0.3s ease;
   padding-bottom: 0;
+  z-index: 1;
 
   &:hover {
     transform: scale(1.03);
@@ -185,4 +186,6 @@
     transform: translate(-50%, 0);
   }
 }
+}
+
 

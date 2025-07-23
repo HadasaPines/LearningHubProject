@@ -3,7 +3,7 @@ import { FiUser, FiEdit2 } from "react-icons/fi";
 import type { User } from "../../models/userModel";
 import { updateUser, updateStudent } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
-import Toast from "../../components/toast"
+import Toast from "../../components/toast"; 
 
 import styles from "./StudentProfile.module.scss";
 
