@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import styles from './Toast.module.scss';
+import styles from './toast.module.scss';
 
 interface ToastProps {
   type: "success" | "error";
@@ -9,7 +9,7 @@ interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ type, message, children }) => {
-}
+
 
 
   return (

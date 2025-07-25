@@ -1,6 +1,6 @@
 
 
-const HomeSection = () => (
+const AboutUs = () => (
   <section className="text-center p-10 bg-blue-100">
     <h1 className="text-4xl font-bold mb-4">ברוכים הבאים ל־Learning Hub</h1>
     <p className="text-xl mb-6">לימוד מותאם אישית לכל תלמיד</p>
@@ -12,4 +12,4 @@ const HomeSection = () => (
   </section>
 );
 
-export default HomeSection;
+export default AboutUs;

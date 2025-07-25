@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./TestimonialsSection.module.scss";
 
 type Testimonial = {
   name: string;
@@ -7,8 +8,8 @@ type Testimonial = {
 };
 
 const initialTestimonials: Testimonial[] = [
-  { name: "דנה", text: "הבן שלי לא מפספס שיעור מאז שנרשמנו!", rating: 5 },
-  { name: "משה", text: "שירות נעים ומורים מעולים!", rating: 4 },
+  { name: "Dana", text: "My son hasn't missed a class since we joined!", rating: 5 },
+  { name: "Moshe", text: "Friendly service and excellent teachers!", rating: 4 },
 ];
 
 const TestimonialsSection = () => {
@@ -31,7 +32,12 @@ const TestimonialsSection = () => {
     setHoveredRating(null);
   };
 
-  const renderStars = (value: number, clickable = false, onClick?: (i: number) => void, onHover?: (i: number | null) => void) => {
+  const renderStars = (
+    value: number,
+    clickable = false,
+    onClick?: (i: number) => void,
+    onHover?: (i: number | null) => void
+  ) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       const filled = i <= value;
@@ -41,11 +47,7 @@ const TestimonialsSection = () => {
           onClick={clickable ? () => onClick?.(i) : undefined}
           onMouseEnter={clickable ? () => onHover?.(i) : undefined}
           onMouseLeave={clickable ? () => onHover?.(null) : undefined}
-          style={{
-            cursor: clickable ? "pointer" : "default",
-            color: filled ? "#FFD700" : "#ccc",
-            fontSize: "1.5rem",
-          }}
+          className={`${styles.star} ${filled ? styles.filled : ""}`}
         >
           ★
         </span>
@@ -55,58 +57,51 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="p-10 bg-white" dir="rtl">
-      <h2 className="text-2xl font-bold mb-4">תגובות:</h2>
+    <section className={styles.testimonialsSection}>
+      <h2 className={styles.title}>What Our Users Say</h2>
 
-
-      <form onSubmit={handleSubmit} className="mb-6 bg-gray-100 p-4 rounded shadow">
-        <div className="mb-2">
-          <label className="block font-bold">שם:</label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Your Name:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className={styles.input}
             required
           />
         </div>
 
-        <div className="mb-2">
-          <label className="block font-bold">תגובה:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Your Testimonial:</label>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className={styles.textarea}
+            placeholder="Share your experience..."
             required
           />
         </div>
 
-        <div className="mb-2">
-          <label className="block font-bold">דירוג:</label>
-          <div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Your Rating:</label>
+          <div className={styles.stars}>
             {renderStars(hoveredRating ?? rating, true, setRating, setHoveredRating)}
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          שלח המלצה
+        <button type="submit" className={styles.submitButton}>
+          Submit Testimonial
         </button>
       </form>
 
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className={styles.testimonialsList}>
         {testimonials.map((t, i) => (
-          <blockquote
-            key={i}
-            className="p-4 border-r-4 border-blue-500 bg-blue-50 rounded shadow-sm"
-          >
-            <p className="mb-2">"{t.text}"</p>
-            <footer className="flex justify-between text-sm text-gray-700">
+          <blockquote key={i} className={styles.testimonial}>
+            <p className={styles.text}>"{t.text}"</p>
+            <footer className={styles.footer}>
               <span>{t.name}</span>
-              <span>{renderStars(t.rating)}</span>
+              <span className={styles.stars}>{renderStars(t.rating)}</span>
             </footer>
           </blockquote>
         ))}

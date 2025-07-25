@@ -1,0 +1,73 @@
+@use '../../styles/abstracts/variables' as *;
+
+.faqSection {
+  background-color: $page-bg;
+  padding: 2rem;
+  font-family: $font-main;
+  color: $page-text;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: $highlight-text;
+  text-align: left;
+}
+
+.faqList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.faqItem {
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background-color: white;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.question {
+  width: 100%;
+  padding: 1rem;
+  background-color: $highlight-bg;
+  color: $highlight-text;
+  font-weight: bold;
+  font-size: 1.05rem;
+  text-align: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.arrowOpen {
+  transform: rotate(90deg);
+}
+
+.answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1rem;
+  color: $page-text;
+  background-color: $page-bg;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.answerOpen {
+  padding: 1rem;
+  max-height: 300px; // adjust as needed
+}

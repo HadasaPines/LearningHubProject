@@ -84,18 +84,18 @@
   }
 
   .passed {
-    background-color: $color-success-bg;
-    color: $color-button-hover;
+    background-color: $color-border;
+    color: $color-background-main;
   }
 
   .upcoming {
-    background-color: $color-text-main;
+    background-color: $color-background-accent;
     color: $color-background-main;
   }
 
   .canceled {
-    background-color: $color-error-bg;
-    color: $color-border;
+    background-color: $color-button-hover;
+    color: $color-background-main;
   }
 }
 
