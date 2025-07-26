@@ -10,6 +10,7 @@ import {
 } from "../../services/api";
 import type { User, StudentDetails, Gender } from "../../models/userModel";
 
+
 import { parseApiError } from "../../utils/apiErrorParser";
 
 const ManageStudents = () => {
@@ -28,13 +29,10 @@ const ManageStudents = () => {
     password: "",
     role: "Student",
     student: newStudent
-
-
   });
 
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [editUser, setEditUser] = useState<Partial<User>>({});
-
   const [editStudent, setEditStudent] = useState<Partial<StudentDetails>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -66,7 +64,6 @@ const ManageStudents = () => {
       const [userRes, studentRes] = await Promise.all([getAllUsers(), getAllStudents()]);
       const studentUsers = userRes.data.filter((u: User) => u.role === "Student");
       const fullList = studentUsers.map((user: User) => {
-
         const student = studentRes.data.find((s: StudentDetails) => s.studentId === user.userId);
         return {
           ...user,
@@ -108,7 +105,6 @@ const ManageStudents = () => {
   };
 
   const handleEditClick = (student: User) => {
-
     setEditingUserId(student.userId);
     setEditUser({ ...student });
     setEditStudent({
@@ -170,15 +166,14 @@ const ManageStudents = () => {
         birthDate: ""
       }
     });
-
   };
 
   return (
-    <div>
-      <h2>Student Management</h2>
+    <div className="container">
+      <h2 className="title">Student Management</h2>
 
-      {errorMessage && <div style={{ color: "red", marginBottom: 10 }}>{errorMessage}</div>}
-      {successMessage && <div style={{ color: "green", marginBottom: 10 }}>{successMessage}</div>}
+      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+      {successMessage && <div className="successMessage">{successMessage}</div>}
 
       <form onSubmit={handleAdd}>
         <h3>Add New Student</h3>
@@ -244,13 +239,13 @@ const ManageStudents = () => {
           value={newStudent.age}
           onChange={(e) => setNewStudent({ ...newStudent, age: parseInt(e.target.value) })}
         />
-        <button type="submit">Add</button>
+        <button type="submit" className="addBtn">Add</button>
       </form>
 
       <hr />
 
       <h3>Student List</h3>
-      <table cellPadding="8">
+      <table cellPadding={8}>
         <thead>
           <tr>
             <th>ID</th>

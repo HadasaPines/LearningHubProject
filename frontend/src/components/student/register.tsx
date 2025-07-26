@@ -5,6 +5,8 @@ import { addUser, addStudent } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "../../pages/authPage.module.scss";
+import { useEffect } from "react";
+
 interface Props {
   onToast: (type: "error" | "success", message: string) => void;
 }
@@ -68,6 +70,12 @@ const RegisterForm: React.FC<Props> = ({ onToast }) => {
       onToast("error", parseApiError(error));
     }
   };
+  useEffect(() => {
+  setUserData((prev) => ({
+    ...prev,
+    student: studentData,
+  }));
+}, [studentData]);
 
   return (
     <form onSubmit={handleSubmitUser}>
