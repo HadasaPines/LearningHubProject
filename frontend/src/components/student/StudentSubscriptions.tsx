@@ -6,7 +6,7 @@ import { parseApiError } from "../../utils/apiErrorParser";
 import type { User } from "../../models/userModel";
 import styles from "./StudentSubscriptions.module.scss";
 import type { Subscription } from "../../models/subscriptionModel";
-import Toast from "../../components/toast"; 
+import Toast from "../toast"; 
 
 const StudentSubscriptions: React.FC = () => {
   const user = localStorage.getItem("user");

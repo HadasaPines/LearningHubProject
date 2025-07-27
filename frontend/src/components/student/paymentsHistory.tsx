@@ -97,7 +97,7 @@ const StudentPayments = () => {
       {errorMessages && <Toast type="error" message={errorMessages} />}
       {successMessage && <Toast type="success" message={successMessage} />}
 
-      <h2>Payment History</h2>
+     
       <table className={styles.paymentTable}>
         <thead>
           <tr>

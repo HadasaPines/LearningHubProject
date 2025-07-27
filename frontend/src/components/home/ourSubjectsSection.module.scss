@@ -1,0 +1,60 @@
+@use '../../styles/abstracts/variables' as *;
+
+.pageWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4rem;
+  position: relative;
+  margin-top: -12%;
+}
+
+.verticalTitle {
+   writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 2rem;
+  font-weight: bold;
+  color: $highlight-text;
+  margin-top: 1%;
+  white-space: nowrap;
+}
+
+.subjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 4rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.subjectCard {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+    background-color: $color-background-main;
+  }
+}
+
+.iconCircle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+
+.subjectName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $color-text-main;
+}

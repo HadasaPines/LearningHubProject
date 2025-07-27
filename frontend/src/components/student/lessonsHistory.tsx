@@ -75,7 +75,7 @@ const StudentLessonHistory = () => {
     const lessonEnd = new Date(`${l.lessonDate}T${l.endTime}`);
     switch (filter) {
       case "passed":
-        return l.status === "passed" && lessonEnd < now;
+        return l.status === "booked" && lessonEnd < now;
       case "upcoming":
         return l.status === "booked" && lessonEnd >= now;
       case "canceled":
@@ -118,7 +118,7 @@ const StudentLessonHistory = () => {
   const getStatusLabel = (lesson: Lesson) => {
     const lessonEnd = new Date(`${lesson.lessonDate}T${lesson.endTime}`);
     if (lesson.status === "canceled") return "Canceled";
-    if (lesson.status === "passed" && lessonEnd < now) return "Passed";
+    if ((lesson.status === "booked" && lessonEnd < now)||lesson.status=="passed") return "Passed";
     if (lesson.status === "booked" && lessonEnd >= now) return "Upcoming";
     return lesson.status;
   };
@@ -128,11 +128,19 @@ const StudentLessonHistory = () => {
     return `${styles.status} ${styles[label.toLowerCase()]}`;
   };
 
+  const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
   
 
   const renderLessonRow = (l: Lesson) => (
+    
     <tr key={l.lessonId}>
-      <td>{l.lessonDate}</td>
+      <td>{formatDate(l.lessonDate)}</td>
       <td>
         {l.startTime} - {l.endTime}
       </td>
@@ -146,7 +154,7 @@ const StudentLessonHistory = () => {
         <span className={getStatusClass(l)}>{getStatusLabel(l)}</span>
       </td>
       <td>
-        {l.status === "booked" && (
+        {(l.status === "booked"&&new Date(`${l.lessonDate}T${l.endTime}`) > new Date()) && (
           <button
             className={styles.actionBtn}
             onClick={() => handleCancelClick(l)}
@@ -171,7 +179,7 @@ const StudentLessonHistory = () => {
       {errorMessages && <Toast type="error" message={errorMessages} />}
       {successMessage && <Toast type="success" message={successMessage} />}
 
-      <h2>My lessons:</h2>
+  
 
       <div className={styles.filters}>
         {["all", "passed", "upcoming", "canceled"].map((key) => (
