@@ -1,0 +1,107 @@
+@use '../../styles/abstracts/variables' as *;
+
+.ourTeachersSection {
+  background-color: $page-bg;
+  font-family: $font-main;
+  color: $page-text;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 2000px;
+  max-height: 100vh;
+  margin-top: -20%;
+  text-align: center;
+  align-items: center;
+}
+
+.title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 2rem;
+  font-weight: bold;
+  color: $highlight-text;
+  margin-top: 12%;
+  white-space: nowrap;
+}
+
+.teachersWrapper {
+  flex: 1;
+  max-height: 700px;
+  overflow-y: visible;
+  padding-right: 1rem;
+
+  scrollbar-width: thin;
+  scrollbar-color: $color-border transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-border;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+.teachersGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  justify-items: center;
+}
+
+.teacherItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.userIcon {
+  width: 80px;
+  height: 80px;
+  background-color: $color-text-main;
+  color: $color-background-main;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  border: 3px solid $color-text-main;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+   margin-bottom: 0rem;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $highlight-text;
+  margin-bottom:0rem;
+}
+
+.bio {
+  font-size: 0.7rem;
+  color: $page-text;
+  max-width: 90%;
+  line-height: 1.4;
+  text-align: center;
+  
+
+  .bioLine {
+    margin: 0;
+  }
+
+  .readMore {
+    display: inline-block;
+    color: $highlight-text;
+    cursor: pointer;
+    font-weight: bold;
+font-size: 0.5rem;
+    margin-top: 0.3rem;
+  }
+}

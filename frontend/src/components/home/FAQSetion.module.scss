@@ -5,16 +5,23 @@
   padding: 2rem;
   font-family: $font-main;
   color: $page-text;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 2000px;
+  margin-top:-10%;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  margin-top: -15%;
   font-weight: bold;
-  margin-bottom: 2rem;
   color: $highlight-text;
-  text-align: left;
+  text-align: center;
+  rotate: (-90deg);
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
 .faqList {
@@ -27,16 +34,16 @@
   border: 1px solid $color-border;
   border-radius: 8px;
   background-color: white;
-  margin-bottom: 1rem;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
 }
 
 .question {
   width: 100%;
   padding: 1rem;
   background-color: $highlight-bg;
-  color: $highlight-text;
+  color: $color-background-main;
   font-weight: bold;
   font-size: 1.05rem;
   text-align: left;
@@ -69,5 +76,5 @@
 
 .answerOpen {
   padding: 1rem;
-  max-height: 300px; // adjust as needed
+  max-height: 300px;
 }

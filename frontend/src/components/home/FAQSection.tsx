@@ -28,32 +28,50 @@ const FAQSection: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const midIndex = Math.ceil(questions.length / 2);
+  const leftColumn = questions.slice(0, midIndex);
+  const rightColumn = questions.slice(midIndex);
+
   return (
     <section className={styles.faqSection}>
       <h2 className={styles.title}>Frequently Asked Questions</h2>
-      <ul className={styles.faqList}>
-        {questions.map((qa, i) => (
-          <li key={i} className={styles.faqItem}>
-            <button className={styles.question} onClick={() => toggle(i)}>
-              {qa.q}
-              <span
-                className={`${styles.arrow} ${
-                  openIndex === i ? styles.arrowOpen : ''
-                }`}
-              >
-                ▶
-              </span>
-            </button>
-            <div
-              className={`${styles.answer} ${
-                openIndex === i ? styles.answerOpen : ''
-              }`}
-            >
-              {qa.a}
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className={styles.faqGrid}>
+        <ul className={styles.faqList}>
+          {leftColumn.map((qa, i) => (
+            <li key={i} className={styles.faqItem}>
+              <button className={styles.question} onClick={() => toggle(i)}>
+                {qa.q}
+                <span
+                  className={`${styles.arrow} ${openIndex === i ? styles.arrowOpen : ''}`}
+                >
+                  ▶
+                </span>
+              </button>
+              <div className={`${styles.answer} ${openIndex === i ? styles.answerOpen : ''}`}>
+                {qa.a}
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <ul className={styles.faqList}>
+          {rightColumn.map((qa, i) => (
+            <li key={i + midIndex} className={styles.faqItem}>
+              <button className={styles.question} onClick={() => toggle(i + midIndex)}>
+                {qa.q}
+                <span
+                  className={`${styles.arrow} ${openIndex === i + midIndex ? styles.arrowOpen : ''}`}
+                >
+                  ▶
+                </span>
+              </button>
+              <div className={`${styles.answer} ${openIndex === i + midIndex ? styles.answerOpen : ''}`}>
+                {qa.a}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 };

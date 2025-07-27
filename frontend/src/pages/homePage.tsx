@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ← חדש
+import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.scss";
 import TestimonialsSection from "../components/home/testimonialsSection";
 import FAQSection from "../components/home/FAQSection";
 import OurTeachersSection from "../components/home/ourTeachersSection";
-import OurLessonsSection from "../components/home/ourLessonsSection";
+
 import AboutUs from "../components/home/aboutUs";
-import HowItWorksSection from "../components/home/howItWorksSection";
 import type { User } from "../models/userModel";
+import OurSubjectsSection from "../components/home/ourSubjectsSection";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -52,10 +52,10 @@ const handleAccountClick = () => {
             <a href="#hero">Home</a>
             <a href="#testimonials">Testimonials</a>
             <a href="#faq">FAQ</a>
-            <a href="#our-teachers">Our Teachers</a>
-            <a href="#our-lessons">Our Lessons</a>
+            <a href="#our-teachers" >Our Teachers</a>
+            <a href="#our-subjects">Our Subjects</a>
             <a href="#about-us">About Us</a>
-            <a href="#how-it-works">How It Works</a>
+            
           </div>
           <div className={styles.rightMenu}>
             <button className={styles.accountButton} onClick={handleAccountClick}>
@@ -81,17 +81,15 @@ const handleAccountClick = () => {
             <OurTeachersSection />
           </section>
 
-          <section id="our-lessons">
-            <OurLessonsSection />
+          <section id="our-subjects">
+            <OurSubjectsSection />
           </section>
 
           <section id="about-us">
             <AboutUs />
           </section>
 
-          <section id="how-it-works">
-            <HowItWorksSection />
-          </section>
+         
         </div>
       </main>
     </div>
