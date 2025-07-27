@@ -44,7 +44,6 @@ const ManageTeachers = () => {
   const [birthDateInputType, setBirthDateInputType] = useState<"text" | "date">("text");
   const [expandedTeacherId, setExpandedTeacherId] = useState<number | null>(null);
 
-  // חדש - ניהול כמות שורות ביוגרפיה לכל מורה
   const [expandedBioLines, setExpandedBioLines] = useState<Record<number, number>>({});
 
   const CHARS_PER_LINE = 25;

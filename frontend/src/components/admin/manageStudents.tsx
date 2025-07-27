@@ -8,19 +8,25 @@ import {
   updateStudent,
   addUser,
 } from "../../services/api";
-import type { User, StudentDetails, Gender } from "../../models/userModel";
+import type { User, StudentDetails } from "../../models/userModel";
+import styles from "./manageStudents.module.scss";
+import Toast from "../../components/toast";
+import { FaEdit, FaTrash, FaSave, FaTimes, FaUserPlus } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
 
-
-import { parseApiError } from "../../utils/apiErrorParser";
+const formatDate = (dateStr: string | undefined): string => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
 const ManageStudents = () => {
-  const [students, setStudents] = useState<(User)[]>([]);
-  const [newStudent, setNewStudent] = useState<Omit<StudentDetails, "studentId">>({
-    gender: "M",
-    age: 0,
-    birthDate: "",
-  });
-  const [newUser, setNewUser] = useState<User>({
+  const [students, setStudents] = useState<User[]>([]);
+  const [newStudentVisible, setNewStudentVisible] = useState(false);
+  const [newUser, setNewUser] = useState<Omit<User, "student">>({
     userId: 0,
     firstName: "",
     lastName: "",
@@ -28,31 +34,35 @@ const ManageStudents = () => {
     phone: "",
     password: "",
     role: "Student",
-    student: newStudent
   });
-
+  const [newStudent, setNewStudent] = useState<Omit<StudentDetails, "studentId">>({
+    gender: "",
+    age: 0,
+    birthDate: "",
+  });
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
-  const [editUser, setEditUser] = useState<Partial<User>>({});
-  const [editStudent, setEditStudent] = useState<Partial<StudentDetails>>({});
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [editUser, setEditUser] = useState<User | null>(null);
+  const [editStudent, setEditStudent] = useState<StudentDetails | null>(null);
+  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [expandedStudentId, setExpandedStudentId] = useState<number | null>(null);
+  const [birthDateInputTypeAdd, setBirthDateInputTypeAdd] = useState<"text" | "date">("text");
 
-  const showMessage = (msg: string, type: "error" | "success") => {
-    if (type === "error") setErrorMessage(msg);
-    else setSuccessMessage(msg);
-
-    setTimeout(() => {
-      setErrorMessage(null);
-      setSuccessMessage(null);
-    }, 4000);
+  // חישוב גיל אוטומטי לפי תאריך לידה
+  const calculateAge = (birthDateStr: string): number => {
+    if (!birthDateStr) return 0;
+    const birthDate = new Date(birthDateStr);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   };
 
-  const extractErrorMessage = (error: any, defaultMsg: string) => {
-    return (
-      error?.response?.data?.detail ||
-      error?.response?.data?.message ||
-      defaultMsg
-    );
+  const showMessage = (msg: string, type: "success" | "error") => {
+    setToast({ message: msg, type });
+    setTimeout(() => setToast(null), 3000);
   };
 
   useEffect(() => {
@@ -67,51 +77,81 @@ const ManageStudents = () => {
         const student = studentRes.data.find((s: StudentDetails) => s.studentId === user.userId);
         return {
           ...user,
-          ...student,
+          student,
         };
       });
       setStudents(fullList);
-    } catch (error: any) {
-      showMessage(extractErrorMessage(error, "Error loading student list"), "error");
+    } catch {
+      showMessage("Failed to load students", "error");
+    }
+  };
+
+  const toggleDetails = (id: number) => {
+    setExpandedStudentId((prev) => (prev === id ? null : id));
+  };
+
+  const handleAddChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const studentFields = ["gender", "age", "birthDate"];
+    if (studentFields.includes(name)) {
+      let newValue: string | number = value;
+      if (name === "age") newValue = Number(value);
+
+      let updatedStudent = {
+        ...newStudent,
+        [name]: newValue,
+      };
+
+      // עדכון גיל אוטומטי כאשר משנים תאריך לידה
+      if (name === "birthDate") {
+        updatedStudent.age = calculateAge(value);
+      }
+
+      setNewStudent(updatedStudent);
+    } else {
+      setNewUser((prev) => ({
+        ...prev,
+        [name]: name === "userId" ? Number(value) : value,
+      }));
     }
   };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addUser(newUser);
+      await addUser({ ...newUser, student: undefined });
       await addStudent({
         studentId: newUser.userId,
         ...newStudent,
         birthDate: newStudent.birthDate ? new Date(newStudent.birthDate).toISOString() : "",
       });
-      resetForm();
-      loadStudents();
       showMessage("Student added successfully", "success");
-    } catch (error: any) {
-      showMessage(parseApiError(error), "error");
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this student?")) return;
-    try {
-      await deleteUser(id);
+      setNewStudentVisible(false);
+      setNewUser({
+        userId: 0,
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
+        role: "Student",
+      });
+      setNewStudent({
+        gender: "M",
+        age: 0,
+        birthDate: "",
+      });
+      setBirthDateInputTypeAdd("text");
       loadStudents();
-      showMessage("Student deleted successfully", "success");
-    } catch (error: any) {
-      showMessage(parseApiError(error), "error");
+    } catch {
+      showMessage("Error adding student", "error");
     }
   };
 
   const handleEditClick = (student: User) => {
     setEditingUserId(student.userId);
-    setEditUser({ ...student });
-    setEditStudent({
-      gender: student.student?.gender,
-      age: student.student?.age,
-      birthDate: student.student?.birthDate,
-    });
+    setEditUser(student);
+    setEditStudent(student.student || { gender: "M", age: 0, birthDate: "" });
   };
 
   const handleEditChange = (
@@ -119,15 +159,32 @@ const ManageStudents = () => {
     target: "user" | "student"
   ) => {
     const { name, value } = e.target;
-    if (target === "user") {
-      setEditUser({ ...editUser, [name]: value });
-    } else {
-      setEditStudent({ ...editStudent, [name]: name === "age" ? parseInt(value) : value });
+
+    if (target === "user" && editUser) {
+      setEditUser({ ...editUser, [name]: name === "userId" ? Number(value) : value });
+    }
+
+    if (target === "student" && editStudent) {
+      let newValue: string | number = value;
+      if (name === "age") newValue = Number(value);
+
+      let updatedStudent = {
+        ...editStudent,
+        [name]: newValue,
+      };
+
+      // עדכון גיל אוטומטי בעריכה לפי שינוי תאריך לידה
+      if (name === "birthDate") {
+        updatedStudent.age = calculateAge(value);
+      }
+
+      setEditStudent(updatedStudent);
     }
   };
 
   const handleSaveEdit = async () => {
-    if (!editingUserId) return;
+    if (!editingUserId || !editUser || !editStudent) return;
+
     try {
       const userPatch = [
         { op: "replace", path: "/firstName", value: editUser.firstName },
@@ -135,214 +192,224 @@ const ManageStudents = () => {
         { op: "replace", path: "/email", value: editUser.email },
         { op: "replace", path: "/phone", value: editUser.phone },
       ];
-
       const studentPatch = [
-        { op: "replace", path: "/gender", value: editStudent.gender },
         { op: "replace", path: "/age", value: editStudent.age },
-      ];
 
+      ];
       await updateUser(editingUserId, userPatch);
       await updateStudent(editingUserId, studentPatch);
+      showMessage("Student updated successfully", "success");
       setEditingUserId(null);
       loadStudents();
-      showMessage("Student updated successfully", "success");
-    } catch (error: any) {
-      showMessage(parseApiError(error), "error");
+    } catch {
+      showMessage("Failed to update student", "error");
     }
   };
 
-  const resetForm = () => {
-    setNewUser({
-      userId: 0,
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      password: "",
-      role: "Student",
-      student: {
-        gender: "M",
-        age: 0,
-        birthDate: ""
-      }
-    });
+  const handleDelete = async (userId: number) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
+    try {
+      await deleteUser(userId);
+      showMessage("Student deleted successfully", "success");
+      loadStudents();
+    } catch {
+      showMessage("Failed to delete student", "error");
+    }
   };
 
   return (
-    <div className="container">
-      <h2 className="title">Student Management</h2>
+    <div>
+      {toast && <Toast type={toast.type} message={toast.message} />}
 
-      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
-      {successMessage && <div className="successMessage">{successMessage}</div>}
+      <div className={styles.container}>
+        <h2 className={styles.title}>Manage Students</h2>
 
-      <form onSubmit={handleAdd}>
-        <h3>Add New Student</h3>
-        <input
-          type="number"
-          name="userId"
-          placeholder="ID"
-          value={newUser.userId}
-          required
-          onChange={(e) => setNewUser({ ...newUser, userId: parseInt(e.target.value) })}
-        />
-        <input
-          name="firstName"
-          placeholder="First Name"
-          value={newUser.firstName}
-          required
-          onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
-        />
-        <input
-          name="lastName"
-          placeholder="Last Name"
-          value={newUser.lastName}
-          required
-          onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
-        />
-        <input
-          name="email"
-          placeholder="Email"
-          value={newUser.email}
-          onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-        />
-        <input
-          name="phone"
-          placeholder="Phone"
-          value={newUser.phone}
-          onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-        />
-        <input
-          name="password"
-          placeholder="Password"
-          value={newUser.password}
-          required
-          onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-        />
-        <input
-          type="date"
-          name="birthDate"
-          value={newStudent.birthDate}
-          onChange={(e) => setNewStudent({ ...newStudent, birthDate: e.target.value })}
-        />
-        <select
-          name="gender"
-          value={newStudent.gender}
-          onChange={(e) => setNewStudent({ ...newStudent, gender: e.target.value as Gender })}
-        >
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-        <input
-          type="number"
-          name="age"
-          placeholder="Age"
-          value={newStudent.age}
-          onChange={(e) => setNewStudent({ ...newStudent, age: parseInt(e.target.value) })}
-        />
-        <button type="submit" className="addBtn">Add</button>
-      </form>
+        <button className={styles.addBtn} onClick={() => setNewStudentVisible((prev) => !prev)}>
+          <FaUserPlus /> {newStudentVisible ? "Cancel" : " Add New Student"}
+        </button>
 
-      <hr />
+        {newStudentVisible && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalBox}>
+              <h3>Add New Student</h3>
+              <form onSubmit={handleAdd} className={styles.form}>
+                <input
+                  type="number"
+                  name="userId"
+                  placeholder="Student ID"
+                  value={newUser.userId || ""}
+                  onChange={handleAddChange}
+                  className={styles.singleInput}
+                  required
+                />
+                <div className={styles.twoColumnForm}>
+                  <input
+                    name="firstName"
+                    placeholder="First Name"
+                    value={newUser.firstName}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <input
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={newUser.lastName}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <input
+                    name="phone"
+                    placeholder="Phone"
+                    value={newUser.phone}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <input
+                    name="email"
+                    placeholder="Email"
+                    value={newUser.email}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    value={newUser.password}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <select name="gender" value={newStudent.gender} onChange={handleAddChange} required>
+                    <option value="" disabled>
+                      Select Gender
+                    </option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                  </select>
+                  <input
+                    name="birthDate"
+                    type={birthDateInputTypeAdd}
+                    placeholder="Birth Date"
+                    value={newStudent.birthDate}
+                    onFocus={() => setBirthDateInputTypeAdd("date")}
+                    onBlur={() => {
+                      if (!newStudent.birthDate) setBirthDateInputTypeAdd("text");
+                    }}
+                    onChange={handleAddChange}
+                    required
+                  />
+                  <input
+                    name="age"
+                    type="number"
+                    placeholder="Age"
+                    value={newStudent.age || ""}
+                    disabled
+                  />
+                </div>
+                <div className={styles.actions}>
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setNewStudentVisible(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
-      <h3>Student List</h3>
-      <table cellPadding={8}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Birth Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((s) =>
-            editingUserId === s.userId ? (
-              <tr key={s.userId}>
-                <td>{s.userId}</td>
-                <td>
+        <div className={styles.cardGrid}>
+          {students.map((student) => {
+            const isExpanded = expandedStudentId === student.userId;
+            if (editingUserId === student.userId && editUser && editStudent) {
+              return (
+                <div
+                  key={student.userId}
+                  className={`${styles.card} ${isExpanded ? styles.expanded : ""}`}
+                >
                   <input
                     name="firstName"
                     value={editUser.firstName || ""}
                     onChange={(e) => handleEditChange(e, "user")}
                   />
-                </td>
-                <td>
                   <input
                     name="lastName"
                     value={editUser.lastName || ""}
                     onChange={(e) => handleEditChange(e, "user")}
                   />
-                </td>
-                <td>
-                  <input
-                    name="phone"
-                    value={editUser.phone || ""}
-                    onChange={(e) => handleEditChange(e, "user")}
-                  />
-                </td>
-                <td>
                   <input
                     name="email"
                     value={editUser.email || ""}
                     onChange={(e) => handleEditChange(e, "user")}
                   />
-                </td>
-                <td>
-                  <select
-                    name="gender"
-                    value={editStudent.gender || "M"}
-                    onChange={(e) => handleEditChange(e, "student")}
-                  >
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                  </select>
-                </td>
-                <td>
                   <input
-                    type="number"
-                    name="age"
-                    value={editStudent.age || 0}
-                    onChange={(e) => handleEditChange(e, "student")}
+                    name="phone"
+                    value={editUser.phone || ""}
+                    onChange={(e) => handleEditChange(e, "user")}
                   />
-                </td>
-                <td>{s.student?.birthDate?.substring(0, 10)}</td>
-                <td>
-                  <button onClick={handleSaveEdit} title="Save">
-                    💾
+        
+                  <div className={styles.actions}>
+                    <button onClick={handleSaveEdit} title="Save">
+                      <FaSave />
+                    </button>
+                    <button onClick={() => setEditingUserId(null)} title="Cancel">
+                      <FaTimes />
+                    </button>
+                    <button onClick={() => toggleDetails(student.userId)}>
+                      {isExpanded ? "Collapse" : "Details"}
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div key={student.userId} className={`${styles.card} ${isExpanded ? styles.expanded : ""}`}>
+                <div className="content">
+                  <div className={styles.icon}>
+                    <FiUser />
+                  </div>
+                  <h4>
+                    {student.firstName} {student.lastName}
+                  </h4>
+                </div>
+                <div className={styles.actions}>
+                  <button onClick={() => handleEditClick(student)} title="Edit">
+                    <FaEdit />
                   </button>
-                  <button onClick={() => setEditingUserId(null)} title="Cancel">
-                    ❌
+                  <button onClick={() => handleDelete(student.userId)} title="Delete">
+                    <FaTrash />
                   </button>
-                </td>
-              </tr>
-            ) : (
-              <tr key={s.userId}>
-                <td>{s.userId}</td>
-                <td>{s.firstName}</td>
-                <td>{s.lastName}</td>
-                <td>{s.phone}</td>
-                <td>{s.email}</td>
-                <td>{s.student?.gender}</td>
-                <td>{s.student?.age}</td>
-                <td>{s.student?.birthDate?.substring(0, 10)}</td>
-                <td>
-                  <button onClick={() => handleEditClick(s)} title="Edit">
-                    ✏️
+                  <button onClick={() => toggleDetails(student.userId)}>
+                    {isExpanded ? "Collapse" : "Details"}
                   </button>
-                  <button onClick={() => handleDelete(s.userId)} title="Delete">
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+                </div>
+                {isExpanded && (
+                  <>
+                    <p>
+                      <b>ID:</b> {student.userId}
+                    </p>
+                    <p>
+                      <b>Email:</b> {student.email}
+                    </p>
+                    <p>
+                      <b>Phone:</b> {student.phone}
+                    </p>
+                    <p>
+                      <b>Gender:</b> {student.student?.gender === "M" ? "Male" : "Female"}
+                    </p>
+                    <p>
+                      <b>Age:</b> {student.student?.age}
+                    </p>
+                    <p>
+                      <b>Birth Date:</b> {formatDate(student.student?.birthDate)}
+                    </p>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

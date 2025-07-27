@@ -1,0 +1,297 @@
+@use '../../styles/abstracts/variables' as *;
+
+.container {
+  position: relative;
+  padding: 40px 20px;
+  direction: ltr;
+  text-align: center;
+  font-family: $font-main;
+  background: $color-background-main;
+  overflow: hidden;
+    height: 88vh;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  &::before {
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: $highlight-button;
+  }
+
+  &::after {
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: $color-border;
+    opacity: 0.12;
+  }
+
+    >* {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.title {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: $color-text-main;
+}
+
+.addBtn {
+    background: $page-button-primary;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
+
+    &:hover {
+        background: $page-button-secondary;
+    }
+}
+
+.cardGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    border: 1px solid $color-text-main;
+    width: 180px;
+    min-height: 100px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    padding: 12px;
+    padding-bottom: 60px;
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &.expanded {
+        width: 350px;
+        min-height: 380px;
+        padding: 20px;
+        padding-bottom: 80px;
+    }
+
+    .icon {
+        font-size: 38px;
+        background-color: $color-text-main;
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px auto;
+    }
+
+    h4 {
+        margin: 20px 0 10px 0;
+        color: $color-text-main;
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 14px;
+        color: $color-background-accent;
+        margin: 5px 0;
+        word-break: break-word;
+    }
+
+    input,
+    select {
+        margin: 10px auto;
+        padding: 8px;
+        width: 85%;
+        border: 1px solid $color-border;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: $font-main;
+    }
+
+    input[type="number"] {
+        max-width: 100px;
+    }
+
+    .actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: $color-text-main;
+        border-radius: 0 0 18px 18px;
+        display: flex;
+        justify-content: space-around;
+        overflow: hidden;
+
+        button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            &:not(:last-child) {
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalBox {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 600px;
+    animation: fadeIn 0.3s ease-in-out;
+    border: 5px solid $color-text-main;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: $highlight-text;
+    }
+
+    .form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        text-align: center;
+        justify-content: center;
+
+        input,
+        select {
+            padding: 0.6rem;
+            border: 1px solid $color-border;
+            border-radius: 0.5rem;
+            background: #f8f8f8;
+            font-family: $font-main;
+            font-size: 15px;
+        }
+
+        input {
+            flex: 1 1 48%;
+            width: 85%;
+        }
+
+        select {
+            flex: 1 1 48%;
+            width: 92%;
+        }
+
+        .actions {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+
+            button {
+                background: $page-button-primary;
+                color: white;
+                padding: 0.6rem 1.4rem;
+                border: none;
+                border-radius: 0.6rem;
+                font-weight: bold;
+                transition: background 0.3s ease;
+                cursor: pointer;
+
+                &:hover {
+                    background: $page-button-secondary;
+                }
+            }
+        }
+            .singleInput {
+      flex: 0 0 auto;
+      width: 45%;
+      border: 1px solid $color-border;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    }
+}
+
+.twoColumnForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  width: 100%;
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid $color-border;
+    border-radius: 0.5rem;
+    background: #f8f8f8;
+    font-family: $font-main;
+    font-size: 15px;
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
