@@ -1,0 +1,221 @@
+@use '../styles/abstracts/variables' as *;
+
+.homePage {
+  background-color: $page-bg;
+  color: $color-text-main;
+  font-family: $font-main;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  background-color: $color-background-main;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leftNav {
+  display: flex;
+  gap: 1rem;
+
+  a {
+    color: $color-text-main;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      color: $highlight-button;
+    }
+  }
+}
+
+.profileIcon {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: $color-text-main;
+  margin-right: 50px;
+}
+
+.profileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 260px;
+  background: linear-gradient(145deg, $color-background-main, lighten($color-background-main, 8%));
+  padding: 2rem 1.2rem;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1100;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  animation: slideIn 0.3s ease forwards;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 0.8rem;
+  width: 100%;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.2s;
+
+  &:hover {
+    background-color: $color-text-main;
+
+    span {
+      color: $color-background-main;
+    }
+
+    .icon {
+      color: $color-background-main;
+    }
+
+    transform: scale(1.02);
+  }
+
+  span {
+    flex: 1;
+    color: $color-text-main;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    color: $color-text-main;
+  }
+}
+
+.logout {
+  background-color: $color-text-main;
+  margin-top: auto;
+  color: $color-background-main;
+
+  .icon {
+    color: $color-background-main;
+  }
+
+  span {
+    flex: 1;
+    color: $color-background-main;
+  }
+
+  &:hover {
+    background-color: $color-background-main;
+    border: 2px solid $color-text-main;
+
+    span {
+      color: $color-text-main;
+    }
+
+    .icon {
+      color: $color-text-main;
+    }
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: $color-background-accent;
+
+  &:hover {
+    color: $color-border;
+  }
+}
+
+.mainContent {
+  margin-top: 5rem; // מתאים לגובה ה-header
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+
+  > div {
+    min-height: 100%;
+  }
+}
+
+.dashboard {
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: $color-text-main;
+  }
+
+  .adminButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+
+    .row {
+      display: flex;
+      gap: 1.2rem;
+
+      &.centered {
+        justify-content: center;
+      }
+    }
+
+    button {
+      background-color: $color-background-main;
+      color: $color-text-main;
+      border: 2px solid $color-border;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      min-width: 220px;
+
+      .icon {
+        font-size: 1.3rem;
+        color: $color-text-main;
+      }
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+.fullPageComponent {
+  flex: 1;
+  min-height: calc(100vh - 80px); 
+  overflow-y: auto;
+  padding: 2rem;
+}
