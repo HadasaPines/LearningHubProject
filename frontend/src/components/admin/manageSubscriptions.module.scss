@@ -10,60 +10,38 @@
   max-height: 88vh;
   height: 88vh;
   overflow-y: auto;
+  justify-content: center;
 
-  &::before,
+
+&::before,
   &::after {
     content: "";
-    position: absolute;
+    position: fixed;
     border-radius: 50%;
     opacity: 0.15;
     z-index: 0;
-  }
+  } 
 
   &::before {
-    top: -120px;
-    left: -100px;
-    width: 320px;
-    height: 320px;
+    top: 12%;
+    left: 3%;
+    transform: translate(-40%, -40%);
+    width: 280px;
+    height: 280px;
     background: $highlight-button;
   }
 
   &::after {
-    bottom: -150px;
-    right: -120px;
-    width: 380px;
-    height: 380px;
+    bottom: 2%;
+    right: 3%;
+    transform: translate(40%, 40%);
+    width: 280px;
+    height: 280px;
     background: $color-border;
     opacity: 0.12;
   }
 
-  .circle1,
-  .circle2 {
-    position: absolute;
-    border-radius: 50%;
-    z-index: 0;
-    pointer-events: none;
-  }
 
-  .circle1 {
-    top: 50%;
-    left: 10%;
-    width: 120px;
-    height: 120px;
-    background: $color-border;
-    opacity: 0.12;
-    filter: blur(6px);
-  }
-
-  .circle2 {
-    top: 80%;
-    left: 50%;
-    width: 80px;
-    height: 80px;
-    background: lighten($color-border, 5%);
-    opacity: 0.18;
-    filter: blur(4px);
-  }
 
   > * {
     position: relative;
@@ -78,22 +56,24 @@
 }
 
 .addBtn {
-  background: $page-button-primary;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
-  transition: background 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+    background: $page-button-primary;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 13%;
+    margin-left: 43%;
 
-  &:hover {
-    background: $page-button-secondary;
-  }
+    &:hover {
+        background: $page-button-secondary;
+    }
 }
 
 .cardGrid {

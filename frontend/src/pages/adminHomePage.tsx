@@ -53,7 +53,6 @@ const AdminHomePage: React.FC = () => {
             <h2>Welcome, Admin</h2>
 
             <div className={styles.adminButtons}>
-              {/* שורה עליונה – 3 כפתורים */}
               <div className={styles.row}>
                 <button onClick={() => handleMenuClick("students")}>
                   <FaUsers className={styles.icon} />
@@ -69,7 +68,6 @@ const AdminHomePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* שורה תחתונה – 2 כפתורים ממורכזים מתחת לשלושת העליונים */}
               <div className={`${styles.row} ${styles.centered}`}>
                 <button onClick={() => handleMenuClick("availability")}>
                   <FaClock className={styles.icon} />

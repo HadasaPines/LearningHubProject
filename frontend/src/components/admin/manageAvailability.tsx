@@ -27,7 +27,10 @@ const ManageAvailability = () => {
   // State for new availability
   const [newAvailability, setNewAvailability] = useState<Omit<TeacherAvailability, "availabilityId">>({
     teacherId: 0,
+    subjectId: 0,
     weekDay: 1,
+    minAge: null,
+    maxAge: null,
     startTime: "",
     endTime: "",
   });
@@ -35,7 +38,10 @@ const ManageAvailability = () => {
   const [editingAvailabilityId, setEditingAvailabilityId] = useState<number | null>(null);
   const [editAvailability, setEditAvailability] = useState<Omit<TeacherAvailability, "availabilityId">>({
     teacherId: 0,
+    subjectId: 0,
     weekDay: 1,
+    minAge: null,
+    maxAge: null,
     startTime: "",
     endTime: "",
   });
@@ -67,18 +73,28 @@ const ManageAvailability = () => {
 
   const handleNewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewAvailability((prev) => ({
-      ...prev,
-      [name]: name === "teacherId" || name === "weekDay" ? +value : value,
-    }));
+    setNewAvailability((prev) => {
+      if (name === "teacherId" || name === "weekDay" || name === "subjectId") {
+        return { ...prev, [name]: +value };
+      }
+      if (name === "minAge" || name === "maxAge") {
+        return { ...prev, [name]: value === "" ? null : +value };
+      }
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditAvailability((prev) => ({
-      ...prev,
-      [name]: name === "teacherId" || name === "weekDay" ? +value : value,
-    }));
+    setEditAvailability((prev) => {
+      if (name === "teacherId" || name === "weekDay" || name === "subjectId") {
+        return { ...prev, [name]: +value };
+      }
+      if (name === "minAge" || name === "maxAge") {
+        return { ...prev, [name]: value === "" ? null : +value };
+      }
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleAdd = async (e: React.FormEvent) => {
@@ -86,7 +102,15 @@ const ManageAvailability = () => {
     try {
       await addAvailability(newAvailability);
       showMessage("Availability added successfully", "success");
-      setNewAvailability({ teacherId: 0, weekDay: 1, startTime: "", endTime: "" });
+      setNewAvailability({
+        teacherId: 0,
+        subjectId: 0,
+        weekDay: 1,
+        minAge: null,
+        maxAge: null,
+        startTime: "",
+        endTime: "",
+      });
       const updated = await getAllAvailabilities();
       setAvailabilities(updated.data);
     } catch (err) {
@@ -100,12 +124,14 @@ const ManageAvailability = () => {
   };
 
   const handleSaveEditAvailability = async () => {
-    console.log("Saving edited availability:", formatTimeToTimeOnly(editAvailability.endTime));
     if (!editingAvailabilityId) return;
     try {
       const patch = [
         { op: "replace", path: "/teacherId", value: editAvailability.teacherId },
+        { op: "replace", path: "/subjectId", value: editAvailability.subjectId },
         { op: "replace", path: "/weekDay", value: editAvailability.weekDay },
+        { op: "replace", path: "/minAge", value: editAvailability.minAge },
+        { op: "replace", path: "/maxAge", value: editAvailability.maxAge },
         { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editAvailability.startTime) },
         { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editAvailability.endTime) },
       ];
@@ -113,7 +139,15 @@ const ManageAvailability = () => {
       await updateAvailability(editingAvailabilityId, patch);
       showMessage("Availability updated successfully", "success");
       setEditingAvailabilityId(null);
-      setEditAvailability({ teacherId: 0, weekDay: 1, startTime: "", endTime: "" });
+      setEditAvailability({
+        teacherId: 0,
+        subjectId: 0,
+        weekDay: 1,
+        minAge: null,
+        maxAge: null,
+        startTime: "",
+        endTime: "",
+      });
       const updated = await getAllAvailabilities();
       setAvailabilities(updated.data);
     } catch (err) {
@@ -156,6 +190,11 @@ const ManageAvailability = () => {
           ))}
         </select>
 
+        <select name="subjectId" value={newAvailability.subjectId} onChange={handleNewChange} required>
+          <option value={0}>Select Subject</option>
+          {/* TODO: הכנס כאן אפשרויות מקצועות */}
+        </select>
+
         <select name="weekDay" value={newAvailability.weekDay} onChange={handleNewChange}>
           {weekDays.map((d) => (
             <option key={d.value} value={d.value}>
@@ -163,6 +202,25 @@ const ManageAvailability = () => {
             </option>
           ))}
         </select>
+
+        <input
+          name="minAge"
+          type="number"
+          value={newAvailability.minAge ?? ""}
+          onChange={handleNewChange}
+          placeholder="Min Age"
+          min={0}
+          style={{ width: "80px", marginRight: "8px" }}
+        />
+        <input
+          name="maxAge"
+          type="number"
+          value={newAvailability.maxAge ?? ""}
+          onChange={handleNewChange}
+          placeholder="Max Age"
+          min={0}
+          style={{ width: "80px" }}
+        />
 
         <input
           name="startTime"
@@ -188,7 +246,10 @@ const ManageAvailability = () => {
         <thead>
           <tr>
             <th>Teacher</th>
+            <th>Subject</th>
             <th>Day</th>
+            <th>Min Age</th>
+            <th>Max Age</th>
             <th>From</th>
             <th>To</th>
             <th>Actions</th>
@@ -208,6 +269,12 @@ const ManageAvailability = () => {
                   </select>
                 </td>
                 <td>
+                  <select name="subjectId" value={editAvailability.subjectId} onChange={handleEditChange} required>
+                    <option value={0}>Select Subject</option>
+                    {/* TODO: הכנס כאן אפשרויות מקצועות */}
+                  </select>
+                </td>
+                <td>
                   <select name="weekDay" value={editAvailability.weekDay} onChange={handleEditChange}>
                     {weekDays.map((d) => (
                       <option key={d.value} value={d.value}>
@@ -218,10 +285,33 @@ const ManageAvailability = () => {
                 </td>
                 <td>
                   <input
+                    name="minAge"
+                    type="number"
+                    value={editAvailability.minAge ?? ""}
+                    onChange={handleEditChange}
+                    placeholder="Min Age"
+                    min={0}
+                    style={{ width: "80px" }}
+                  />
+                </td>
+                <td>
+                  <input
+                    name="maxAge"
+                    type="number"
+                    value={editAvailability.maxAge ?? ""}
+                    onChange={handleEditChange}
+                    placeholder="Max Age"
+                    min={0}
+                    style={{ width: "80px" }}
+                  />
+                </td>
+                <td>
+                  <input
                     name="startTime"
                     type="time"
                     value={editAvailability.startTime}
                     onChange={handleEditChange}
+                    required
                   />
                 </td>
                 <td>
@@ -230,6 +320,7 @@ const ManageAvailability = () => {
                     type="time"
                     value={editAvailability.endTime}
                     onChange={handleEditChange}
+                    required
                   />
                 </td>
                 <td>
@@ -240,7 +331,10 @@ const ManageAvailability = () => {
             ) : (
               <tr key={a.availabilityId}>
                 <td>{getTeacherName(a.teacherId)}</td>
+                <td>{/* TODO: להציג את שם המקצוע לפי a.subjectId */}</td>
                 <td>{weekDays.find((d) => d.value === a.weekDay)?.label}</td>
+                <td>{a.minAge ?? "-"}</td>
+                <td>{a.maxAge ?? "-"}</td>
                 <td>{a.startTime}</td>
                 <td>{a.endTime}</td>
                 <td>
@@ -249,7 +343,10 @@ const ManageAvailability = () => {
                       setEditingAvailabilityId(a.availabilityId);
                       setEditAvailability({
                         teacherId: a.teacherId,
+                        subjectId: a.subjectId,
                         weekDay: a.weekDay,
+                        minAge: a.minAge ?? null,
+                        maxAge: a.maxAge ?? null,
                         startTime: a.startTime,
                         endTime: a.endTime,
                       });

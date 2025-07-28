@@ -171,9 +171,9 @@ const ManageLessons = () => {
                   <FaChalkboardTeacher />
                 </div >
                 <div className={styles.info}>
-                <p><b>{lesson.lessonDate}</b></p>
-                <p><strong>Subject:</strong> {subject ? subject.name : "-"}</p>
-                <p><strong>Teacher:</strong> {teacher ? `${teacher.firstName} ${teacher.lastName}` : "-"}</p>
+                  <p><b>{lesson.lessonDate}</b></p>
+                  <p><strong>Subject:</strong> {subject ? subject.name : "-"}</p>
+                  <p><strong>Teacher:</strong> {teacher ? `${teacher.firstName} ${teacher.lastName}` : "-"}</p>
                 </div>
                 <div className={styles.content}>
                   {isExpanded && (

@@ -1,70 +1,46 @@
 @use '../../styles/abstracts/variables' as *;
 
 .container {
-    position: relative;
-    padding: 40px 20px;
-    direction: ltr;
-    text-align: center;
-    font-family: $font-main;
-    background: $color-background-main;
-    //overflow: hidden;
-    max-height: 88vh;
-    height: 88vh;
-    overflow-y: auto;
+  padding: 40px 20px;
+  direction: ltr;
+  text-align: center;
+  font-family: $font-main;
+  background: $color-background-main;
+  overflow: visible; // או פשוט לא לשים overflow בכלל
+  height: auto;
+  max-height: none;
 
-    &::before,
-    &::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        opacity: 0.15;
-        z-index: 0;
-    }
 
-    &::before {
-        top: -120px;
-        left: -100px;
-        width: 320px;
-        height: 320px;
-        background: $highlight-button;
-    }
 
-    &::after {
-        bottom: -150px;
-        right: -120px;
-        width: 380px;
-        height: 380px;
-        background: $color-border;
-        opacity: 0.12;
-    }
+&::before,
+  &::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  } 
 
-    .circle1,
-    .circle2 {
-        position: absolute;
-        border-radius: 50%;
-        z-index: 0;
-        pointer-events: none;
-    }
+  &::before {
+    top: 12%;
+    left: 3%;
+    transform: translate(-40%, -40%);
+    width: 280px;
+    height: 280px;
+    background: $highlight-button;
+  }
 
-    .circle1 {
-        top: 50%;
-        left: 10%;
-        width: 120px;
-        height: 120px;
-        background: $color-border;
-        opacity: 0.12;
-        filter: blur(6px);
-    }
+  &::after {
+    bottom: 2%;
+    right: 3%;
+    transform: translate(40%, 40%);
+    width: 280px;
+    height: 280px;
+    background: $color-border;
+    opacity: 0.12;
+  }
 
-    .circle2 {
-        top: 80%;
-        left: 50%;
-        width: 80px;
-        height: 80px;
-        background: lighten($color-border, 5%);
-        opacity: 0.18;
-        filter: blur(4px);
-    }
+  
 
     >* {
         position: relative;
