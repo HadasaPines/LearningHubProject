@@ -45,7 +45,7 @@ namespace DAL.Services
 
         public async Task<List<TeacherAvailability>> GetAllTeacherAvailabilities()
         {
-            return await dbContext.TeacherAvailabilities.ToListAsync();
+            return await dbContext.TeacherAvailabilities.Include(ta=>ta.Teacher).ToListAsync();
         }
 
         public async Task<List<TeacherAvailability>> GetTeacherAvailabilitiesByWeekDay(int weekDay)

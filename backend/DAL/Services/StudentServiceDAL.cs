@@ -42,14 +42,9 @@ namespace DAL.Services
         public async Task AddStudent(Student student)
         {
             dbContext.Students.Add(student);
-            try {
+           
                 await dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException?.Message);
-            }
+           
         }
 
 
@@ -75,6 +70,11 @@ namespace DAL.Services
         public async Task AddRegistrationToStudent(Registration registration)
         {
             dbContext.Registrations.Add(registration);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
             await dbContext.SaveChangesAsync();
         }
     }

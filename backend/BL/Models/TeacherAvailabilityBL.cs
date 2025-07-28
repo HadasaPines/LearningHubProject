@@ -13,8 +13,12 @@ namespace BL.Models
         public int AvailabilityId { get; set; }
         public int TeacherId { get; set; }
 
+        public int SubjectId { get; set; }
         public int WeekDay { get; set; }
 
+        public int? MinAge { get; set; }
+
+        public int? MaxAge { get; set; }
         public TimeOnly StartTime { get; set; }
 
         public TimeOnly EndTime { get; set; }

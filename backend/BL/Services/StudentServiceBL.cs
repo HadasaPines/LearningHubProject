@@ -121,6 +121,27 @@ namespace BL.Services
             await _studentServiceDAL.AddRegistrationToStudent(registration);
             return _mapper.Map<RegistrationBL>(registration);
         }
+
+
+        public async Task UpdateStudentAges()
+        {
+            var allStudents = await _studentServiceDAL.GetAllStudents();
+
+            var today = DateTime.Today;
+
+            var birthdayStudents = allStudents
+                .Where(s => s.BirthDate.Month == today.Month && s.BirthDate.Day == today.Day)
+                .ToList();
+
+            foreach (var student in birthdayStudents)
+            {
+                student.Age += 1; 
+                await _studentServiceDAL.UpdateStudent(student);
+            }
+
+            await _studentServiceDAL.SaveChanges();
+        }
+
     }
 
 }

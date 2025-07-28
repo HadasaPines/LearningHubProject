@@ -14,11 +14,21 @@ public partial class TeacherAvailability
 
     public int TeacherId { get; set; }
 
+    public int SubjectId { get; set; }
+
     public int WeekDay { get; set; }
+
+    public int? MinAge { get; set; }
+
+    public int? MaxAge { get; set; }
 
     public TimeOnly StartTime { get; set; }
 
     public TimeOnly EndTime { get; set; }
+
+    [ForeignKey("SubjectId")]
+    [InverseProperty("TeacherAvailabilities")]
+    public virtual Subject Subject { get; set; } = null!;
 
     [ForeignKey("TeacherId")]
     [InverseProperty("TeacherAvailabilities")]

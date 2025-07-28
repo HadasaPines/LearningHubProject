@@ -24,7 +24,8 @@ namespace DAL.Services
         }
         public async Task<List<Lesson>> GetAllLessons()
         {
-            return await dbContext.Lessons.ToListAsync();
+            List<Lesson> l = await dbContext.Lessons.ToListAsync();
+            return l;
         }
         public async Task<List<Lesson>> GetAllLessonsIncludeDetails()
         {
