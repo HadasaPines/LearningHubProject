@@ -14,5 +14,7 @@ namespace BL.Api
         Task<StudentBL> UpdateStudent(int studentId, JsonPatchDocument<StudentBL> patchDoc);
         Task<RegistrationBL> AddRegistrationToStudent(int studentId, RegistrationBL registrationBL);
 
+        Task UpdateStudentAges();
+
     }
 }

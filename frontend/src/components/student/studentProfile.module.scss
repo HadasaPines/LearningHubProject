@@ -2,18 +2,15 @@
 
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  z-index: 0;
-  background: $color-background-main;
-  overflow: visible;
   position: relative;
   direction: ltr;
   text-align: center;
+  font-family: $font-main;
+  background: $color-background-main;
+  overflow: hidden;
+  height: 88vh;
+  align-items: center;
 
- 
   &::before {
     content: "";
     position: absolute;
@@ -60,7 +57,7 @@
   }
 
   .circle2 {
-    top: 56%;
+    top: 58%;
     left: 17%;
     width: 100px;
     height: 100px;
@@ -75,10 +72,9 @@
     position: relative;
     z-index: 1;
   }
-}
 
 .card {
-  //  border: 1px solid $highlight-button;
+
   background-color: white;
   width: 650px;
   max-width: 100%;
@@ -89,6 +85,10 @@
   display: flex;
   flex-direction: column;
   text-align: center;
+  margin-left: 20%;
+   margin-top: 10%;
+
+  
 }
 
 .profileSection {
@@ -222,4 +222,5 @@
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
 }

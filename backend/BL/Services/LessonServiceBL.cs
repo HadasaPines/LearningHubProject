@@ -186,18 +186,19 @@ namespace BL.Services
                     var end = availability.EndTime;
                     while (start.Add(lessonLength) <= end)
                     {
-                        var lesson = new Lesson
+                        var lesson = new LessonBL
                         {
                             TeacherId = availability.TeacherId,
-                            SubjectId = 0,
+                            SubjectId = availability.SubjectId,
                             LessonDate = date,
                             StartTime = start,
                             EndTime = start.Add(lessonLength),
                             Gender = availability.Teacher.Gender,
                             Status = "available"
                         };
+                        
 
-                        await _lessonServiceDAL.AddLesson(lesson);
+                        await _lessonServiceDAL.AddLesson(_mapper.Map<Lesson>(lesson));
                         start = start.Add(lessonLength);
                     }
                 }

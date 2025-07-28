@@ -1,0 +1,113 @@
+@use '../styles/abstracts/variables' as *;
+
+.homePage {
+  background-color: $page-bg;
+  color: $color-text-main;
+  font-family: $font-main;
+  scroll-behavior: smooth;
+}
+
+.header {
+  background-color: $color-background-main;
+  color: $color-text-main;
+  padding: 1rem 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftMenu {
+  display: flex;
+  gap: 1.5rem;
+
+  a {
+    color: $color-text-main;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+
+    &:hover {
+      color: $highlight-button;
+    }
+  }
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+
+  .accountButton {
+    all: unset; // מנקה סטיילים ברירת מחדל של כפתור
+    background-color: $header-button;
+    color: $header-text;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 2rem;
+
+    &:hover {
+      background-color: $color-button-hover;
+    }
+  }
+}
+
+.mainContent {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.heroImage {
+  width: 100%;
+  height: 95vh;
+
+  background: url("../images/homeImage.jpg") center center / cover no-repeat;
+  
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0;
+
+  section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-margin-top: 100px;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .leftMenu,
+  .rightMenu {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .rightMenu .accountButton {
+    margin-right: 0;
+    align-self: flex-end;
+  }
+}

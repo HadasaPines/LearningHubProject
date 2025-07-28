@@ -30,6 +30,9 @@ public partial class User
     [StringLength(10)]
     public string Role { get; set; } = null!;
 
+    [StringLength(255)]
+    public string? ProfileImageUrl { get; set; }
+
     [InverseProperty("User")]
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 

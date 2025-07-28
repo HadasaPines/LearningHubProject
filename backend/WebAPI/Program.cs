@@ -36,7 +36,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<LearningHubDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// ??????? DAL
+
 builder.Services.AddScoped<IUserServiceDAL, UserServiceDAL>();
 builder.Services.AddScoped<ISubjectServiceDAL, SubjectServiceDAL>();
 builder.Services.AddScoped<IStudentServiceDAL, StudentServiceDAL>();
@@ -48,6 +48,8 @@ builder.Services.AddScoped<IRegistrationServiceDAL, RegistrationServiceDAL>();
 builder.Services.AddScoped<ISubscriptionServiceDAL, SubscriptionServiceDAL>();
 builder.Services.AddScoped<IStudentSubscriptionServiceDAL, StudentSubscriptionServiceDAL>();
 builder.Services.AddScoped<IPaymentServiceDAL, PaymentServiceDAL>();
+builder.Services.AddScoped<ITeacherAvailabilityServiceDAL, TeacherAvailabilityServiceDAL>();
+
 
 builder.Services.AddScoped<IUserServiceBL, UserServiceBL>();
 builder.Services.AddScoped<IStudentServiceBL, StudentServiceBL>();
@@ -59,6 +61,14 @@ builder.Services.AddScoped<IRegistrationServiceBL, RegistrationServiceBL>();
 builder.Services.AddScoped<ISubscriptionServiceBL, SubscriptionServiceBL>();
 builder.Services.AddScoped<IStudentSubscriptionServiceBL, StudentSubscriptionServiceBL>();
 builder.Services.AddScoped<IPaymentServiceBL, PaymentServiceBL>();
+builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilityServiceBL>();
+
+builder.Services.AddHostedService<MonthlyTaskServiceBL>();
+builder.Services.AddHostedService<PastLessonUpdaterBL>();
+builder.Services.AddHostedService<StudentBirthdayUpdaterBL>();
+
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
