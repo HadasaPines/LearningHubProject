@@ -5,12 +5,14 @@
   gap: 1rem;             
   padding: 1rem;         
    flex-wrap: nowrap;
+   margin-top: -20%;
+   
   
 }
 
 .sidebar {
   width: 17%; 
-  height: 90%;         
+        
   background: $color-background-accent;
   color: $color-background-main;
   padding: 1rem 1.5rem;   
@@ -108,7 +110,7 @@
   }
 
   .sidebar {
-    width: 100%;
+    width: 80%;
     padding: 1rem;
     max-height: none;
   }

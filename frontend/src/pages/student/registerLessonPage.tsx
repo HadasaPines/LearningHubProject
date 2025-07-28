@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import type { Lesson } from "../../models/lessonModel";
 import type { LessonDetails } from "../../models/lessonDetailsModel";
@@ -8,6 +5,7 @@ import type { Subject } from "../../models/subjectModel";
 import type { StudentDetails, User } from "../../models/userModel";
 import styles from "./RegisterLessonForm.module.scss";
 import Toast from "../../components/toast";
+import StudentHeader from "../../components/student/studentHeader";
 import {
   updateLessonsUsedForActiveStudentSubscription,
   getAllTeachers,
@@ -36,10 +34,11 @@ const RegisterLessonForm: React.FC = () => {
   if (userData.role !== "Student") {
     return <div>Access denied. Only students can register for lessons.</div>;
   }
-  if (userData.student === undefined) {
+  if (!userData.student) {
     return <div>User is not defined as a student</div>;
   }
   const student: StudentDetails = userData.student;
+
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [formData, setFormData] = useState<LessonDetails>({
     teacherId: undefined,
@@ -49,9 +48,9 @@ const RegisterLessonForm: React.FC = () => {
     specificDate: "",
     dateFrom: "",
     dateTo: "",
-    age: student?.age ?? 0,
+    age: student.age ?? 0,
     status: "",
-    gender: student?.gender??"",
+    gender: student.gender ?? "",
   });
 
   useEffect(() => {
@@ -94,11 +93,10 @@ const RegisterLessonForm: React.FC = () => {
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
-
     try {
-      setSuccessMessage(" successfully!");
+      setSuccessMessage("Payment completed successfully!");
     } catch (err) {
-      setErrorMessages("Error" + parseApiError(err));
+      setErrorMessages("Error: " + parseApiError(err));
     }
   };
 
@@ -125,9 +123,7 @@ const RegisterLessonForm: React.FC = () => {
     try {
       await updateLessonsUsedForActiveStudentSubscription(userData.userId);
       await addRegistration(registration);
-      setSuccessMessage(
-        "Successfully registered! Subscription usage updated."
-      );
+      setSuccessMessage("Successfully registered! Subscription usage updated.");
       setErrorMessages(null);
       setSubscriptionError(false);
 
@@ -137,9 +133,7 @@ const RegisterLessonForm: React.FC = () => {
       const err = parseApiError(error);
 
       if (error?.response?.status === 404) {
-        setErrorMessages(
-          "No active subscription found"
-        );
+        setErrorMessages("No active subscription found");
         setSubscriptionError(true);
       } else {
         setErrorMessages("Error registering for lesson: " + err);
@@ -152,28 +146,32 @@ const RegisterLessonForm: React.FC = () => {
 
   return (
     <>
+      <StudentHeader />
+
       {errorMessages && (
         <Toast type="error" message={errorMessages}>
           {subscriptionError && (
             <>
-              <button className={styles.navigateSubscripation}
+              <button
+                className={styles.navigateSubscripation}
                 onClick={() => navigate("/student/buySubscriptions")}
               >
                 Buy Subscription
               </button>
-              <button className={styles.navigatePayment}
+              <button
+                className={styles.navigatePayment}
                 onClick={() => setPaymentOpen(true)}
               >
-                Payment for single lesson
+                Pay for Single Lesson
               </button>
             </>
           )}
-
         </Toast>
       )}
+
       {paymentOpen && (
         <PaymentOverlay
-          userId={student.studentId ? student.studentId : 0}
+          userId={student.studentId ?? 0}
           open={paymentOpen}
           onClose={() => setPaymentOpen(false)}
           amount={90}
@@ -183,7 +181,7 @@ const RegisterLessonForm: React.FC = () => {
 
       {successMessage && <Toast type="success" message={successMessage} />}
 
-      <div className={styles.container}>
+      <div className={styles.container} style={{ marginTop: "5rem" }}>
         <aside className={styles.sidebar}>
           <h2>Filter Lessons</h2>
           <form className={styles.formContainer}>

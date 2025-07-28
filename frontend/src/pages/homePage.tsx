@@ -66,9 +66,11 @@ const handleAccountClick = () => {
       </header>
 
       <main className={styles.mainContent}>
-        <section id="hero" className={styles.heroImage}></section>
+       
+       
 
         <div className={styles.overlay}>
+           <section id="hero" className={styles.heroImage}></section>
           <section id="testimonials">
             <TestimonialsSection />
           </section>

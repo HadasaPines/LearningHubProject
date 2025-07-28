@@ -9,7 +9,7 @@ import ManageTeachers from "./components/admin/manageTeachers";
 import ManageLessons from "./components/admin/manageLessons";
 import ManageSubscriptions from "./components/admin/manageSubscriptions";
 import AuthPage from "./pages/authPage";
-import StudentSubscriptions from "./components/student/StudentSubscriptions"
+
 
 import StudentHomePage from "./pages/studentHomePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage";

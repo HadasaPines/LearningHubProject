@@ -12,8 +12,8 @@ import {
 } from "../../services/api";
 import PaymentOverlay from "../paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
-
-import Toast from "../../components/toast"; 
+import Toast from "../../components/toast";
+import StudentHeader from "../../components/student/studentHeader"
 
 const BuyStudentSubscriptions: React.FC = () => {
   const user = localStorage.getItem("user");
@@ -98,52 +98,43 @@ const BuyStudentSubscriptions: React.FC = () => {
   };
 
   return (
-    <> 
-     {error && <Toast type="error" message={error} />}
+    <>
+      <StudentHeader /> {/* ✅ זה כל מה שצריך */}
+      {error && <Toast type="error" message={error} />}
       {success && <Toast type="success" message={success} />}
-    <div className={styles.container}>
-      <div className={styles.circle2}></div>
-      <div className={styles.circle3}></div>
 
+      <div className={styles.container} style={{ marginTop: "5rem" }}>
+        <div className={styles.circle2}></div>
+        <div className={styles.circle3}></div>
 
-    
+        <h3 className={styles.title}>Available Subscriptions</h3>
+        <div className={styles.subscriptionsList}>
+          {availableSubscriptions.map((sub) => (
+            <div key={sub.subscriptionId} className={styles.card}>
+              {sub.name.toLowerCase().includes("premium") && <div className={styles.icon}><FaGlobe /></div>}
+              {sub.name.toLowerCase().includes("focus") && <div className={styles.icon}><FaFileAlt /></div>}
+              {sub.name.toLowerCase().includes("smart") && <div className={styles.icon}><FaHeart /></div>}
 
-      <h3 className={styles.title}>Available Subscriptions</h3>
-      <div className={styles.subscriptionsList}>
-        {availableSubscriptions.map((sub) => (
-          <div key={sub.subscriptionId} className={styles.card}>
-            {sub.name.toLowerCase().includes("premium") && (
-              <div className={styles.icon}><FaGlobe /></div>
-            )}
-            {sub.name.toLowerCase().includes("focus") && (
-              <div className={styles.icon}><FaFileAlt /></div>
-            )}
-            {sub.name.toLowerCase().includes("smart") && (
-              <div className={styles.icon}><FaHeart /></div>
-            )}
+              <h4>{sub.name}</h4>
+              <div className={styles.price}>₪ {sub.price}</div>
+              <div className={styles.description}>{sub.description}</div>
+              <div className={styles.features}>
+                {sub.lessonCount && <p><strong>Total Lessons:</strong> {sub.lessonCount}</p>}
+              </div>
 
-            <h4>{sub.name}</h4>
-            <div className={styles.price}>₪ {sub.price}</div>
-            <div className={styles.description}>{sub.description}</div>
-            <div className={styles.features}>
-              {sub.lessonCount && <p><strong> Total Lessons:</strong> {sub.lessonCount}</p>}
+              <button className={styles.buyBtn} onClick={() => handleBuy(sub)}>Select Plan</button>
             </div>
+          ))}
+        </div>
 
-            <button className={styles.buyBtn} onClick={() => handleBuy(sub)}>
-              Select Plan
-            </button>
-          </div>
-        ))}
+        <PaymentOverlay
+          userId={parsedUser.userId}
+          open={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          amount={selectedSubscription?.price || 0}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
       </div>
-
-      <PaymentOverlay
-        userId={parsedUser.userId}
-        open={paymentOpen}
-        onClose={() => setPaymentOpen(false)}
-        amount={selectedSubscription?.price || 0}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
-    </div>
     </>
   );
 };

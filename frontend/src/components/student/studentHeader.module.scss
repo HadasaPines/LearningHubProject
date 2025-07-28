@@ -1,0 +1,139 @@
+@use '../../styles/abstracts/variables' as *;
+
+.header {
+  background-color: $color-background-main;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leftNav {
+  display: flex;
+  gap: 1rem;
+
+  a {
+    color: $color-text-main;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      color: $highlight-button;
+    }
+  }
+}
+
+.profileIcon {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: $color-text-main;
+  margin-right: 50px;
+}
+
+.profileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 260px;
+  background: linear-gradient(145deg, $color-background-main, lighten($color-background-main, 8%));
+  padding: 2rem 1.2rem;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1100;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  animation: slideIn 0.3s ease forwards;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 0.8rem;
+  width: 100%;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.2s;
+
+  &:hover {
+    background-color: $color-text-main;
+    span {
+      color: $color-background-main;
+    }
+    .icon {
+      color: $color-background-main;
+    }
+    transform: scale(1.02);
+  }
+
+  span {
+    flex: 1;
+    color: $color-text-main;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    color: $color-text-main;
+  }
+}
+
+.logout {
+  background-color:  $color-text-main;
+  margin-top: 110%;
+  color: $color-background-main;
+
+  .icon {
+    color: $color-background-main;
+  }
+  span {
+    flex: 1;
+    color: $color-background-main;
+  }
+
+  &:hover {
+    background-color:  $color-background-main;
+    border: 2px solid $color-text-main;
+
+    span {
+      color: $color-text-main;
+    }
+
+    .icon {
+      color: $color-text-main;
+    }
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: $color-background-accent;
+
+  &:hover {
+    color: $color-border;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}

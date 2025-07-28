@@ -37,35 +37,11 @@
     z-index: 0;
   }
 
-  .circle1,
-  .circle2 {
-    position: absolute;
-    border-radius: 50%;
-    z-index: 0;
-    pointer-events: none;
-  }
 
-  .circle1 {
-    top: 70%;
-    left: 15%;
-    width: 200px;
-    height: 200px;
-    background: $color-border;
-    opacity: 0.12;
-  }
-
-  .circle2 {
-    top: -8%;
-    right: 17%;
-    width: 150px;
-    height: 150px;
-    background: lighten($color-border, 5%);
-    opacity: 0.18;
-  }
 
   .form-wrapper {
-    width: 900px;
-    height: 600px;
+    width: 800px;
+    height: 500px;
     position: relative;
     display: flex;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);

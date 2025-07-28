@@ -1,5 +1,10 @@
 @use '../styles/abstracts/variables' as *;
 
+html {
+  /* מוודא שהגלילה ל-anchor לא תכסה את הניווט הקבוע */
+  scroll-padding-top: 80px; /* התאמה לגובה הניווט */
+}
+
 .homePage {
   background-color: $page-bg;
   color: $color-text-main;
@@ -45,7 +50,7 @@
   align-items: center;
 
   .accountButton {
-    all: unset; // מנקה סטיילים ברירת מחדל של כפתור
+    all: unset; 
     background-color: $header-button;
     color: $header-text;
     padding: 0.5rem 1rem;
@@ -62,17 +67,19 @@
 }
 
 .mainContent {
-  margin-top: 80px;
+  margin-top: 80px; 
   display: flex;
   flex-direction: column;
 }
 
 .heroImage {
   width: 100%;
-  height: 95vh;
+  height: 85vh;
 
   background: url("../images/homeImage.jpg") center center / cover no-repeat;
+
   
+  scroll-margin-top: 80px;
 }
 
 .overlay {
@@ -87,7 +94,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    scroll-margin-top: 100px;
+
+  
+    scroll-margin-top: 80px;
+
     padding: 2rem;
     box-sizing: border-box;
   }

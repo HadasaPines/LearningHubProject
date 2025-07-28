@@ -59,7 +59,7 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className={styles.testimonialsSection}>
+    <section id="testimonials" className={styles.testimonialsSection}>
       <h2 className={styles.title}>What Our Users Say</h2>
       <div className={styles.testimonialsLayout}>
         <form onSubmit={handleSubmit} className={styles.form}>
