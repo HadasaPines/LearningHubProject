@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
-  addLesson,
   getAllTeachers,
   getAllSubjects,
   getAllLessons,
-  updateLesson,
   deleteLesson,
   getStudentToLeeson,
   deleteRegistrationByLessonId,
@@ -13,36 +11,32 @@ import type { Lesson } from "../../models/lessonModel";
 import type { User } from "../../models/userModel";
 import type { Subject } from "../../models/subjectModel";
 import { parseApiError } from "../../utils/apiErrorParser";
-
+import Toast from "../../components/toast";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import styles from "./manageLessons.module.scss";
 
 const ManageLessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [newLesson, setNewLesson] = useState<Omit<Lesson, "lessonId">>({
-
-    teacherId: 0,
-    teacherName: "",
-    subjectId: 0,
-    lessonDate: "",
-    startTime: "",
-    endTime: "",
-    minAge: 0,
-    maxAge: 0,
-    gender: "M",
-    status: "Available",
-  });
-  const [editingLessonId, setEditingLessonId] = useState<number | null>(null);
-  const [editLesson, setEditLesson] = useState<Partial<Lesson>>({});
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [filterTeacherId, setFilterTeacherId] = useState<number | null>(null);
+  const [filterDate, setFilterDate] = useState<string>("");
+  const [selectedLessons, setSelectedLessons] = useState<number[]>([]);
+  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [expandedLessonId, setExpandedLessonId] = useState<number | null>(null);
 
   const showMessage = (msg: string, type: "success" | "error") => {
-    type === "success" ? setSuccessMessage(msg) : setErrorMessage(msg);
-    setTimeout(() => {
-      setSuccessMessage(null);
-      setErrorMessage(null);
-    }, 3000);
+    setToast({ message: msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const refreshLessons = async () => {
+    try {
+      const res = await getAllLessons();
+      setLessons(res.data);
+    } catch (error) {
+      showMessage(parseApiError(error), "error");
+    }
   };
 
   useEffect(() => {
@@ -63,271 +57,169 @@ const ManageLessons = () => {
     fetchData();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    isEdit = false
-  ) => {
-    const { name, value } = e.target;
-    if (name == "teacherId") {
-      const selectedTeacher = teachers.find((teacher) => teacher.userId === Number(value));
-      newLesson.teacherName = selectedTeacher?.firstName + " " + selectedTeacher?.lastName || "";
-      editLesson.teacherName = selectedTeacher?.firstName + " " + selectedTeacher?.lastName || "";
-      newLesson.gender = selectedTeacher?.teacher?.gender || "M";
-      editLesson.gender = selectedTeacher?.teacher?.gender || "M";
-
-    }
-    const parsedValue = ["teacherId", "subjectId", "minAge", "maxAge"].includes(name)
-      ? parseInt(value)
-      : value;
-
-    if (isEdit) {
-      setEditLesson((prev) => ({ ...prev, [name]: parsedValue }));
-    } else {
-      setNewLesson((prev) => ({ ...prev, [name]: parsedValue }));
-    }
+  const toggleSelectLesson = (lessonId: number) => {
+    setSelectedLessons((prev) =>
+      prev.includes(lessonId)
+        ? prev.filter((id) => id !== lessonId)
+        : [...prev, lessonId]
+    );
   };
 
-  const handleAdd = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await addLesson(newLesson);
-      showMessage("Lesson added successfully", "success");
-      setNewLesson({
-        teacherId: 0,
-        teacherName: "",
-        subjectId: 0,
-        lessonDate: "",
-        startTime: "",
-        endTime: "",
-        minAge: 0,
-        maxAge: 0,
-        gender: "M",
-        status: "Available",
-      });
-      const updated = await getAllLessons();
-      setLessons(updated.data);
-    } catch (error) {
-      showMessage("Error adding lesson: " + parseApiError(error), "error");
-    }
-  };
-
-  const handleEditClick = (lesson: Lesson) => {
-    setEditingLessonId(lesson.lessonId);
-    setEditLesson({ ...lesson });
-  };
-
-  const handleDeleteLesson = async (lessonId: number) => {
-    if (window.confirm("Are you sure you want to delete this lesson?")) {
+  const handleBulkDelete = async () => {
+    if (
+      selectedLessons.length &&
+      window.confirm("Are you sure you want to delete the selected lessons?")
+    ) {
       try {
-        await deleteLesson(lessonId);
-        setSuccessMessage("Lesson deleted successfully");
-        const updatedLessons = await getAllLessons();
-        setLessons(updatedLessons.data);
+        for (const lessonId of selectedLessons) {
+          await handleDeleteLesson(lessonId, false);
+        }
+        await refreshLessons();
+        setSelectedLessons([]);
+        showMessage("Selected lessons deleted successfully", "success");
       } catch (error) {
-        setErrorMessage("Error deleting lesson: " + parseApiError(error));
+        showMessage("Error deleting selected lessons: " + parseApiError(error), "error");
       }
     }
-  }
+  };
 
-  const handleDeleteLessonWithStudent = async (lessonId: number) => {
-    const response = await getStudentToLeeson(lessonId);
-    const student: User = response.data;
-    if (student) {
-      const massage = `${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
-      if (window.confirm("Note: This lesson has a registered student. Are you sure you want to delete the lesson? " + massage)) {
-        try {
-          await deleteRegistrationByLessonId(lessonId);
-          await deleteLesson(lessonId);
-          setSuccessMessage("Lesson deleted successfully");
-          const updatedLessons = await getAllLessons();
-          setLessons(updatedLessons.data);
-        } catch (error) {
-          setErrorMessage("Error deleting lesson: " + parseApiError(error));
+  const handleDeleteLesson = async (lessonId: number, showConfirm = true) => {
+    try {
+      const response = await getStudentToLeeson(lessonId);
+      const student: User = response.data;
+
+      if (student) {
+        const message = `${student.firstName} ${student.lastName} ${student.phone} ${student.email}`;
+        if (showConfirm) {
+          const confirmDelete = window.confirm(
+            `Note: This lesson has a registered student. Are you sure you want to delete the lesson?\n${message}`
+          );
+          if (!confirmDelete) return;
+        }
+        await deleteRegistrationByLessonId(lessonId);
+      } else {
+        if (showConfirm) {
+          const confirmDelete = window.confirm("Are you sure you want to delete this lesson?");
+          if (!confirmDelete) return;
         }
       }
-    }
-  }
 
-  const formatDateToDateOnly = (dateString: any) => {
-    const date = new Date(dateString);
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-  };
-
-  const formatTimeToTimeOnly = (timeString: any) => {
-    const [hours, minutes] = timeString.split(":");
-    return `${hours}:${minutes}`;
-  };
-
-
-  const handleSaveEdit = async () => {
-    if (!editingLessonId) return;
-
-
-    try {
-      const lessonPatch = [
-        { op: "replace", path: "/teacherId", value: editLesson.teacherId },
-        { op: "replace", path: "/subjectId", value: editLesson.subjectId },
-        { op: "replace", path: "/gender", value: editLesson.gender },
-        { op: "replace", path: "/lessonDate", value: formatDateToDateOnly(editLesson.lessonDate) },
-        { op: "replace", path: "/startTime", value: formatTimeToTimeOnly(editLesson.startTime) },
-        { op: "replace", path: "/endTime", value: formatTimeToTimeOnly(editLesson.endTime) },
-        { op: "replace", path: "/minAge", value: editLesson.minAge },
-        { op: "replace", path: "/maxAge", value: editLesson.maxAge },
-      ];
-
-      await updateLesson(editingLessonId, lessonPatch);
-      setSuccessMessage("Lesson updated successfully");
-
-      const updated = await getAllLessons();
-      setLessons(updated.data);
-
-      setEditingLessonId(null);
-      setEditLesson({});
+      await deleteLesson(lessonId);
+      showMessage("Lesson deleted successfully", "success");
+      const updatedLessons = await getAllLessons();
+      setLessons(updatedLessons.data);
     } catch (error) {
-      setErrorMessage("Error updating lesson: " + parseApiError(error));
+      showMessage("Error deleting lesson: " + parseApiError(error), "error");
     }
   };
 
+  const filteredLessons = lessons.filter((lesson) => {
+    const matchTeacher = !filterTeacherId || lesson.teacherId === filterTeacherId;
+    const matchDate = !filterDate || lesson.lessonDate === filterDate;
+    return matchTeacher && matchDate;
+  });
 
 
   return (
-    <div>
-      <h2>Manage Lessons</h2>
+    <div className={styles.container}>
+      {toast && <Toast type={toast.type} message={toast.message} />}
+      <h2 className={styles.title}>Manage Lessons</h2>
 
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-      {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
-
-      <form onSubmit={handleAdd}>
-        <h3>Add New Lesson</h3>
-        <select name="teacherId" value={newLesson.teacherId} onChange={handleChange}>
-          <option value="">Select Teacher</option>
+      <div className={styles.filters}>
+        <select
+          value={filterTeacherId ?? ""}
+          onChange={(e) => setFilterTeacherId(Number(e.target.value) || null)}
+        >
+          <option value="">All Teachers</option>
           {teachers.map((t) => (
             <option key={t.userId} value={t.userId}>
               {t.firstName} {t.lastName}
             </option>
           ))}
         </select>
-        <select name="subjectId" value={newLesson.subjectId} onChange={handleChange}>
-          <option value="">Select Subject</option>
-          {subjects.map((s) => (
-            <option key={s.subjectId} value={s.subjectId}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-        <input name="lessonDate" type="date" value={newLesson.lessonDate} onChange={handleChange} />
-        <input name="startTime" type="time" value={newLesson.startTime} onChange={handleChange} />
-        <input name="endTime" type="time" value={newLesson.endTime} onChange={handleChange} />
-        <input name="minAge" type="number" placeholder="Min Age" value={newLesson.minAge} onChange={handleChange} />
-        <input name="maxAge" type="number" placeholder="Max Age" value={newLesson.maxAge} onChange={handleChange} />
-        <button type="submit">Add Lesson</button>
-      </form>
 
-      <hr />
-      <h3>Lesson List</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Teacher</th>
-            <th>Subject</th>
-            <th>Age Range</th>
-            <th>Gender</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lessons.map((lesson) =>
-            editingLessonId === lesson.lessonId ? (
-              <tr key={lesson.lessonId}>
-                <td>
-                  <input type="date" name="lessonDate" value={editLesson.lessonDate || ""} onChange={(e) => handleChange(e, true)} />
-                </td>
-                <td>
-                  <input type="time" name="startTime" value={editLesson.startTime || ""} onChange={(e) => handleChange(e, true)} />
-                  -
-                  <input type="time" name="endTime" value={editLesson.endTime || ""} onChange={(e) => handleChange(e, true)} />
-                
-                </td>
-               
-                <td>
-                  <select name="teacherId" value={editLesson.teacherId || 0} onChange={(e) => handleChange(e, true)}>
-                    {teachers.map((t) => (
-                      <option key={t.userId} value={t.userId}>
-                        {t.firstName} {t.lastName}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td>
-                  <select name="subjectId" value={editLesson.subjectId || 0} onChange={(e) => handleChange(e, true)}>
-                    {subjects.map((s) => (
-                      <option key={s.subjectId} value={s.subjectId}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td>
-                  <input type="number" name="minAge" value={editLesson.minAge || 0} onChange={(e) => handleChange(e, true)} />
-                  -
-                  <input type="number" name="maxAge" value={editLesson.maxAge || 0} onChange={(e) => handleChange(e, true)} />
-                </td>
-                <td>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+        />
 
-                </td>
-                <td>{lesson.status}</td>
-                <td>
-                  <button onClick={handleSaveEdit}>💾</button>
-                  <button onClick={() => setEditingLessonId(null)}>❌</button>
-                </td>
-              </tr>
-            ) : (
-              <tr key={lesson.lessonId}>
-                <td>{lesson.lessonDate}</td>
-                <td>
-                  {lesson.startTime} - {lesson.endTime}
-                </td>
-                <td>{teachers.find((t) => t.userId === lesson.teacherId)?.firstName}{teachers.find((t) => t.userId === lesson.teacherId)?.lastName}</td>
-                <td>{subjects.find((s) => s.subjectId === lesson.subjectId)?.name}</td>
-                <td>
-                  {lesson.minAge} - {lesson.maxAge}
-                </td>
-                <td>{lesson.gender === "M" ? "Male" : "Female"}</td>
-                <td>{lesson.status}</td>
-                <td>
+        <button
+          onClick={handleBulkDelete}
+          disabled={!selectedLessons.length}
+          className={styles.addBtn}
+        >
+          Delete Selected
+        </button>
+      </div>
+
+      {filteredLessons.length === 0 ? (
+        <p>No lessons found.</p>
+      ) : (
+        <div className={styles.cardGrid}>
+          {filteredLessons.map((lesson) => {
+            const teacher = teachers.find((t) => t.userId === lesson.teacherId);
+            const subject = subjects.find((s) => s.subjectId === lesson.subjectId);
+            const isExpanded = expandedLessonId === lesson.lessonId;
+
+            return (
+              <div
+                key={lesson.lessonId}
+                className={`${styles.card} ${isExpanded ? styles.expanded : ""}`}
+              >
+                <div className={styles.icon}>
+                  <FaChalkboardTeacher />
+                </div >
+                <div className={styles.info}>
+                <p><b>{lesson.lessonDate}</b></p>
+                <p><strong>Subject:</strong> {subject ? subject.name : "-"}</p>
+                <p><strong>Teacher:</strong> {teacher ? `${teacher.firstName} ${teacher.lastName}` : "-"}</p>
+                </div>
+                <div className={styles.content}>
+                  {isExpanded && (
+                    <>
+                      <p><strong>Time:</strong> {lesson.startTime} - {lesson.endTime}</p>
+
+                      <p><strong>Age Range:</strong> {lesson.minAge} - {lesson.maxAge}</p>
+                      <p><strong>Gender:</strong> {lesson.gender === "M" ? "Male" : "Female"}</p>
+                      <p><strong>Status:</strong> {lesson.status}</p>
+                    </>
+                  )}
+                </div>
+
+                <div className={styles.actions}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedLessons.includes(lesson.lessonId)}
+                      onChange={() => toggleSelectLesson(lesson.lessonId)}
+                    />
+                  </label>
+
+
+                  <button onClick={() => handleDeleteLesson(lesson.lessonId)}>
+                    Delete
+                  </button>
                   <button
-                    onClick={() => handleEditClick(lesson)}
-                    disabled={lesson.status !== "Available"}
-                    style={{
-                      cursor: lesson.status === "Available" ? "pointer" : "not-allowed",
-                      border: "none",
-                      padding: "5px 10px",
-                    }}
+                    className={styles.detailsBtn}
+                    onClick={() =>
+                      setExpandedLessonId((prev) =>
+                        prev === lesson.lessonId ? null : lesson.lessonId
+                      )
+                    }
                   >
-                    ✏️
+                    {isExpanded ? "Collapse" : "Details"}
                   </button>
 
-                  <button
-                    onClick={() => lesson.status != "booked" ? handleDeleteLesson(lesson.lessonId) : handleDeleteLessonWithStudent(lesson.lessonId)}
-                    style={{
-                      border: "none",
-                      padding: "5px 10px",
-                    }}
-                  >
-                    🗑️
-                  </button>
-
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
+
 };
 
 export default ManageLessons;

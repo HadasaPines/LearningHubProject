@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/homePage";
+
 import ManageAvailability from "./components/admin/manageAvailability";
 import ManageSubjects from "./components/admin/manageSubjects";
 import ManageStudents from "./components/admin/manageStudents";
@@ -8,6 +9,8 @@ import ManageTeachers from "./components/admin/manageTeachers";
 import ManageLessons from "./components/admin/manageLessons";
 import ManageSubscriptions from "./components/admin/manageSubscriptions";
 import AuthPage from "./pages/authPage";
+import StudentSubscriptions from "./components/student/StudentSubscriptions"
+
 import StudentHomePage from "./pages/studentHomePage";
 import RegisterLessonForm from "./pages/student/registerLessonPage";
 import BuyStudentSubscriptions from "./components/student/buyStudentSubscriptions";

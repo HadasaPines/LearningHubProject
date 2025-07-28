@@ -49,9 +49,9 @@ const RegisterLessonForm: React.FC = () => {
     specificDate: "",
     dateFrom: "",
     dateTo: "",
-    age: student.age,
+    age: student?.age ?? 0,
     status: "",
-    gender: student.gender,
+    gender: student?.gender??"",
   });
 
   useEffect(() => {
