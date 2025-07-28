@@ -1,40 +1,46 @@
 @use '../../styles/abstracts/variables' as *;
 
 .container {
-  position: relative;
-  padding: 40px 20px;
-  direction: ltr;
-  text-align: center;
-  font-family: $font-main;
-  background: $color-background-main;
-  overflow: hidden;
+    position: relative;
+    padding: 40px 20px;
+    direction: ltr;
+    text-align: center;
+    font-family: $font-main;
+    background: $color-background-main;
+    overflow: hidden;
     height: 88vh;
+    max-width: 100vw;
+    justify-content: center;
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.15;
-    z-index: 0;
-  }
 
-  &::before {
-    top: -120px;
-    left: -100px;
-    width: 320px;
-    height: 320px;
-    background: $highlight-button;
-  }
 
-  &::after {
-    bottom: -150px;
-    right: -120px;
-    width: 380px;
-    height: 380px;
-    background: $color-border;
-    opacity: 0.12;
-  }
+    &::before,
+    &::after {
+        content: "";
+        position: fixed;
+        border-radius: 50%;
+        opacity: 0.15;
+        z-index: 0;
+    }
+
+    &::before {
+        top: 12%;
+        left: 3%;
+        transform: translate(-40%, -40%);
+        width: 280px;
+        height: 280px;
+        background: $highlight-button;
+    }
+
+    &::after {
+        bottom: 2%;
+        right: 3%;
+        transform: translate(40%, 40%);
+        width: 280px;
+        height: 280px;
+        background: $color-border;
+        opacity: 0.12;
+    }
 
     >* {
         position: relative;
@@ -251,39 +257,41 @@
                 }
             }
         }
-            .singleInput {
-      flex: 0 0 auto;
-      width: 45%;
-      border: 1px solid $color-border;
-      border-radius: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
+
+        .singleInput {
+            flex: 0 0 auto;
+            width: 45%;
+            border: 1px solid $color-border;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
     }
 }
 
 .twoColumnForm {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  width: 100%;
-
-  input,
-  select,
-  textarea {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
     width: 100%;
-    padding: 0.6rem;
-    border: 1px solid $color-border;
-    border-radius: 0.5rem;
-    background: #f8f8f8;
-    font-family: $font-main;
-    font-size: 15px;
-  }
 
-  textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid $color-border;
+        border-radius: 0.5rem;
+        background: #f8f8f8;
+        font-family: $font-main;
+        font-size: 15px;
+    }
+
+    textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
 }
+
 @keyframes fadeIn {
     from {
         opacity: 0;

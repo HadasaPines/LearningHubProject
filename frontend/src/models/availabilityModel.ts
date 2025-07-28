@@ -1,7 +1,10 @@
 export interface TeacherAvailability {
   availabilityId: number;
   teacherId: number;
-  weekDay: number;      
-  startTime: string;     
-  endTime: string;
+  subjectId: number;
+  weekDay: number;
+  minAge?: number | null;
+  maxAge?: number | null;
+  startTime: string;
+  endTime: string;  
 }
