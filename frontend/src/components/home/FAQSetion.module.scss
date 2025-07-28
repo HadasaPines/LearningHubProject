@@ -1,0 +1,80 @@
+@use '../../styles/abstracts/variables' as *;
+
+.faqSection {
+  background-color: $page-bg;
+  padding: 2rem;
+  font-family: $font-main;
+  color: $page-text;
+  max-width: 2000px;
+  margin-top:-10%;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-top: -15%;
+  font-weight: bold;
+  color: $highlight-text;
+  text-align: center;
+  rotate: (-90deg);
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.faqList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.faqItem {
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+
+.question {
+  width: 100%;
+  padding: 1rem;
+  background-color: $highlight-bg;
+  color: $color-background-main;
+  font-weight: bold;
+  font-size: 1.05rem;
+  text-align: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.arrowOpen {
+  transform: rotate(90deg);
+}
+
+.answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1rem;
+  color: $page-text;
+  background-color: $page-bg;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.answerOpen {
+  padding: 1rem;
+  max-height: 300px;
+}

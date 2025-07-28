@@ -22,6 +22,8 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<Registration> Registrations { get; set; }
 
+    public virtual DbSet<SiteReview> SiteReviews { get; set; }
+
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<StudentSubscription> StudentSubscriptions { get; set; }
@@ -38,7 +40,7 @@ public partial class LearningHubDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Lesson>(entity =>
@@ -78,6 +80,14 @@ public partial class LearningHubDbContext : DbContext
             entity.HasOne(d => d.Student).WithMany(p => p.Registrations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Registrations_Students");
+        });
+
+        modelBuilder.Entity<SiteReview>(entity =>
+        {
+            entity.HasKey(e => e.ReviewId).HasName("PK__SiteRevi__74BC79CEE3C370E5");
+
+            entity.Property(e => e.StudentName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.Text).UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 
         modelBuilder.Entity<Student>(entity =>
@@ -136,7 +146,11 @@ public partial class LearningHubDbContext : DbContext
 
         modelBuilder.Entity<TeacherAvailability>(entity =>
         {
-            entity.HasKey(e => e.AvailabilityId).HasName("PK__TeacherA__DA3979B104A3882A");
+            entity.HasKey(e => e.AvailabilityId).HasName("PK__tmp_ms_x__DA3979B103D84C2B");
+
+            entity.HasOne(d => d.Subject).WithMany(p => p.TeacherAvailabilities)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TeacherAvailability_Subjects");
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.TeacherAvailabilities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -166,6 +180,7 @@ public partial class LearningHubDbContext : DbContext
             entity.Property(e => e.LastName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.PasswordHash).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Phone).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ProfileImageUrl).UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.Role).UseCollation("SQL_Latin1_General_CP1_CI_AS");
         });
 

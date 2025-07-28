@@ -5,12 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BL.Api;
 
-public class PastLessonUpdater : BackgroundService
+public class PastLessonUpdaterBL : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
     private static readonly TimeSpan TargetTime = new TimeSpan(0, 0, 0); // 21:15
 
-    public PastLessonUpdater(IServiceProvider serviceProvider)
+    public PastLessonUpdaterBL(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
@@ -28,11 +28,11 @@ public class PastLessonUpdater : BackgroundService
 
             try
             {
-                await Task.Delay(delay, stoppingToken); // ממתין עד הזמן הרצוי
+                await Task.Delay(delay, stoppingToken); 
             }
             catch (TaskCanceledException)
             {
-                break; // עצירה תקינה אם השירות נסגר
+                break; 
             }
 
             using (var scope = _serviceProvider.CreateScope())

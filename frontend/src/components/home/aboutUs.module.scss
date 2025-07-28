@@ -1,0 +1,68 @@
+@use '../../styles/abstracts/variables' as *;
+.aboutUs {
+  font-family: $font-main;
+  padding: 2rem;
+  background-color: $color-background-main;
+  color: $color-text-main;
+  height: 100vh;
+  margin-top: -10%;
+}
+
+.aboutUsHeader {
+  color: $color-background-main;
+  text-align: center;
+  border-radius: 8px;
+
+  h1 {
+    font-size: 2rem;
+    color: $highlight-text;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $highlight-text;
+  }
+}
+
+.aboutUsSection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-around;
+  margin-top: 0rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: $color-background-main;
+  color: $color-text-main;
+  padding: 2rem;
+  width: 20%;
+  max-height: 10%;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-top: -18%;
+
+  &:hover {
+   transform: translateY(-5px);
+    background-color: $color-background-main;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: $highlight-bg; 
+  }
+}

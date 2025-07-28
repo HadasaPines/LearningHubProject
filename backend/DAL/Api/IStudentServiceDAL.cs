@@ -11,5 +11,7 @@ namespace DAL.Api
         Task<Student> GetStudentById(int studentId);
         Task<Student> GetStudentByName(string firstName, string lastName);
         Task UpdateStudent(Student student);
+
+        Task SaveChanges();
     }
 }
