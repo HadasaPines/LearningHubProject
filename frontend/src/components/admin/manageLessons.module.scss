@@ -10,34 +10,37 @@
   max-height: 88vh;
   height: 88vh;
   overflow-y: auto;
+  overflow-x: hidden;
 
   &::before,
   &::after {
     content: "";
-    position: absolute;
+    position: fixed;
     border-radius: 50%;
     opacity: 0.15;
     z-index: 0;
   }
 
   &::before {
-    top: -120px;
-    left: -100px;
-    width: 320px;
-    height: 320px;
+    top: 12%;
+    left: 3%;
+    transform: translate(-40%, -40%);
+    width: 280px;
+    height: 280px;
     background: $highlight-button;
   }
 
   &::after {
-    bottom: -150px;
-    right: -120px;
-    width: 380px;
-    height: 380px;
+    bottom: 2%;
+    right: 3%;
+    transform: translate(40%, 40%);
+    width: 280px;
+    height: 280px;
     background: $color-border;
     opacity: 0.12;
   }
 
-  > * {
+  >* {
     position: relative;
     z-index: 1;
   }
@@ -45,7 +48,7 @@
 
 .title {
   font-size: 28px;
-//   margin-bottom: 30px;
+  //   margin-bottom: 30px;
   color: $color-text-main;
 }
 
@@ -123,31 +126,33 @@
     height: 320px;
   }
 
-  .icon {
-    font-size:25px;
-    background-color: $color-text-main;
+.icon {
+  font-size: 25px;
+  background-color: $color-text-main;
+  color: white;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0; // ✅ לא מאפשר כיווץ
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto auto auto;
+
+  &::before {
+    font-size: 32px;
+    line-height: 60px;
+    display: block;
+    text-align: center;
+    width: 100%;
     color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto auto auto;
-
-    &::before {
-      font-size: 32px;
-      line-height: 60px;
-      display: block;
-      text-align: center;
-      width: 100%;
-      color: white;
-    }
   }
+}
 
-  h5{
+
+  h5 {
     margin: 0px 0 0px 0;
-    font-size: 15px;
+    font-size: 10px;
     color: $color-text-main;
   }
 
@@ -163,7 +168,7 @@
     padding: 0 8px;
 
     p {
-  margin: 6px 0;
+      margin: 6px 0;
       word-break: break-word;
     }
   }
@@ -214,6 +219,9 @@
       }
     }
   }
+  .info{
+    font-size: 14px;
+  }
 }
 
 .noData {
@@ -221,6 +229,7 @@
   color: $color-background-accent;
   margin-top: 40px;
 }
+
 .card p {
   margin: 6px 0;
 }
