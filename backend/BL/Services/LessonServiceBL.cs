@@ -115,6 +115,7 @@ namespace BL.Services
         public async Task DeleteLesson(int id)
         {
             var existingLesson = await _lessonServiceDAL.GetLessonById(id);
+
             if (existingLesson == null)
             {
                 throw new LessonNotFoundException($"Lesson with ID {id} not found");

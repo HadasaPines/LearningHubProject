@@ -31,7 +31,7 @@ namespace DAL.Services
             return await dbContext.Lessons
                 .Include(l => l.Teacher)
                 .Include(l => l.Registration)
-                .ThenInclude(r => r.Student)
+                .ThenInclude(l => l.Student)
                 .ToListAsync();
         }
 
@@ -53,6 +53,14 @@ namespace DAL.Services
         {
             var lesson = await dbContext.Lessons
                 .FirstOrDefaultAsync(l => l.LessonId == lessonId);
+            if(lesson.Status== "Booked")
+            {
+                lesson.Status = "Cancelled"; 
+
+                dbContext.Entry(lesson).State = EntityState.Modified; 
+                await dbContext.SaveChangesAsync();
+                return; 
+            }
 
             dbContext.Lessons.Remove(lesson);
             await dbContext.SaveChangesAsync();

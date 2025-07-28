@@ -47,7 +47,6 @@ const ManageStudents = () => {
   const [expandedStudentId, setExpandedStudentId] = useState<number | null>(null);
   const [birthDateInputTypeAdd, setBirthDateInputTypeAdd] = useState<"text" | "date">("text");
 
-  // חישוב גיל אוטומטי לפי תאריך לידה
   const calculateAge = (birthDateStr: string): number => {
     if (!birthDateStr) return 0;
     const birthDate = new Date(birthDateStr);
@@ -102,7 +101,6 @@ const ManageStudents = () => {
         [name]: newValue,
       };
 
-      // עדכון גיל אוטומטי כאשר משנים תאריך לידה
       if (name === "birthDate") {
         updatedStudent.age = calculateAge(value);
       }
@@ -173,7 +171,6 @@ const ManageStudents = () => {
         [name]: newValue,
       };
 
-      // עדכון גיל אוטומטי בעריכה לפי שינוי תאריך לידה
       if (name === "birthDate") {
         updatedStudent.age = calculateAge(value);
       }

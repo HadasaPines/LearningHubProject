@@ -1,0 +1,226 @@
+@use '../../styles/abstracts/variables' as *;
+
+.container {
+  position: relative;
+  padding: 40px 20px;
+  direction: ltr;
+  text-align: center;
+  font-family: $font-main;
+  background: $color-background-main;
+  max-height: 88vh;
+  height: 88vh;
+  overflow-y: auto;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  &::before {
+    top: -120px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: $highlight-button;
+  }
+
+  &::after {
+    bottom: -150px;
+    right: -120px;
+    width: 380px;
+    height: 380px;
+    background: $color-border;
+    opacity: 0.12;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.title {
+  font-size: 28px;
+//   margin-bottom: 30px;
+  color: $color-text-main;
+}
+
+.filters {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  select,
+  input[type="date"] {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid $color-border;
+    min-width: 160px;
+    font-family: $font-main;
+    font-size: 1rem;
+  }
+}
+
+.addBtn {
+  background: $page-button-primary;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  font-weight: bold;
+  transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 140px;
+
+  &:hover:not(:disabled) {
+    background: $page-button-secondary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+  align-items: flex-start;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  border: 1px solid $color-text-main;
+  width: 180px;
+  height: 130px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: height 0.3s ease;
+  cursor: default;
+  position: relative;
+  padding: 12px;
+  padding-bottom: 60px;
+
+  &.expanded {
+    height: 320px;
+  }
+
+  .icon {
+    font-size:25px;
+    background-color: $color-text-main;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto auto auto;
+
+    &::before {
+      font-size: 32px;
+      line-height: 60px;
+      display: block;
+      text-align: center;
+      width: 100%;
+      color: white;
+    }
+  }
+
+  h5{
+    margin: 0px 0 0px 0;
+    font-size: 15px;
+    color: $color-text-main;
+  }
+
+
+  .content {
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: $color-background-accent;
+    text-align: left;
+    padding: 0 8px;
+
+    p {
+  margin: 6px 0;
+      word-break: break-word;
+    }
+  }
+
+  &.expanded .content {
+    opacity: 1;
+    max-height: 160px;
+  }
+
+  .actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: $color-text-main;
+    border-radius: 0 0 18px 18px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    padding: 3px 0;
+
+    label {
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+
+      input {
+        margin-right: 6px;
+        cursor: pointer;
+      }
+    }
+
+    button {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 0;
+      border-radius: 0;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+}
+
+.noData {
+  font-style: italic;
+  color: $color-background-accent;
+  margin-top: 40px;
+}
+.card p {
+  margin: 6px 0;
+}
