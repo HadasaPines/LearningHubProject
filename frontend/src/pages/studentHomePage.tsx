@@ -6,7 +6,7 @@ import {FaUserCircle, FaUser, FaChalkboardTeacher, FaWallet, FaClipboardList, Fa
 
 import StudentProfile from "../components/student/studentProfile";
 import StudentLessonHistory from "../components/student/lessonsHistory";
-import StudentSubscriptions from "../components/student/studentSubscriptions";
+import StudentSubscriptions from "../components/student/StudentSubscriptions";
 import StudentPayments from "../components/student/paymentsHistory";
 import DashboardComponent from "../components/student/studentDashboard";
 

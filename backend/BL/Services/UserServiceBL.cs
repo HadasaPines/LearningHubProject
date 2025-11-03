@@ -39,6 +39,11 @@ namespace BL.Services
         public async Task<List<UserIncludeRoleBL>> GetAllTeachers()
         {
             var users = await _userService.GetAllTeachers();
+            if (users == null || !users.Any())
+            {
+                return new List<UserIncludeRoleBL>();
+            }
+
             return _mapper.Map<List<UserIncludeRoleBL>>(users);
         }
 
@@ -170,7 +175,7 @@ namespace BL.Services
 
         }
 
-        public async Task<UserWithoutPassBL?> AddUser(UserBL userBL)
+        public async Task<UserIncludeRoleBL?> AddUser(UserBL userBL)
 
         {
             if (userBL == null)
@@ -189,7 +194,7 @@ namespace BL.Services
             user.PasswordHash = passwordHash;
             await _userService.AddUser(user);
 
-            return _mapper.Map<UserWithoutPassBL?>(user);
+            return _mapper.Map<UserIncludeRoleBL?>(user);
         }
 
         public async Task DeleteUser(int userId)

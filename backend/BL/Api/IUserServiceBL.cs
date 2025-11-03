@@ -5,7 +5,7 @@ namespace BL.Api
 {
     public interface IUserServiceBL
     {
-        Task<UserWithoutPassBL?> AddUser(UserBL userBL);
+        Task<UserIncludeRoleBL?> AddUser(UserBL userBL);
         Task DeleteUser(int userId);
         Task<List<UserIncludeRoleBL>> GetAllUsers();
 

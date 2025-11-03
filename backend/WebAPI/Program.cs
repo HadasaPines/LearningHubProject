@@ -63,7 +63,7 @@ builder.Services.AddScoped<IStudentSubscriptionServiceBL, StudentSubscriptionSer
 builder.Services.AddScoped<IPaymentServiceBL, PaymentServiceBL>();
 builder.Services.AddScoped<ITeacherAvailabilityServiceBL, TeacherAvailabilityServiceBL>();
 
-builder.Services.AddHostedService<MonthlyTaskServiceBL>();
+//builder.Services.AddHostedService<MonthlyTaskServiceBL>();
 builder.Services.AddHostedService<PastLessonUpdaterBL>();
 builder.Services.AddHostedService<StudentBirthdayUpdaterBL>();
 

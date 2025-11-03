@@ -99,7 +99,7 @@ const BuyStudentSubscriptions: React.FC = () => {
 
   return (
     <>
-      <StudentHeader /> {/* ✅ זה כל מה שצריך */}
+      <StudentHeader /> 
       {error && <Toast type="error" message={error} />}
       {success && <Toast type="success" message={success} />}
 
@@ -112,8 +112,8 @@ const BuyStudentSubscriptions: React.FC = () => {
           {availableSubscriptions.map((sub) => (
             <div key={sub.subscriptionId} className={styles.card}>
               {sub.name.toLowerCase().includes("premium") && <div className={styles.icon}><FaGlobe /></div>}
-              {sub.name.toLowerCase().includes("focus") && <div className={styles.icon}><FaFileAlt /></div>}
-              {sub.name.toLowerCase().includes("smart") && <div className={styles.icon}><FaHeart /></div>}
+              {sub.name.toLowerCase().includes("basic") && <div className={styles.icon}><FaFileAlt /></div>}
+              {sub.name.toLowerCase().includes("advance") && <div className={styles.icon}><FaHeart /></div>}
 
               <h4>{sub.name}</h4>
               <div className={styles.price}>₪ {sub.price}</div>

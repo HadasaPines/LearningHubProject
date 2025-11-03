@@ -41,6 +41,10 @@ const handleAccountClick = () => {
   if (userData.role === "Student") {
     navigate("/student/studentHome");
   }
+
+  if (userData.role === "Admin") {
+    navigate("/Admin/adminHome");
+  }
 };
 
 

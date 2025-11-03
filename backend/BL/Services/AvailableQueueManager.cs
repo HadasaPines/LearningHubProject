@@ -66,12 +66,12 @@ namespace BL.service
                             if (subcat == "modern" && title != "Yom HaAtzma'ut")
                                 return false;
 
-                            return true; 
+                            return true;
                         }
                     }
                 }
 
-                return false; 
+                return false;
             }
         }
     }

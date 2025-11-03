@@ -93,6 +93,7 @@ const RegisterLessonForm: React.FC = () => {
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
+    
     try {
       setSuccessMessage("Payment completed successfully!");
     } catch (err) {
@@ -115,6 +116,7 @@ const RegisterLessonForm: React.FC = () => {
   };
 
   const handleSubmit = async (lesson: Lesson) => {
+   
     const registration = {
       studentId: userData.userId,
       lessonId: lesson.lessonId,
@@ -122,7 +124,9 @@ const RegisterLessonForm: React.FC = () => {
 
     try {
       await updateLessonsUsedForActiveStudentSubscription(userData.userId);
+      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
       await addRegistration(registration);
+      console.log("sssssssssssssssssssssssssssssssssssss")
       setSuccessMessage("Successfully registered! Subscription usage updated.");
       setErrorMessages(null);
       setSubscriptionError(false);

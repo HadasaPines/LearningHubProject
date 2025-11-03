@@ -79,11 +79,9 @@
   transition: transform 0.2s ease;
   font-size: 0.85rem;
 
-  /* הרחבת הכרטיס לרוחב מלבני */
-  width: 40%; /* אפשר לשנות ל-35%, 45% לפי טעם */
+  width: 40%; 
   max-width: none;
 
-  transform: rotate(-1deg);
 
   &:hover {
     transform: rotate(0deg) scale(1.03);

@@ -192,9 +192,11 @@ namespace BL.Services
                             SubjectId = availability.SubjectId,
                             LessonDate = date,
                             StartTime = start,
+                           MaxAge=availability.MaxAge,
+                           MinAge=availability.MinAge,
                             EndTime = start.Add(lessonLength),
                             Gender = availability.Teacher.Gender,
-                            Status = "available"
+                            Status = "Available"
                         };
                         
 
@@ -255,13 +257,20 @@ namespace BL.Services
         public async Task<List<LessonBL>> GetLessonsByStudentId(int studentId)
         {
             var registrations = await _registrationServiceDAL.GetRegistrationsToStudent(studentId);
+
+         
             if (registrations == null || !registrations.Any())
             {
-                throw new RegistrationNotFoundException($"No registrations found for student with ID {studentId}");
+                return new List<LessonBL>();
             }
 
-            var lessons = registrations.Select(r => r.Lesson).ToList();
+            var lessons = registrations
+                .Where(r => r.Lesson != null) 
+                .Select(r => r.Lesson)
+                .ToList();
+
             return _mapper.Map<List<LessonBL>>(lessons);
         }
+
     }
 }
