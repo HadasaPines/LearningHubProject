@@ -17,6 +17,7 @@ import { parseApiError } from "../../utils/apiErrorParser";
 import CalendarView from "../../components/calendarView";
 import { useNavigate } from "react-router-dom";
 import PaymentOverlay from "../../components/paymentOverlay";
+import SubscriptionErrorModal from "./subscriptionErrorModal";
 
 const RegisterLessonForm: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ const RegisterLessonForm: React.FC = () => {
   const [subscriptionError, setSubscriptionError] = useState(false);
 
   const user = localStorage.getItem("user");
-  if (!user) return <div>User not logged in</div>;
+  if (!user) {
+    return <div>User not logged in</div>;
+  }
   const userData: User = JSON.parse(user);
   if (userData.role !== "Student") {
     return <div>Access denied. Only students can register for lessons.</div>;
@@ -40,6 +43,7 @@ const RegisterLessonForm: React.FC = () => {
   const student: StudentDetails = userData.student;
 
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null); 
   const [formData, setFormData] = useState<LessonDetails>({
     teacherId: undefined,
     subjectId: undefined,
@@ -68,7 +72,7 @@ const RegisterLessonForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (errorMessages || successMessage) {
+    if ((errorMessages || successMessage)&& !subscriptionError) {
       const timeout = setTimeout(() => {
         setErrorMessages(null);
         setSuccessMessage(null);
@@ -93,11 +97,23 @@ const RegisterLessonForm: React.FC = () => {
 
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
-    
+
     try {
-      setSuccessMessage("Payment completed successfully!");
+      
+      if (selectedLesson) {
+        const registration = {
+          studentId: userData.userId,
+          lessonId: selectedLesson.lessonId,
+        };
+        await addRegistration(registration);
+        setSuccessMessage("Payment completed successfully, You are registered for the lesson.");
+        setErrorMessages(null);
+        
+      } else {
+        setErrorMessages("Error: Lesson not found for registration after payment.");
+      }
     } catch (err) {
-      setErrorMessages("Error: " + parseApiError(err));
+      setErrorMessages("Error registering after payment: " + parseApiError(err));
     }
   };
 
@@ -116,7 +132,6 @@ const RegisterLessonForm: React.FC = () => {
   };
 
   const handleSubmit = async (lesson: Lesson) => {
-   
     const registration = {
       studentId: userData.userId,
       lessonId: lesson.lessonId,
@@ -124,9 +139,8 @@ const RegisterLessonForm: React.FC = () => {
 
     try {
       await updateLessonsUsedForActiveStudentSubscription(userData.userId);
-      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
       await addRegistration(registration);
-      console.log("sssssssssssssssssssssssssssssssssssss")
+
       setSuccessMessage("Successfully registered! Subscription usage updated.");
       setErrorMessages(null);
       setSubscriptionError(false);
@@ -137,8 +151,8 @@ const RegisterLessonForm: React.FC = () => {
       const err = parseApiError(error);
 
       if (error?.response?.status === 404) {
-        setErrorMessages("No active subscription found");
         setSubscriptionError(true);
+        setSelectedLesson(lesson); 
       } else {
         setErrorMessages("Error registering for lesson: " + err);
         setSubscriptionError(false);
@@ -152,7 +166,14 @@ const RegisterLessonForm: React.FC = () => {
     <>
       <StudentHeader />
 
-      {errorMessages && (
+  {subscriptionError && (
+      <SubscriptionErrorModal
+        onClose={() => setSubscriptionError(false)}
+        onSinglePayment={() => setPaymentOpen(true)}
+      />
+    )}
+
+      {errorMessages && !subscriptionError && (
         <Toast type="error" message={errorMessages}>
           {subscriptionError && (
             <>
@@ -177,7 +198,7 @@ const RegisterLessonForm: React.FC = () => {
         <PaymentOverlay
           userId={student.studentId ?? 0}
           open={paymentOpen}
-          onClose={() => setPaymentOpen(false)}
+          onClose={() =>{ setPaymentOpen(false); setSubscriptionError(false)}}
           amount={90}
           onPaymentSuccess={handlePaymentSuccess}
         />
