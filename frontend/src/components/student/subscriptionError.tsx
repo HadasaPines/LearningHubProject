@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./SubscriptionErrorModal.module.scss";
+import styles from "./SubscriptionError.module.scss";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

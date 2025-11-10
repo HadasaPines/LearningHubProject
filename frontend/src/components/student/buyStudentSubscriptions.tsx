@@ -10,7 +10,7 @@ import {
   addStudentSubscription,
   checkAddStudentSubscription,
 } from "../../services/api";
-import PaymentOverlay from "../paymentOverlay";
+import PaymentOverlay from "../../components/student/paymentOverlay";
 import { parseApiError } from "../../utils/apiErrorParser";
 import Toast from "../../components/toast";
 import StudentHeader from "../../components/student/studentHeader"
