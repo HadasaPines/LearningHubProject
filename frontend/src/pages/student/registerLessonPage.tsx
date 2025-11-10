@@ -14,9 +14,11 @@ import {
   addRegistration,
 } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
-import CalendarView from "../../components/calendarView";
+import CalendarView from "../../components/student/calendarView";
 import { useNavigate } from "react-router-dom";
-import PaymentOverlay from "../../components/paymentOverlay";
+import PaymentOverlay from "../../components/student/paymentOverlay";
+import SubscriptionErrorModal from "../../components/student/subscriptionError";
+import ConfirmSubscriptionModal from "../../components/student/confirmSubscription"; 
 
 const RegisterLessonForm: React.FC = () => {
   const navigate = useNavigate();
@@ -27,9 +29,12 @@ const RegisterLessonForm: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [subscriptionError, setSubscriptionError] = useState(false);
-
+  const [confirm, setConfirm] = useState(false); 
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null); 
   const user = localStorage.getItem("user");
-  if (!user) return <div>User not logged in</div>;
+  if (!user) {
+    return <div>User not logged in</div>;
+  }
   const userData: User = JSON.parse(user);
   if (userData.role !== "Student") {
     return <div>Access denied. Only students can register for lessons.</div>;
@@ -68,7 +73,7 @@ const RegisterLessonForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (errorMessages || successMessage) {
+    if ((errorMessages || successMessage) && !subscriptionError) {
       const timeout = setTimeout(() => {
         setErrorMessages(null);
         setSuccessMessage(null);
@@ -94,15 +99,23 @@ const RegisterLessonForm: React.FC = () => {
   const handlePaymentSuccess = async () => {
     setPaymentOpen(false);
     try {
-      setSuccessMessage("Payment completed successfully!");
+      if (selectedLesson) {
+        const registration = {
+          studentId: userData.userId,
+          lessonId: selectedLesson.lessonId,
+        };
+        await addRegistration(registration);
+        setSuccessMessage("Payment completed successfully, You are registered for the lesson.");
+        setErrorMessages(null);
+      } else {
+        setErrorMessages("Error: Lesson not found for registration after payment.");
+      }
     } catch (err) {
-      setErrorMessages("Error: " + parseApiError(err));
+      setErrorMessages("Error registering after payment: " + parseApiError(err));
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -114,33 +127,43 @@ const RegisterLessonForm: React.FC = () => {
     }));
   };
 
+ 
   const handleSubmit = async (lesson: Lesson) => {
-    const registration = {
-      studentId: userData.userId,
-      lessonId: lesson.lessonId,
-    };
+    setSelectedLesson(lesson);
+
+    try {
+
+      await updateLessonsUsedForActiveStudentSubscription(userData.userId);
+      setConfirm(true); 
+    } catch (error: any) {
+      const err = parseApiError(error);
+      if (error?.response?.status === 404) {
+        setSubscriptionError(true); 
+      } else {
+        setErrorMessages("Error checking subscription: " + err);
+      }
+    }
+  };
+
+
+  const handleConfirmSubscription = async () => { 
+    setConfirm(false);
+    if (!selectedLesson) return;
 
     try {
       await updateLessonsUsedForActiveStudentSubscription(userData.userId);
-      await addRegistration(registration);
+      await addRegistration({
+        studentId: userData.userId,
+        lessonId: selectedLesson.lessonId,
+      });
+
       setSuccessMessage("Successfully registered! Subscription usage updated.");
       setErrorMessages(null);
       setSubscriptionError(false);
-
       const response = await getLessonsByDetails(formData);
       setLessons(response.data);
-    } catch (error: any) {
-      const err = parseApiError(error);
-
-      if (error?.response?.status === 404) {
-        setErrorMessages("No active subscription found");
-        setSubscriptionError(true);
-      } else {
-        setErrorMessages("Error registering for lesson: " + err);
-        setSubscriptionError(false);
-      }
-
-      setSuccessMessage(null);
+    } catch (error) {
+      setErrorMessages("Error registering for lesson: " + parseApiError(error));
     }
   };
 
@@ -148,7 +171,22 @@ const RegisterLessonForm: React.FC = () => {
     <>
       <StudentHeader />
 
-      {errorMessages && (
+      
+      {confirm && (
+        <ConfirmSubscriptionModal
+          onConfirm={handleConfirmSubscription}
+          onCancel={() => setConfirm(false)}
+        />
+      )}
+
+      {subscriptionError && (
+        <SubscriptionErrorModal
+          onClose={() => setSubscriptionError(false)}
+          onSinglePayment={() => setPaymentOpen(true)}
+        />
+      )}
+
+      {errorMessages && !subscriptionError && (
         <Toast type="error" message={errorMessages}>
           {subscriptionError && (
             <>
@@ -173,7 +211,10 @@ const RegisterLessonForm: React.FC = () => {
         <PaymentOverlay
           userId={student.studentId ?? 0}
           open={paymentOpen}
-          onClose={() => setPaymentOpen(false)}
+          onClose={() => {
+            setPaymentOpen(false);
+            setSubscriptionError(false);
+          }}
           amount={90}
           onPaymentSuccess={handlePaymentSuccess}
         />

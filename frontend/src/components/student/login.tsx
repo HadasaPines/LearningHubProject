@@ -32,7 +32,10 @@ const LoginForm: React.FC<Props> = ({ onToast }) => {
       const user: User = response.data;
       localStorage.setItem("user", JSON.stringify(user));
       onToast("success", "Login successful!");
-      navigate("/registerLesson");
+      if(user.role=="Student")
+      navigate("/student/studentHome");
+    if(user.role=="Admin")
+      navigate("/admin/adminHome");
     } catch (error: any) {
       onToast("error", parseApiError(error));
     }

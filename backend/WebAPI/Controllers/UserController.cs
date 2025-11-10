@@ -113,7 +113,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddUser([FromBody] UserBL user)
         {
             await _userServiceBL.AddUser(user);
-            return Ok($"User with id {user.UserId} added successfully.");
+            return Ok(user);
         }
 
         [HttpDelete("deleteUser/{userId}")]

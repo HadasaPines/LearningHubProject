@@ -62,12 +62,14 @@
 
 .lessonsList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, minmax(380px, 1fr));
   gap: 2rem;
   padding: 1rem;
-  overflow-y: auto;
+  overflow-y: 0;
   max-height: 100%;
 }
+
+
 
 .lessonCard {
   position: relative;
@@ -79,11 +81,9 @@
   transition: transform 0.2s ease;
   font-size: 0.85rem;
 
-  /* הרחבת הכרטיס לרוחב מלבני */
-  width: 40%; /* אפשר לשנות ל-35%, 45% לפי טעם */
+  width: 40%; 
   max-width: none;
 
-  transform: rotate(-1deg);
 
   &:hover {
     transform: rotate(0deg) scale(1.03);

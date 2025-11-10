@@ -72,18 +72,20 @@ const DashboardComponent: React.FC = () => {
 
     const fetchData = async () => {
       try {
-        const [lessonsRes, studentSubsRes, paymentsRes, subjectsRes, teachersRes] = await Promise.all([
-          getLessonsByStudentId(userData.userId),
-          getStudentSubscriptionById(userData.userId),
-          getPaymentsByUserId(userData.userId),
-          getAllSubjects(),
-          getAllTeachers(),
+        const [lessonsRes, studentSubsRes, paymentsRes, subjectsRes,
+            teachersRes
+        ] = await Promise.all([
+          await getLessonsByStudentId(userData.userId),
+          await  getStudentSubscriptionById(userData.userId),
+          await getPaymentsByUserId(userData.userId),
+           await getAllSubjects(),
+          await getAllTeachers(),
         ]);
 
         setLessons(lessonsRes.data);
         setStudentSubscriptions(studentSubsRes.data);
         setPayments(paymentsRes);
-        setSubjects(subjectsRes.data);
+       setSubjects(subjectsRes.data);
         setTeachers(teachersRes.data);
 
         const uniqueSubIds = [...new Set(studentSubsRes.data.map((sub) => sub.subscriptionId))];
@@ -102,10 +104,11 @@ const DashboardComponent: React.FC = () => {
     return subject ? subject.name : "Unknown";
   };
 
-  const getTeacherName = (id: number) => {
-    const teacher = teachers.find((t) => t.userId === id);
-    return teacher ? `${teacher.firstName} ${teacher.lastName}` : "Unknown";
-  };
+ const getTeacherName = (id: number) => {
+  if (!teachers || teachers.length === 0) return "Unknown"; 
+  const teacher = teachers.find((t) => t.userId === id);
+  return teacher ? `${teacher.firstName} ${teacher.lastName}` : "Unknown";
+};
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

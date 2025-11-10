@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
-import { addPayment } from "../services/api";
-import type { Payment } from "../models/paymentModel";
+import { addPayment } from "../../services/api";
+import type { Payment } from "../../models/paymentModel";
 import "./paymentOverlay.scss";
-import Toast from "../components/toast"
+import Toast from "../../components/toast"
 
 interface Props {
   userId: number;

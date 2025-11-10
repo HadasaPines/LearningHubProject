@@ -54,7 +54,7 @@ namespace BL.Services
         {
             var payments = await _paymentServiceDAL.GetPaymentsByStudentId(studentId);
             if (payments == null || !payments.Any())
-                throw new PaymentNotFoundException($"No payments found for student with ID '{studentId}'");
+                return new List<PaymentBL>();
             return _mapper.Map<List<PaymentBL>>(payments);
 
         }

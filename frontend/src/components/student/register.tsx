@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User, StudentDetails } from "../../models/userModel";
 import { addUser, addStudent } from "../../services/api";
 import { parseApiError } from "../../utils/apiErrorParser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "../../pages/authPage.module.scss";
-import { useEffect } from "react";
 
 interface Props {
   onToast: (type: "error" | "success", message: string) => void;
@@ -29,7 +29,7 @@ const RegisterForm: React.FC<Props> = ({ onToast }) => {
     password: "",
     phone: "",
     email: "",
-    role: "Student",
+    role: "Student",  
     student: studentData,
   });
 
@@ -62,20 +62,37 @@ const RegisterForm: React.FC<Props> = ({ onToast }) => {
   const handleSubmitUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addUser(UserData);
-      await addStudent(studentData);
+      
+      const response = await addUser(UserData);
+      await addStudent({ ...studentData, studentId: UserData.userId });
+
+      // const user: User = response.data;
+const user: User = {
+  ...response.data,  
+  student: studentData,  
+};
+localStorage.setItem("user", JSON.stringify(user));
+
+     
+    
+
       onToast("success", "Registration successful!");
-      navigate("/registerLesson");
+
+     
+      if (user.role === "Student") {
+        navigate("/student/studentHome");
+      }
     } catch (error: any) {
       onToast("error", parseApiError(error));
     }
   };
+
   useEffect(() => {
-  setUserData((prev) => ({
-    ...prev,
-    student: studentData,
-  }));
-}, [studentData]);
+    setUserData((prev) => ({
+      ...prev,
+      student: studentData,
+    }));
+  }, [studentData]);
 
   return (
     <form onSubmit={handleSubmitUser}>
